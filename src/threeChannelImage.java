@@ -24,8 +24,7 @@ public class threeChannelImage implements TypeOfImage {
   }
 
 
-  public static class threeChannelImageBuilder extends
-      ImageBuilder <threeChannelObject> {
+  public static class threeChannelImageBuilder extends ImageBuilder<threeChannelObject, threeChannelImageBuilder> {
 
     private TypeofImageObject[][] pixels;
 

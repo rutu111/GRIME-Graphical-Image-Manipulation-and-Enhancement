@@ -1,4 +1,4 @@
-public class threeChannelObject extends ImageBuilder<threeChannelObject> implements TypeofImageObject{
+public class threeChannelObject implements TypeofImageObject{
 
   final int red;
   final int green;

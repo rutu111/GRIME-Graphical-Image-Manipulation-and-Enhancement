@@ -1,4 +1,4 @@
-public abstract class ImageBuilder <P extends ImageBuilder<P>>  {
+public abstract class ImageBuilder <P, T extends ImageBuilder<P, T>>  {
 
   protected final int width;
   protected final int height;
