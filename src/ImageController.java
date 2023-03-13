@@ -20,9 +20,9 @@ public class ImageController {
 
 
   public void run() {
+    while (true) {
     Scanner scanner = new Scanner(System.in);
     String command;
-    while (true) {
       command = scanner.nextLine();
       String[] commandParts = command.split(" ");
       String commandName = commandParts[0];
@@ -141,7 +141,7 @@ public class ImageController {
           System.out.println("File path does not exist.");
         }
       }
-      scanner.close();
+      //scanner.close();
     }
   }
 }

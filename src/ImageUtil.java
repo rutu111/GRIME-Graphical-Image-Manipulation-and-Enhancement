@@ -98,6 +98,8 @@ public class ImageUtil {
         }
       }
       System.out.println("Success");
+    }catch(FileNotFoundException e){
+      throw e;
     }
   }
 

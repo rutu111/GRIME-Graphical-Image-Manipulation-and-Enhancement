@@ -6,7 +6,7 @@ import java.util.NoSuchElementException;
 
 public class Model {
 
-  private HashMap<String, TypeOfImage> imageHashMap;
+  private HashMap<String, TypeOfImage> imageHashMap = new HashMap<String, TypeOfImage>();
 
   public void combineGreyScaleToRGB(String imageName1, String imageName2, String imageName3,
       String newImageName) throws IllegalArgumentException, NoSuchElementException {
@@ -146,18 +146,18 @@ public class Model {
     for (int i = 0; i < image.getHeight(); i++) {
       for (int j = 0; j < image.getWidth(); j++) {
         switch (measure) {
-          case Value:
+          case value:
             int value = Math.max(Math.max(image.getPixels()[i][j].getChanne11(),
                 image.getPixels()[i][j].getChanne12()), image.getPixels()[i][j].getChanne13());
             new_image[i][j] = new threeChannelObject(value, value, value);
             //intensity
-          case Intensity:
+          case intensity:
             int intensity =
                 (image.getPixels()[i][j].getChanne11() + image.getPixels()[i][j].getChanne12()
                     + image.getPixels()[i][j].getChanne13()) / 3;
             new_image[i][j] = new threeChannelObject(intensity, intensity, intensity);
             //luma
-          case Luma:
+          case luma:
             double luma = 0.2126 * image.getPixels()[i][j].getChanne11()
                 + 0.7152 * image.getPixels()[i][j].getChanne12() +
                 0.0722 * image.getPixels()[i][j].getChanne13();

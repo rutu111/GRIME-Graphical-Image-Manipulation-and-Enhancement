@@ -1,7 +1,7 @@
 public enum MeasurementType {
-  Value("value"),
-  Intensity("intensity"),
-  Luma("luma");
+  value("value"),
+  intensity("intensity"),
+  luma("luma");
 
   private final String measure;
 
