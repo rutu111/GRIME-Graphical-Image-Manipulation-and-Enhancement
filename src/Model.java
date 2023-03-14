@@ -135,29 +135,6 @@ public class Model {
         new threeChannelImage(newPixels, image.getWidth(), image.getHeight()));
   }
 
-  public void visualizeValue(String imageName, String newImageName,
-      MeasurementType measure)
-      throws NoSuchElementException {
-    if (!imageHashMap.containsKey(imageName)) {
-      throw new NoSuchElementException("Image: " + imageName + "does not exist.");
-    }
-    TypeOfImage image = imageHashMap.get(imageName);
-    if(measure == MeasurementType.value){
-      TypeofImageObject[][] new_image = new threeChannelObject[image.getWidth()][image.getHeight()];
-      for (int i = 0; i < image.getWidth(); i++) {
-        for (int j = 0; j < image.getHeight(); j++) {
-              int value = Math.max(image.getPixels()[i][j].getChanne11(),
-                  Math.max(image.getPixels()[i][j].getChanne12(),
-                      image.getPixels()[i][j].getChanne13()));
-              new_image[i][j] = new threeChannelObject(value, value, value);
-          }
-        }
-        imageHashMap.put(newImageName,
-            new threeChannelImage(new_image, image.getWidth(), image.getHeight()));
-
-    }
-
-  }
   public void visualizeValueIntensityLuma(String imageName, String newImageName,
       MeasurementType measure)
       throws NoSuchElementException {
@@ -199,22 +176,11 @@ public class Model {
     if (!imageHashMap.containsKey(imageName)) {
       throw new NoSuchElementException("Image: " + imageName + "does not exist.");
     }
-    //creates a hashmap having channels as keys and greyscale image as values.
-    //loop through the value of components and put the greyscale image in hashmap.
-
     visIndividualComponent(imageName, newImageName1, Component.red);
     visIndividualComponent(imageName, newImageName2, Component.green);
     visIndividualComponent(imageName, newImageName3, Component.blue);
-
   }
 
-
-  public TypeofImageObject getPixelAtPosition(TypeOfImage image, int width, int height) {
-    if (width < 0 || width >= image.getWidth() || height < 0 || height >= image.getHeight()) {
-      throw new IndexOutOfBoundsException("Position out of bounds.");
-    }
-    return image.getPixels()[image.getWidth()][image.getHeight()];
-  }
 
   public TypeOfImage getObject(String imageName) throws NoSuchElementException {
     if (!imageHashMap.containsKey(imageName)) {

@@ -4,13 +4,8 @@ import java.util.List;
 import java.util.Scanner;
 
 public class ImageController {
-
-  //create instance of ImageUtil class
   static ImageUtil imageUtil = new ImageUtil();
-  static TypeOfImage currentImage = null;
-
   private Model model;
-  //creating hashmap here
 
   public ImageController(Model model) {
     this.model = model;
@@ -20,7 +15,8 @@ public class ImageController {
 
 
   public void run() {
-    while (true) {
+    boolean go = true;
+    while (go) {
     Scanner scanner = new Scanner(System.in);
     String command;
       command = scanner.nextLine();
@@ -32,8 +28,6 @@ public class ImageController {
           String imagePath = commandParts[1];
           String imageName = commandParts[2];
           imageUtil.readPPM(this.model, imagePath, imageName);
-          //identify the type based on the type of image
-          //put imageName and currentImage object in hashmap
           System.out.println("Loaded image '" + imageName + "' from '" + imagePath + "'");
         } catch (FileNotFoundException e) {
           System.out.println("File not found: " + commandParts[1]);
@@ -45,10 +39,7 @@ public class ImageController {
           double increment = Integer.parseInt(commandParts[1]);
           String imageName = commandParts[2];
           String updatedImageName = commandParts[3];
-          //currentImage - should be taken from the hashmap (hashmap.get(imageName.value()))
-          //TypeOfImage updatedImage = currentImage.brighten(increment);
           model.brighten(imageName, updatedImageName, increment);
-          //upadtedImageName, upadtedImage added to hashmap
           System.out.println(
               "Image brightened '" + imageName + "'stored as'" + updatedImageName + "'");
         } catch (IndexOutOfBoundsException e) {
@@ -58,9 +49,8 @@ public class ImageController {
         try {
           String imageName = commandParts[1];
           String updatedImageName = commandParts[2];
-          //currentImage - should be taken from the hashmap (hashmap.get(imageName.value()))
           model.verticalFlip(imageName,
-              updatedImageName);          //upadtedImageName, upadtedImage added to hashmap
+              updatedImageName);
           System.out.println(
               "Image vertically flipped'" + imageName + "'stored as'" + updatedImageName + "'");
         } catch (IndexOutOfBoundsException e) {
@@ -70,9 +60,8 @@ public class ImageController {
         try {
           String imageName = commandParts[1];
           String updatedImageName = commandParts[2];
-          //currentImage - should be taken from the hashmap (hashmap.get(imageName.value()))
           model.horizontalFlip(imageName,
-              updatedImageName);           //upadtedImageName, upadtedImage added to hashmap
+              updatedImageName);
           System.out.println(
               "Image horizontally flipped'" + imageName + "'stored as'" + updatedImageName + "'");
         } catch (IndexOutOfBoundsException e) {
@@ -83,7 +72,6 @@ public class ImageController {
           String component = commandParts[1];
           String imageName = commandParts[2];
           String updatedImageName = commandParts[3];
-          //currentImage - should be taken from the hashmap (hashmap.get(imageName.value()))
           String[] componentParts = component.split("-");
           if (componentParts[0].equals("red") || componentParts[0].equals("green")
               || componentParts[0].equals("blue")) {
@@ -93,7 +81,6 @@ public class ImageController {
             model.visualizeValueIntensityLuma(imageName, updatedImageName,
                 MeasurementType.valueOf(componentParts[0]));
           }
-          //upadtedImageName, upadtedImage added to hashmap
           System.out.println(
               "Image '" + imageName + "'stored as greyscale'" + updatedImageName + "'");
         } catch (IndexOutOfBoundsException e) {
@@ -109,9 +96,11 @@ public class ImageController {
           String updatedimageName1 = commandParts[2];
           String updatedimageName2 = commandParts[3];
           String updatedimageName3 = commandParts[4];
-          //currentImage - should be taken from the hashmap (hashmap.get(imageName.value()))
           model.splitInto3Images(imageName, updatedimageName1, updatedimageName2,
-              updatedimageName3);//need to create modelgrey-depends on design
+              updatedimageName3);
+          System.out.println(
+              "Image '" + imageName + "'has been split into greyscale images: '"
+                  + updatedimageName1 + "'" + updatedimageName2 + "'and" + updatedimageName3 + "'");
         } catch (IndexOutOfBoundsException e) {
           throw e;
         } catch (NoSuchFieldException e) {
@@ -126,7 +115,9 @@ public class ImageController {
           String imageName2 = commandParts[3];
           String imageName3 = commandParts[4];
           model.combineGreyScaleToRGB(imageName1, imageName2, imageName3, updatedimageName);
-
+          System.out.println(
+              "Image '" + updatedimageName + "was created by combining greyscale images: '"
+                  + imageName1 + "'" + imageName2 + "'and" + imageName3 + "'");
         } catch (IndexOutOfBoundsException e) {
           throw e;
         }
@@ -138,8 +129,10 @@ public class ImageController {
         } catch (FileNotFoundException e) {
           System.out.println("File path does not exist.");
         }
+      } else if (commandName.equals("exit")){
+        go = false;
+        System.out.println("Exit the program");
       }
-      //scanner.close();
     }
   }
 }
