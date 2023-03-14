@@ -57,27 +57,26 @@ public class Model {
     imageHashMap.put(nameOfObject, image);
   }
 
-  public void horizontalFlip(String imageName, String newImageName)
+  public void verticalFlip(String imageName, String newImageName)
       throws NoSuchElementException {
     if (!imageHashMap.containsKey(imageName)) {
       throw new NoSuchElementException("Image: " + imageName + "does not exist.");
     }
     TypeOfImage image = imageHashMap.get(imageName);
     TypeofImageObject[][] flippedImage = image.getPixels().clone();
-    TypeofImageObject temp;
     //flip the columns
-    for (int i = 0; i < flippedImage.length; i++) {
-      for (int j = 0; j < flippedImage[i].length / 2; j++) {
-        temp = flippedImage[j][i];
-        flippedImage[i][j] = flippedImage[i][flippedImage.length - 1 - j];
-        flippedImage[i][flippedImage.length - 1 - j] = temp;
+    for(int row = 0; row < flippedImage.length; row++){
+      for(int col = 0; col < flippedImage[row].length / 2; col++) {
+        TypeofImageObject temp = flippedImage[row][col];
+        flippedImage[row][col] = flippedImage[row][flippedImage[row].length - col - 1];
+        flippedImage[row][flippedImage[row].length - col - 1] = temp;
       }
     }
     imageHashMap.put(newImageName,
-        new threeChannelImage(flippedImage, flippedImage[0].length, flippedImage.length));
+        new threeChannelImage(flippedImage, image.getWidth(), image.getHeight()));
   }
 
-  public void verticalFlip(String imageName, String newImageName)
+  public void horizontalFlip(String imageName, String newImageName)
       throws NoSuchElementException {
     if (!imageHashMap.containsKey(imageName)) {
       throw new NoSuchElementException("Image: " + imageName + "does not exist.");
@@ -85,10 +84,12 @@ public class Model {
     TypeOfImage image = imageHashMap.get(imageName);
     //flip the rows
     TypeofImageObject[][] flippedImage = image.getPixels().clone();
-    for (int i = 0; i < image.getHeight(); ++i) {
-      TypeofImageObject[] tempRow = flippedImage[i];
-      flippedImage[i] = flippedImage[image.getHeight() - i - 1];
-      flippedImage[image.getHeight() - i - 1] = tempRow;
+    for(int col = 0;col < flippedImage[0].length; col++){
+      for(int row = 0; row < flippedImage.length/2; row++) {
+        TypeofImageObject temp = flippedImage[row][col];
+        flippedImage[row][col] = flippedImage[flippedImage.length - row - 1][col];
+        flippedImage[flippedImage.length - row - 1][col] = temp;
+      }
     }
     imageHashMap.put(newImageName,
         new threeChannelImage(flippedImage, image.getWidth(), image.getHeight()));
