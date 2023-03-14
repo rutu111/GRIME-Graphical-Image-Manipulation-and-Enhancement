@@ -54,7 +54,28 @@ public class ModelTest {
     assertTrue(model.getObject("test-bright").equals(model.getObject("expected+imageBrightenBy10")));
   }
 
+  //darken the image
+  @Test
+  public void testIfDarkenWorks() {
 
+    c = 0;
+    expectedImage = model.createBuilderThreeChannel(width, height);
+    int increment = -10;
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        expectedImage.addPixelAtPosition(j, i, new threeChannelObject(Math.abs(c+increment), Math.abs(c+increment), Math.abs(c+increment)));
+        c+=1;
+      }
+    }
+    //before
+    model.createImageThreeChannel(testImage1, "test+image");
+    model.createImageThreeChannel(expectedImage, "expected+imageDarkenBy10");
+    assertFalse(model.getObject("test+image").equals(model.getObject("expected+imageDarkenBy10")));
+
+    //after
+    model.brighten("test+image", "test-darken", -10);
+    assertTrue(model.getObject("test-darken").equals(model.getObject("expected+imageDarkenBy10")));
+  }
   @Test
   public void testThatHashMapWorks() {
 
