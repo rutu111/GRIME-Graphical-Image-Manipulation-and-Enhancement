@@ -1,7 +1,5 @@
 import java.lang.reflect.Field;
-import java.security.KeyException;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.NoSuchElementException;
 
 public class Model {
@@ -46,15 +44,15 @@ public class Model {
         new threeChannelImage(new_image, image1.getWidth(), image1.getHeight()));
   }
 
-  public threeChannelImage.threeChannelImageBuilder createBuilder(int width, int height) {
+  public threeChannelImage.threeChannelImageBuilder createBuilderThreeChannel(int width, int height) {
     threeChannelImage.threeChannelImageBuilder testBuilder = new threeChannelImage.threeChannelImageBuilder(
         width, height);
 
     return testBuilder; //saves to hashamp.
   }
 
-  public void createImage(TypeOfImage image, String nameOfObject) {
-    imageHashMap.put(nameOfObject, image);
+  public void createImageThreeChannel(threeChannelImage.threeChannelImageBuilder image, String nameOfObject) {
+    imageHashMap.put(nameOfObject, image.buildImage());
   }
 
   public void verticalFlip(String imageName, String newImageName)

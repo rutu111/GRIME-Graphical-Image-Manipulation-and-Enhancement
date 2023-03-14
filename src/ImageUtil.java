@@ -8,9 +8,6 @@ import java.util.Scanner;
  *  as required.
  */
 import java.io.PrintWriter;
-import java.util.Scanner;
-import java.io.FileNotFoundException;
-import java.io.FileInputStream;
 
 
 /**
@@ -53,7 +50,7 @@ public class ImageUtil {
     int maxValue = sc.nextInt();
     //System.out.println("Maximum value of a color in this file (usually 255): "+maxValue);
 
-    threeChannelImage.threeChannelImageBuilder builderObject = model.createBuilder(width, height);
+    threeChannelImage.threeChannelImageBuilder builderObject = model.createBuilderThreeChannel(width, height);
 
     int k = 0;
     //ModelRGB Image = null;
@@ -67,7 +64,7 @@ public class ImageUtil {
 
       }
 
-      model.createImage(builderObject.buildImage(), nameOfTheObject);
+      model.createImageThreeChannel(builderObject, nameOfTheObject);
     }
 
   }

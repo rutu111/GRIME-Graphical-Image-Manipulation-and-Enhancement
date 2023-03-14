@@ -1,6 +1,5 @@
 import static org.junit.Assert.*;
 
-import com.sun.source.tree.AssertTree;
 import java.util.NoSuchElementException;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,7 +22,7 @@ public class ModelTest {
     width = 5;
     height = 5;
 
-    testImage1 = model.createBuilder(width, height);
+    testImage1 = model.createBuilderThreeChannel(width, height);
     c = 0;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
@@ -37,7 +36,7 @@ public class ModelTest {
   public void testIfBrightenWorks() {
 
     c = 0;
-    expectedImage = model.createBuilder(width, height);
+    expectedImage = model.createBuilderThreeChannel(width, height);
     int increment = 10;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
@@ -46,8 +45,8 @@ public class ModelTest {
       }
     }
     //before brighterning
-    model.createImage(testImage1.buildImage(), "test+image");
-    model.createImage(expectedImage.buildImage(), "expected+imageBrightenBy10");
+    model.createImageThreeChannel(testImage1, "test+image");
+    model.createImageThreeChannel(expectedImage, "expected+imageBrightenBy10");
     assertFalse(model.getObject("test+image").equals(model.getObject("expected+imageBrightenBy10")));
 
     //after brighterning
@@ -60,7 +59,7 @@ public class ModelTest {
   public void testThatHashMapWorks() {
 
     c = 0;
-    expectedImage = model.createBuilder(width, height);
+    expectedImage = model.createBuilderThreeChannel(width, height);
     int increment = 10;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
@@ -71,9 +70,9 @@ public class ModelTest {
 
     //before anything is added
     assertEquals(model.numberOfImagesInModel(), 0);
-    model.createImage(testImage1.buildImage(), "test+image");
+    model.createImageThreeChannel(testImage1, "test+image");
     assertEquals(model.numberOfImagesInModel(), 1);
-    model.createImage(expectedImage.buildImage(), "expected+imageBrightenBy10");
+    model.createImageThreeChannel(expectedImage, "expected+imageBrightenBy10");
     assertEquals(model.numberOfImagesInModel(), 2);
   }
 
@@ -86,18 +85,18 @@ public class ModelTest {
   public void testIfDefaultimageGetsCreated() {
       //default image
     threeChannelImage.threeChannelImageBuilder defaultIamge;
-      defaultIamge = model.createBuilder(width, height);
-    model.createImage(defaultIamge.buildImage(), "default+image");
+      defaultIamge = model.createBuilderThreeChannel(width, height);
+    model.createImageThreeChannel(defaultIamge, "default+image");
 
     //image with all 0's
       c = 0;
-    expectedImage = model.createBuilder(width, height);
+    expectedImage = model.createBuilderThreeChannel(width, height);
       for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
           expectedImage.addPixelAtPosition(j, i, new threeChannelObject(c, c, c));
         }
       }
-    model.createImage(expectedImage.buildImage(), "default+image-test");
+    model.createImageThreeChannel(expectedImage, "default+image-test");
 
     assertTrue(model.getObject("default+image").equals(model.getObject("default+image-test")));
 
