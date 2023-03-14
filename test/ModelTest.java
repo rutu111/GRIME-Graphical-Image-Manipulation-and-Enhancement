@@ -65,6 +65,7 @@ public class ModelTest {
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         expectedImage.addPixelAtPosition(j, i, new threeChannelObject(c+increment, c+increment, c+increment));
+        c+=1;
       }
     }
 
@@ -86,18 +87,21 @@ public class ModelTest {
       //default image
     threeChannelImage.threeChannelImageBuilder defaultIamge;
       defaultIamge = model.createBuilder(width, height);
-    model.createImage(defaultIamge.buildImage(), "test+image");
+    model.createImage(defaultIamge.buildImage(), "default+image");
 
     //image with all 0's
       c = 0;
     expectedImage = model.createBuilder(width, height);
-      int increment = 10;
       for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
           expectedImage.addPixelAtPosition(j, i, new threeChannelObject(c, c, c));
         }
       }
-    }
+    model.createImage(expectedImage.buildImage(), "default+image-test");
+
+    assertTrue(model.getObject("default+image").equals(model.getObject("default+image-test")));
+
+  }
 
 
 }
