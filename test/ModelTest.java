@@ -44,9 +44,9 @@ public class ModelTest {
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         expectedImage.addPixelAtPosition(j, i,
-            new threeChannelObject((Math.max(0, c + increment)),
-                (Math.max(0, c + increment)),
-                (Math.max(0, c + increment))));
+            new threeChannelObject(((int) Math.min(255, Math.max(0, c + increment))),
+                ((int) Math.min(255, Math.max(0, c + increment))),
+                (int) Math.min(255, Math.max(0, c + increment))));
         c += 1;
       }
     }
@@ -72,9 +72,9 @@ public class ModelTest {
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         expectedImage.addPixelAtPosition(j, i,
-            new threeChannelObject((Math.max(0, c + increment)),
-                (Math.max(0, c + increment)),
-                (Math.max(0, c + increment))));
+            new threeChannelObject(((int) Math.min(255, Math.max(0, c + increment))),
+                ((int) Math.min(255, Math.max(0, c + increment))),
+                (int) Math.min(255, Math.max(0, c + increment))));
         c += 1;
       }
     }
@@ -98,7 +98,9 @@ public class ModelTest {
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         expectedImage.addPixelAtPosition(j, i,
-            new threeChannelObject(c + increment, c + increment, c + increment));
+            new threeChannelObject(((int) Math.min(255, Math.max(0, c + increment))),
+                ((int) Math.min(255, Math.max(0, c + increment))),
+                (int) Math.min(255, Math.max(0, c + increment))));
         c += 1;
       }
     }
@@ -113,6 +115,9 @@ public class ModelTest {
     assertTrue(
         model.getObject("test-bright01").equals(model.getObject("expected+imageBrightenBy10")));
   }
+
+
+
 
   @Test
   public void testThatHashMapWorks() {
