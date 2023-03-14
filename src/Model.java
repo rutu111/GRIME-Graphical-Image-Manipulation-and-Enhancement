@@ -143,8 +143,8 @@ public class Model {
     }
     TypeOfImage image = imageHashMap.get(imageName);
     TypeofImageObject[][] new_image = new threeChannelObject[image.getWidth()][image.getHeight()];
-    for (int i = 0; i < image.getHeight(); i++) {
-      for (int j = 0; j < image.getWidth(); j++) {
+    for (int i = 0; i < image.getWidth(); i++) {
+      for (int j = 0; j < image.getHeight(); j++) {
         switch (measure) {
           case value:
             int value = Math.max(Math.max(image.getPixels()[i][j].getChanne11(),

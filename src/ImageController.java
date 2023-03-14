@@ -38,7 +38,7 @@ public class ImageController {
         } catch (FileNotFoundException e) {
           System.out.println("File not found: " + commandParts[1]);
         } catch (IndexOutOfBoundsException e) {
-          System.out.println("Usage: load image-path image-name");
+          throw e;
         }
       } else if (commandName.equals("brighten")) {
         try {
@@ -52,7 +52,7 @@ public class ImageController {
           System.out.println(
               "Image brightened '" + imageName + "'stored as'" + updatedImageName + "'");
         } catch (IndexOutOfBoundsException e) {
-          System.out.println("Usage: brighten increment imageName updatedImageName");
+          throw e;
         }
       } else if (commandName.equals("vertical-flip")) {
         try {
@@ -64,7 +64,7 @@ public class ImageController {
           System.out.println(
               "Image vertically flipped'" + imageName + "'stored as'" + updatedImageName + "'");
         } catch (IndexOutOfBoundsException e) {
-          System.out.println("Usage: vertical-flip imageName updatedImageName");
+          throw e;
         }
       } else if (commandName.equals("horizontal-flip")) {
         try {
@@ -76,7 +76,7 @@ public class ImageController {
           System.out.println(
               "Image horizontally flipped'" + imageName + "'stored as'" + updatedImageName + "'");
         } catch (IndexOutOfBoundsException e) {
-          System.out.println("Usage: horizontal-flip imageName updatedImageName");
+          throw e;
         }
       } else if (commandName.equals("greyscale")) {
         try {
@@ -95,9 +95,9 @@ public class ImageController {
           }
           //upadtedImageName, upadtedImage added to hashmap
           System.out.println(
-              "Image horizontally flipped'" + imageName + "'stored as'" + updatedImageName + "'");
+              "Image '" + imageName + "'stored as greyscale'" + updatedImageName + "'");
         } catch (IndexOutOfBoundsException e) {
-          System.out.println("Usage: greyscale value-component imageName updatedImageName");
+          throw e;
         } catch (NoSuchFieldException e) {
           throw new RuntimeException(e);
         } catch (IllegalAccessException e) {
@@ -113,8 +113,7 @@ public class ImageController {
           model.splitInto3Images(imageName, updatedimageName1, updatedimageName2,
               updatedimageName3);//need to create modelgrey-depends on design
         } catch (IndexOutOfBoundsException e) {
-          System.out.println(
-              "Usage: rgb-split imageName updatedimageName1 updatedimageName2 updatedimageName3");
+          throw e;
         } catch (NoSuchFieldException e) {
           throw new RuntimeException(e);
         } catch (IllegalAccessException e) {
@@ -129,8 +128,7 @@ public class ImageController {
           model.combineGreyScaleToRGB(imageName1, imageName2, imageName3, updatedimageName);
 
         } catch (IndexOutOfBoundsException e) {
-          System.out.println(
-              "Usage: rgb-combine updatedimageName imageName1 imageName2 imageName3");
+          throw e;
         }
       } else if (commandName.equals("save")) {
         try {
