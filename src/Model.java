@@ -135,6 +135,29 @@ public class Model {
         new threeChannelImage(newPixels, image.getWidth(), image.getHeight()));
   }
 
+  public void visualizeValue(String imageName, String newImageName,
+      MeasurementType measure)
+      throws NoSuchElementException {
+    if (!imageHashMap.containsKey(imageName)) {
+      throw new NoSuchElementException("Image: " + imageName + "does not exist.");
+    }
+    TypeOfImage image = imageHashMap.get(imageName);
+    if(measure == MeasurementType.value){
+      TypeofImageObject[][] new_image = new threeChannelObject[image.getWidth()][image.getHeight()];
+      for (int i = 0; i < image.getWidth(); i++) {
+        for (int j = 0; j < image.getHeight(); j++) {
+              int value = Math.max(image.getPixels()[i][j].getChanne11(),
+                  Math.max(image.getPixels()[i][j].getChanne12(),
+                      image.getPixels()[i][j].getChanne13()));
+              new_image[i][j] = new threeChannelObject(value, value, value);
+          }
+        }
+        imageHashMap.put(newImageName,
+            new threeChannelImage(new_image, image.getWidth(), image.getHeight()));
+
+    }
+
+  }
   public void visualizeValueIntensityLuma(String imageName, String newImageName,
       MeasurementType measure)
       throws NoSuchElementException {
@@ -145,20 +168,20 @@ public class Model {
     TypeofImageObject[][] new_image = new threeChannelObject[image.getWidth()][image.getHeight()];
     for (int i = 0; i < image.getWidth(); i++) {
       for (int j = 0; j < image.getHeight(); j++) {
-        switch (measure) {
-          case value:
-            int value = Math.max(image.getPixels()[i][j].getChanne11(),
-                Math.max(image.getPixels()[i][j].getChanne12(), image.getPixels()[i][j].getChanne13()));
-            new_image[i][j] = new threeChannelObject(value, value, value);
+        if(measure.toString().equals("value")) {
+          int value = Math.max(image.getPixels()[i][j].getChanne11(),
+              Math.max(image.getPixels()[i][j].getChanne12(),
+                  image.getPixels()[i][j].getChanne13()));
+          new_image[i][j] = new threeChannelObject(value, value, value);
+        }
             //intensity
-          case intensity:
-            double intensity =
-                (image.getPixels()[i][j].getChanne11() + image.getPixels()[i][j].getChanne12()
-                    + image.getPixels()[i][j].getChanne13()) / 3;
-            new_image[i][j] = new threeChannelObject((int) intensity, (int) intensity,
-                (int) intensity);
+        if(measure.toString().equals("intensity")) {
+          int intensity = (image.getPixels()[i][j].getChanne11() + image.getPixels()[i][j].getChanne12()
+                  + image.getPixels()[i][j].getChanne13()) / 3;
+          new_image[i][j] = new threeChannelObject(intensity, intensity, intensity);
+        }
             //luma
-          case luma:
+          if(measure.toString().equals("luma")){
             double luma = 0.2126 * image.getPixels()[i][j].getChanne11()
                 + 0.7152 * image.getPixels()[i][j].getChanne12() +
                 0.0722 * image.getPixels()[i][j].getChanne13();
