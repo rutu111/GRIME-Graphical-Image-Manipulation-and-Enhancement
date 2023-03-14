@@ -196,4 +196,8 @@ public class Model {
     return imageHashMap.get(imageName);
   }
 
+  public int numberOfImagesInModel() {
+    return imageHashMap.size();
+  }
+
 }
