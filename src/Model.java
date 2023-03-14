@@ -68,7 +68,7 @@ public class Model {
     //flip the columns
     for (int i = 0; i < flippedImage.length; i++) {
       for (int j = 0; j < flippedImage[i].length / 2; j++) {
-        temp = flippedImage[i][j];
+        temp = flippedImage[j][i];
         flippedImage[i][j] = flippedImage[i][flippedImage.length - 1 - j];
         flippedImage[i][flippedImage.length - 1 - j] = temp;
       }
@@ -85,13 +85,13 @@ public class Model {
     TypeOfImage image = imageHashMap.get(imageName);
     //flip the rows
     TypeofImageObject[][] flippedImage = image.getPixels().clone();
-    for (int i = 0; i < image.getHeight() / 2; ++i) {
+    for (int i = 0; i < image.getHeight(); ++i) {
       TypeofImageObject[] tempRow = flippedImage[i];
       flippedImage[i] = flippedImage[image.getHeight() - i - 1];
       flippedImage[image.getHeight() - i - 1] = tempRow;
     }
     imageHashMap.put(newImageName,
-        new threeChannelImage(flippedImage, flippedImage[0].length, flippedImage.length));
+        new threeChannelImage(flippedImage, image.getWidth(), image.getHeight()));
   }
 
   public void visIndividualComponent(String imageName, String newImageName, Component channel)
@@ -135,6 +135,7 @@ public class Model {
         new threeChannelImage(newPixels, image.getWidth(), image.getHeight()));
   }
 
+
   public void visualizeValueIntensityLuma(String imageName, String newImageName,
       MeasurementType measure)
       throws NoSuchElementException {
@@ -151,18 +152,18 @@ public class Model {
                   image.getPixels()[i][j].getChanne13()));
           new_image[i][j] = new threeChannelObject(value, value, value);
         }
-            //intensity
+        //intensity
         if(measure.toString().equals("intensity")) {
           int intensity = (image.getPixels()[i][j].getChanne11() + image.getPixels()[i][j].getChanne12()
-                  + image.getPixels()[i][j].getChanne13()) / 3;
+              + image.getPixels()[i][j].getChanne13()) / 3;
           new_image[i][j] = new threeChannelObject(intensity, intensity, intensity);
         }
-            //luma
-          if(measure.toString().equals("luma")){
-            double luma = 0.2126 * image.getPixels()[i][j].getChanne11()
-                + 0.7152 * image.getPixels()[i][j].getChanne12() +
-                0.0722 * image.getPixels()[i][j].getChanne13();
-            new_image[i][j] = new threeChannelObject((int) luma, (int) luma, (int) luma);
+        //luma
+        if(measure.toString().equals("luma")){
+          double luma = 0.2126 * image.getPixels()[i][j].getChanne11()
+              + 0.7152 * image.getPixels()[i][j].getChanne12() +
+              0.0722 * image.getPixels()[i][j].getChanne13();
+          new_image[i][j] = new threeChannelObject((int) luma, (int) luma, (int) luma);
         }
       }
     }
@@ -176,10 +177,15 @@ public class Model {
     if (!imageHashMap.containsKey(imageName)) {
       throw new NoSuchElementException("Image: " + imageName + "does not exist.");
     }
+    //creates a hashmap having channels as keys and greyscale image as values.
+    //loop through the value of components and put the greyscale image in hashmap.
+
     visIndividualComponent(imageName, newImageName1, Component.red);
     visIndividualComponent(imageName, newImageName2, Component.green);
     visIndividualComponent(imageName, newImageName3, Component.blue);
+
   }
+
 
 
   public TypeOfImage getObject(String imageName) throws NoSuchElementException {
