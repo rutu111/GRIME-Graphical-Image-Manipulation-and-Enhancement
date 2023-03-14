@@ -23,6 +23,33 @@ public class threeChannelImage implements TypeOfImage {
     return this.width;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    // Fast path for pointer equality:
+    if (this == o) { //backward compatibility with default equals
+      return true;
+    }
+
+    // Check if the type of o is the same as the type of "this"
+    if (!(o instanceof TypeOfImage)) {
+      return false;
+    }
+    TypeOfImage other = (TypeOfImage) o;
+    //if (other.getPixels()[0][0] instanceof threeChannelObject) {
+    if (this.getWidth() == other.getWidth() & this.getHeight() == other.getHeight()) {
+      for (int i = 0; i < this.getWidth(); i++) {
+        for (int j = 0; j < this.getHeight(); j++) {
+          if (!this.getPixels()[i][j].equals(other.getPixels()[i][j])) {
+            return false;
+          }
+        }
+      }
+    } else {
+      return false;
+    }
+    return true;
+  }
+
 
   public static class threeChannelImageBuilder extends ImageBuilder<threeChannelObject, threeChannelImageBuilder> {
 

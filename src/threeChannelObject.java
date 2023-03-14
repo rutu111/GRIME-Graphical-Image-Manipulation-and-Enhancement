@@ -1,4 +1,4 @@
-public class threeChannelObject implements TypeofImageObject{
+public class threeChannelObject implements TypeofImageObject {
 
   public final int red;
   public final int green;
@@ -24,5 +24,20 @@ public class threeChannelObject implements TypeofImageObject{
   @Override
   public int getChanne13() {
     return this.blue;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+
+    if (!(o instanceof threeChannelObject)) {
+      return false;
+    }
+
+    threeChannelObject other = (threeChannelObject) o;
+    return this.getChanne11() == other.getChanne11() & this.getChanne12() == other.getChanne12()
+        & this.getChanne13() == other.getChanne13();
   }
 }
