@@ -152,18 +152,18 @@ public class Model {
                   image.getPixels()[i][j].getChanne13()));
           new_image[i][j] = new threeChannelObject(value, value, value);
         }
-            //intensity
+        //intensity
         if(measure.toString().equals("intensity")) {
           int intensity = (image.getPixels()[i][j].getChanne11() + image.getPixels()[i][j].getChanne12()
-                  + image.getPixels()[i][j].getChanne13()) / 3;
+              + image.getPixels()[i][j].getChanne13()) / 3;
           new_image[i][j] = new threeChannelObject(intensity, intensity, intensity);
         }
-            //luma
-          if(measure.toString().equals("luma")){
-            double luma = 0.2126 * image.getPixels()[i][j].getChanne11()
-                + 0.7152 * image.getPixels()[i][j].getChanne12() +
-                0.0722 * image.getPixels()[i][j].getChanne13();
-            new_image[i][j] = new threeChannelObject((int) luma, (int) luma, (int) luma);
+        //luma
+        if(measure.toString().equals("luma")){
+          double luma = 0.2126 * image.getPixels()[i][j].getChanne11()
+              + 0.7152 * image.getPixels()[i][j].getChanne12() +
+              0.0722 * image.getPixels()[i][j].getChanne13();
+          new_image[i][j] = new threeChannelObject((int) luma, (int) luma, (int) luma);
         }
       }
     }
