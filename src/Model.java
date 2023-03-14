@@ -100,7 +100,7 @@ public class Model {
       throw new NoSuchElementException("Image: " + imageName + "does not exist.");
     }
     TypeOfImage image = imageHashMap.get(imageName);
-    Field field = threeChannelObject.class.getField(channel.toString());
+    Field field = threeChannelObject.class.getDeclaredField(channel.toString());
     TypeofImageObject[][] new_image = new threeChannelObject[image.getWidth()][image.getHeight()];
     for (int i = 0; i < image.getWidth(); i++) {
       for (int j = 0; j < image.getHeight(); j++) {
@@ -147,15 +147,16 @@ public class Model {
       for (int j = 0; j < image.getHeight(); j++) {
         switch (measure) {
           case value:
-            int value = Math.max(Math.max(image.getPixels()[i][j].getChanne11(),
-                image.getPixels()[i][j].getChanne12()), image.getPixels()[i][j].getChanne13());
+            int value = Math.max(image.getPixels()[i][j].getChanne11(),
+                Math.max(image.getPixels()[i][j].getChanne12(), image.getPixels()[i][j].getChanne13()));
             new_image[i][j] = new threeChannelObject(value, value, value);
             //intensity
           case intensity:
-            int intensity =
+            double intensity =
                 (image.getPixels()[i][j].getChanne11() + image.getPixels()[i][j].getChanne12()
                     + image.getPixels()[i][j].getChanne13()) / 3;
-            new_image[i][j] = new threeChannelObject(intensity, intensity, intensity);
+            new_image[i][j] = new threeChannelObject((int) intensity, (int) intensity,
+                (int) intensity);
             //luma
           case luma:
             double luma = 0.2126 * image.getPixels()[i][j].getChanne11()
@@ -178,9 +179,9 @@ public class Model {
     //creates a hashmap having channels as keys and greyscale image as values.
     //loop through the value of components and put the greyscale image in hashmap.
 
-    visIndividualComponent(imageName, newImageName1, Component.Red);
-    visIndividualComponent(imageName, newImageName2, Component.Green);
-    visIndividualComponent(imageName, newImageName3, Component.Blue);
+    visIndividualComponent(imageName, newImageName1, Component.red);
+    visIndividualComponent(imageName, newImageName2, Component.green);
+    visIndividualComponent(imageName, newImageName3, Component.blue);
 
   }
 
