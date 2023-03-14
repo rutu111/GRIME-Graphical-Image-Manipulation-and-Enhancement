@@ -147,15 +147,16 @@ public class Model {
       for (int j = 0; j < image.getHeight(); j++) {
         switch (measure) {
           case value:
-            int value = Math.max(Math.max(image.getPixels()[i][j].getChanne11(),
-                image.getPixels()[i][j].getChanne12()), image.getPixels()[i][j].getChanne13());
+            int value = Math.max(image.getPixels()[i][j].getChanne11(),
+                Math.max(image.getPixels()[i][j].getChanne12(), image.getPixels()[i][j].getChanne13()));
             new_image[i][j] = new threeChannelObject(value, value, value);
             //intensity
           case intensity:
-            int intensity =
+            double intensity =
                 (image.getPixels()[i][j].getChanne11() + image.getPixels()[i][j].getChanne12()
                     + image.getPixels()[i][j].getChanne13()) / 3;
-            new_image[i][j] = new threeChannelObject(intensity, intensity, intensity);
+            new_image[i][j] = new threeChannelObject((int) intensity, (int) intensity,
+                (int) intensity);
             //luma
           case luma:
             double luma = 0.2126 * image.getPixels()[i][j].getChanne11()
