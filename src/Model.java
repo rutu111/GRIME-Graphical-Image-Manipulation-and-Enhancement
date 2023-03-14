@@ -32,9 +32,9 @@ public class Model {
         image1.getPixels()[0].length == image2.getPixels()[0].length
         & image2.getPixels()[0].length == image3.getPixels()[0].length
         & image1.getPixels()[0].length == image3.getPixels()[0].length) {
-      new_image = new threeChannelObject[image1.getPixels()[0].length][image1.getPixels().length];
-      for (int i = 0; i < new_image[0].length; i++) {
-        for (int j = 0; j < new_image.length; j++) {
+      new_image = new threeChannelObject[image1.getWidth()][image1.getHeight()];
+      for (int i = 0; i < image1.getWidth(); i++) {
+        for (int j = 0; j < image1.getHeight(); j++) {
           new_image[i][j] = new threeChannelObject(image1.getPixels()[i][j].getChanne11(),
               image2.getPixels()[i][j].getChanne12(), image3.getPixels()[i][j].getChanne13());
         }

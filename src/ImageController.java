@@ -112,6 +112,8 @@ public class ImageController {
           //currentImage - should be taken from the hashmap (hashmap.get(imageName.value()))
           model.splitInto3Images(imageName, updatedimageName1, updatedimageName2,
               updatedimageName3);//need to create modelgrey-depends on design
+          System.out.println(
+              "Image '" + imageName + "'has been split into greyscale images: '" + updatedimageName1 + "'" + updatedimageName2 + "'and" + updatedimageName3 + "'");
         } catch (IndexOutOfBoundsException e) {
           throw e;
         } catch (NoSuchFieldException e) {
@@ -126,7 +128,8 @@ public class ImageController {
           String imageName2 = commandParts[3];
           String imageName3 = commandParts[4];
           model.combineGreyScaleToRGB(imageName1, imageName2, imageName3, updatedimageName);
-
+          System.out.println(
+              "Image '" + updatedimageName + "was created by combining greyscale images: '" + imageName1 + "'" + imageName2 + "'and" + imageName3 + "'");
         } catch (IndexOutOfBoundsException e) {
           throw e;
         }
