@@ -68,7 +68,7 @@ public class Model {
     //flip the columns
     for (int i = 0; i < flippedImage.length; i++) {
       for (int j = 0; j < flippedImage[i].length / 2; j++) {
-        temp = flippedImage[i][j];
+        temp = flippedImage[j][i];
         flippedImage[i][j] = flippedImage[i][flippedImage.length - 1 - j];
         flippedImage[i][flippedImage.length - 1 - j] = temp;
       }
@@ -85,13 +85,13 @@ public class Model {
     TypeOfImage image = imageHashMap.get(imageName);
     //flip the rows
     TypeofImageObject[][] flippedImage = image.getPixels().clone();
-    for (int i = 0; i < image.getHeight() / 2; ++i) {
+    for (int i = 0; i < image.getHeight(); ++i) {
       TypeofImageObject[] tempRow = flippedImage[i];
       flippedImage[i] = flippedImage[image.getHeight() - i - 1];
       flippedImage[image.getHeight() - i - 1] = tempRow;
     }
     imageHashMap.put(newImageName,
-        new threeChannelImage(flippedImage, flippedImage[0].length, flippedImage.length));
+        new threeChannelImage(flippedImage, image.getWidth(), image.getHeight()));
   }
 
   public void visIndividualComponent(String imageName, String newImageName, Component channel)
@@ -135,29 +135,7 @@ public class Model {
         new threeChannelImage(newPixels, image.getWidth(), image.getHeight()));
   }
 
-  public void visualizeValue(String imageName, String newImageName,
-      MeasurementType measure)
-      throws NoSuchElementException {
-    if (!imageHashMap.containsKey(imageName)) {
-      throw new NoSuchElementException("Image: " + imageName + "does not exist.");
-    }
-    TypeOfImage image = imageHashMap.get(imageName);
-    if(measure == MeasurementType.value){
-      TypeofImageObject[][] new_image = new threeChannelObject[image.getWidth()][image.getHeight()];
-      for (int i = 0; i < image.getWidth(); i++) {
-        for (int j = 0; j < image.getHeight(); j++) {
-              int value = Math.max(image.getPixels()[i][j].getChanne11(),
-                  Math.max(image.getPixels()[i][j].getChanne12(),
-                      image.getPixels()[i][j].getChanne13()));
-              new_image[i][j] = new threeChannelObject(value, value, value);
-          }
-        }
-        imageHashMap.put(newImageName,
-            new threeChannelImage(new_image, image.getWidth(), image.getHeight()));
 
-    }
-
-  }
   public void visualizeValueIntensityLuma(String imageName, String newImageName,
       MeasurementType measure)
       throws NoSuchElementException {
@@ -209,12 +187,6 @@ public class Model {
   }
 
 
-  public TypeofImageObject getPixelAtPosition(TypeOfImage image, int width, int height) {
-    if (width < 0 || width >= image.getWidth() || height < 0 || height >= image.getHeight()) {
-      throw new IndexOutOfBoundsException("Position out of bounds.");
-    }
-    return image.getPixels()[image.getWidth()][image.getHeight()];
-  }
 
   public TypeOfImage getObject(String imageName) throws NoSuchElementException {
     if (!imageHashMap.containsKey(imageName)) {
