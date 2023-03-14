@@ -117,7 +117,7 @@ public class Model {
   public void brighten(String imageName, String newImageName, double increment)
       throws NoSuchElementException {
     if (!imageHashMap.containsKey(imageName)) {
-      throw new NoSuchElementException("Image: " + imageName + "does not exist.");
+      throw new NoSuchElementException("Image: " + imageName + " does not exist.");
     }
     TypeOfImage image = imageHashMap.get(imageName);
     TypeofImageObject[][] newPixels = new threeChannelObject[image.getWidth()][image.getHeight()];
