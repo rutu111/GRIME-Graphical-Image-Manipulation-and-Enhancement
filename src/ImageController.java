@@ -177,7 +177,7 @@ public class ImageController {
 
       while(scanner.hasNextLine()){
         String line = scanner.nextLine().trim();
-        if (!line.isEmpty() && !line.startsWith("//") && !line.startsWith("//")) { // Ignore comments and empty lines
+        if (!line.isEmpty() && !line.startsWith("//") && !line.startsWith("#")) { // Ignore comments and empty lines
           String[] words = line.split("\\s+");
           commandExecution(words);
         }
