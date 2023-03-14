@@ -100,7 +100,7 @@ public class Model {
       throw new NoSuchElementException("Image: " + imageName + "does not exist.");
     }
     TypeOfImage image = imageHashMap.get(imageName);
-    Field field = threeChannelObject.class.getField(channel.toString());
+    Field field = threeChannelObject.class.getDeclaredField(channel.toString());
     TypeofImageObject[][] new_image = new threeChannelObject[image.getWidth()][image.getHeight()];
     for (int i = 0; i < image.getWidth(); i++) {
       for (int j = 0; j < image.getHeight(); j++) {
@@ -178,9 +178,9 @@ public class Model {
     //creates a hashmap having channels as keys and greyscale image as values.
     //loop through the value of components and put the greyscale image in hashmap.
 
-    visIndividualComponent(imageName, newImageName1, Component.Red);
-    visIndividualComponent(imageName, newImageName2, Component.Green);
-    visIndividualComponent(imageName, newImageName3, Component.Blue);
+    visIndividualComponent(imageName, newImageName1, Component.red);
+    visIndividualComponent(imageName, newImageName2, Component.green);
+    visIndividualComponent(imageName, newImageName3, Component.blue);
 
   }
 

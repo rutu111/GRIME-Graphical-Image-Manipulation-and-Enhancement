@@ -1,7 +1,7 @@
 public enum Component {
-  Red("red"),
-  Blue("blue"),
-  Green("green");
+  red("red"),
+  blue("blue"),
+  green("green");
 
   private final String channel;
 

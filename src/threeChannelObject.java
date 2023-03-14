@@ -1,8 +1,8 @@
 public class threeChannelObject implements TypeofImageObject{
 
-  final int red;
-  final int green;
-  final int blue;
+  public final int red;
+  public final int green;
+  public final int blue;
 
   public threeChannelObject(int red, int green, int blue) throws IllegalArgumentException {
     this.red = red;
