@@ -7,20 +7,22 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class ImageController {
   private final Model model;
-  InputStream in;
-  OutputStream out;
+  final Readable in;
+  final Appendable out;
 
-  public ImageController(Model model, InputStream in, OutputStream out) {
+  public ImageController(Model model, Readable in, Appendable out) {
     this.model = model;
     this.in = in;
     this.out = out;
   }
 
   public void run() {
+    Objects.requireNonNull(model);
     System.out.println("Welcome to image processing with PPM files! You can enter commands here. Type exit to exit the program anytime.");
     boolean go = true;
     while (go) {
