@@ -5,7 +5,6 @@ import Model.MeasurementType;
 import Model.Model;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Objects;
@@ -22,13 +21,13 @@ public class ImageController {
     this.out = out;
   }
 
-  public void run() throws IOException {
+  public void run() {
     Objects.requireNonNull(model);
     System.out.println("Welcome to image processing with PPM files! You can enter commands here. Type exit to exit the program anytime.");
     boolean go = true;
     while (go) {
       try {
-        Scanner scanner = new Scanner(this.in);
+        Scanner scanner = new Scanner(System.in);
         String command;
         command = scanner.nextLine().trim();
         String[] commandParts = command.split(" ");
