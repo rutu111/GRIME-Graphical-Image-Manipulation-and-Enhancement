@@ -51,9 +51,8 @@ public class threeChannelImage implements TypeOfImage {
   }
 
 
-  public static class threeChannelImageBuilder extends ImageBuilder<threeChannelObject, threeChannelImageBuilder> {
+  public static class threeChannelImageBuilder extends ImageBuilder <threeChannelObject> {
 
-    private TypeofImageObject[][] pixels;
 
     public threeChannelImageBuilder(int width, int height) throws IllegalArgumentException {
       super(width, height);
@@ -81,10 +80,6 @@ public class threeChannelImage implements TypeOfImage {
       if (width >= 0 && width < this.width && height >= 0 && height < this.height) {
         this.pixels[width][height] = pixel;
       }
-//      System.out.println(this.pixels[width][height].red);
-//      System.out.println(this.pixels[width][height].green);
-//      System.out.println(this.pixels[width][height].blue);
-//      System.out.println('\n');
     }
 
 
@@ -93,7 +88,6 @@ public class threeChannelImage implements TypeOfImage {
     public TypeOfImage buildImage() {
       return new threeChannelImage(this.pixels, width, height);
     }
-
   }
 
 }
