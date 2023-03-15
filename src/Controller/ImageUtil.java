@@ -8,6 +8,7 @@ import Model.threeChannelImage.threeChannelImageBuilder;
 import Model.threeChannelObject;
 import Model.TypeOfImage;
 import Model.TypeofImageObject;
+import Model.Operations;
 /**
  * This class contains utility methods to read a PPM image from file and simply print its contents. Feel free to change this method
  *  as required.
@@ -27,7 +28,7 @@ public class ImageUtil {
    *
    * @param filename the path of the file.
    */
-  public static void readPPM(Model model, String filename, String nameOfTheObject)
+  public static void readPPM(Operations model, String filename, String nameOfTheObject)
       throws FileNotFoundException {
     Scanner sc;
     sc = new Scanner(new FileInputStream(filename));
@@ -82,7 +83,7 @@ public class ImageUtil {
   }
 
 
-  public static void writePPM(Model model, String filePath, String imageName)
+  public static void writePPM(Operations model, String filePath, String imageName)
       throws FileNotFoundException {
     try (PrintWriter writer = new PrintWriter(filePath)) {
 
