@@ -5,6 +5,7 @@ import Model.MeasurementType;
 import Model.Model;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Objects;
@@ -27,7 +28,7 @@ public class ImageController {
     boolean go = true;
     while (go) {
       try {
-        Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(this.in);
         String command;
         command = scanner.nextLine().trim();
         String[] commandParts = command.split(" ");
