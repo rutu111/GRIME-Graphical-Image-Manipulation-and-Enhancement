@@ -1,7 +1,7 @@
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.IllegalFormatException;
 import java.util.Scanner;
-
 
 /**
  * This class contains utility methods to read a PPM image from file and simply print its contents. Feel free to change this method
@@ -11,8 +11,8 @@ import java.io.PrintWriter;
 
 
 /**
- * This class contains utility methods to read a PPM image from file and simply print its contents. Feel free to change this method
- *  as required.
+ * This class contains utility methods to read a PPM image from file and simply print its contents.
+ * Feel free to change this method as required.
  */
 public class ImageUtil {
 
@@ -22,7 +22,8 @@ public class ImageUtil {
    *
    * @param filename the path of the file.
    */
-  public static void readPPM(Model model, String filename, String nameOfTheObject) throws FileNotFoundException {
+  public static void readPPM(Model model, String filename, String nameOfTheObject)
+      throws FileNotFoundException {
     Scanner sc;
     sc = new Scanner(new FileInputStream(filename));
 
@@ -43,34 +44,41 @@ public class ImageUtil {
     if (!token.equals("P3")) {
       throw new IllegalStateException("Invalid PPM file: plain RAW file should begin with P3");
     }
-    int width = sc.nextInt();
-    //System.out.println("Width of image: "+width);
-    int height = sc.nextInt();
-    //System.out.println("Height of image: "+height);
-    int maxValue = sc.nextInt();
-    //System.out.println("Maximum value of a color in this file (usually 255): "+maxValue);
+    try {
+      int width = sc.nextInt();
+      //System.out.println("Width of image: "+width);
+      int height = sc.nextInt();
+      //System.out.println("Height of image: "+height);
+      int maxValue = sc.nextInt();
+      //System.out.println("Maximum value of a color in this file (usually 255): "+maxValue);
 
-    threeChannelImage.threeChannelImageBuilder builderObject = model.createBuilderThreeChannel(width, height);
+      threeChannelImage.threeChannelImageBuilder builderObject = model.createBuilderThreeChannel(
+          width, height);
 
-    int k = 0;
-    //ModelRGB Image = null;
-    for (int i = 0; i < height; i++) {
-      for (int j = 0; j < width; j++) {
-        int r = sc.nextInt();
-        int g = sc.nextInt();
-        int b = sc.nextInt();
-        //System.out.println("Color of pixel ("+j+","+i+"): "+ r+","+g+","+b);
-        builderObject.addPixelAtPosition(j, i, new threeChannelObject(r, g, b));
+      int k = 0;
+      //ModelRGB Image = null;
+      for (int i = 0; i < height; i++) {
+        for (int j = 0; j < width; j++) {
+          int r = sc.nextInt();
+          int g = sc.nextInt();
+          int b = sc.nextInt();
+          //System.out.println("Color of pixel ("+j+","+i+"): "+ r+","+g+","+b);
+          builderObject.addPixelAtPosition(j, i, new threeChannelObject(r, g, b));
 
+        }
+
+        model.createImageThreeChannel(builderObject, nameOfTheObject);
       }
-
-      model.createImageThreeChannel(builderObject, nameOfTheObject);
+    } catch (Exception e) {
+      throw e;
+      //System.out.println("Invalid PPM file format. ");
     }
 
   }
 
 
-  public static void writePPM(Model model, String filePath, String imageName) throws FileNotFoundException {
+  public static void writePPM(Model model, String filePath, String imageName)
+      throws FileNotFoundException {
     try (PrintWriter writer = new PrintWriter(filePath)) {
 
       TypeOfImage Image = model.getObject(imageName);
@@ -80,7 +88,7 @@ public class ImageUtil {
       writer.printf(Image.getWidth() + " " + Image.getHeight() + System.lineSeparator());
       //writer.printf(Image.getMaxValue() + System.lineSeparator());
       int maxValue = 255;
-      writer.printf(maxValue+ System.lineSeparator());
+      writer.printf(maxValue + System.lineSeparator());
 
       // Write pixel data
       for (int y = 0; y < Image.getHeight(); y++) {
@@ -95,7 +103,7 @@ public class ImageUtil {
         }
       }
       System.out.println("Success");
-    }catch(FileNotFoundException e){
+    } catch (FileNotFoundException e) {
       throw e;
     }
   }

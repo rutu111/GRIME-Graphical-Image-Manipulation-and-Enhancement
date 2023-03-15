@@ -53,8 +53,11 @@ public class threeChannelImage implements TypeOfImage {
 
     private TypeofImageObject[][] pixels;
 
-    public threeChannelImageBuilder(int width, int height) {
+    public threeChannelImageBuilder(int width, int height) throws IllegalArgumentException {
       super(width, height);
+      if (width <= 0 | height <= 0) {
+        throw new IllegalArgumentException("Width and height need to be greater then 0. ");
+      }
       //here create a 2D matrix using width and height given with dummy values of type RGB. (default)
       // Initialize the 2D matrix with dummy RGB values
       this.pixels = new threeChannelObject[width][height];

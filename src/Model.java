@@ -6,6 +6,17 @@ public class Model {
 
   private HashMap<String, TypeOfImage> imageHashMap = new HashMap<String, TypeOfImage>();
 
+  public threeChannelImage.threeChannelImageBuilder createBuilderThreeChannel(int width, int height) {
+    threeChannelImage.threeChannelImageBuilder testBuilder = new threeChannelImage.threeChannelImageBuilder(
+        width, height);
+
+    return testBuilder; //saves to hashamp.
+  }
+
+  public void createImageThreeChannel(threeChannelImage.threeChannelImageBuilder image, String nameOfObject) {
+    imageHashMap.put(nameOfObject, image.buildImage());
+  }
+
   public void combineGreyScaleToRGB(String imageName1, String imageName2, String imageName3,
       String newImageName) throws IllegalArgumentException, NoSuchElementException {
     if (!imageHashMap.containsKey(imageName1)) {
@@ -42,17 +53,6 @@ public class Model {
     }
     imageHashMap.put(newImageName,
         new threeChannelImage(new_image, image1.getWidth(), image1.getHeight()));
-  }
-
-  public threeChannelImage.threeChannelImageBuilder createBuilderThreeChannel(int width, int height) {
-    threeChannelImage.threeChannelImageBuilder testBuilder = new threeChannelImage.threeChannelImageBuilder(
-        width, height);
-
-    return testBuilder; //saves to hashamp.
-  }
-
-  public void createImageThreeChannel(threeChannelImage.threeChannelImageBuilder image, String nameOfObject) {
-    imageHashMap.put(nameOfObject, image.buildImage());
   }
 
   public void verticalFlip(String imageName, String newImageName)
