@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 
-public class Model {
+public class Model implements Operations{
 
   private HashMap<String, TypeOfImage> imageHashMap = new HashMap<String, TypeOfImage>();
 
