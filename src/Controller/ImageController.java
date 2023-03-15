@@ -5,13 +5,19 @@ import Model.MeasurementType;
 import Model.Model;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Scanner;
 
 public class ImageController {
   private final Model model;
+  InputStream in;
+  OutputStream out;
 
-  public ImageController(Model model) {
+  public ImageController(Model model, InputStream in, OutputStream out) {
     this.model = model;
+    this.in = in;
+    this.out = out;
   }
 
   public void run() {

@@ -5,7 +5,7 @@ public class Main {
   public static void main(String[] args) {
 
     Model model = new Model();
-    ImageController controller = new ImageController(model);
+    ImageController controller = new ImageController(model, System.in, System.out);
     controller.run();
   }
 }
