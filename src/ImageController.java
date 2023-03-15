@@ -58,6 +58,9 @@ public class ImageController {
           }
           String imagePath = commands[1];
           String imageName = commands[2];
+          if(!imagePath.split("\\.")[1].equals("ppm")){
+            throw new IllegalArgumentException("Invalid file format: " + imagePath.split("\\.")[1]);
+          }
           ImageUtil.readPPM(this.model, imagePath, imageName);
           System.out.println("Loaded image '" + imageName + "' from '" + imagePath + "'");
         } catch (FileNotFoundException e) {
@@ -161,8 +164,8 @@ public class ImageController {
           }
           String imagePath = commands[1];
           String imageName = commands[2];
-          if(!imagePath.split(".")[1].equals("ppm")){
-            throw new IllegalArgumentException("Invalid file format: " + imagePath.split(".")[1]);
+          if(!imagePath.split("\\.")[1].equals("ppm")){
+            throw new IllegalArgumentException("Invalid file format: " + imagePath.split("\\.")[1]);
           }
           ImageUtil.writePPM(this.model, imagePath, imageName);
         } catch (FileNotFoundException e) {
