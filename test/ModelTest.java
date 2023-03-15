@@ -338,17 +338,90 @@ public class ModelTest {
     assertTrue(model.getObject("test-brighten").equals(model.getObject("expected+imageBrightenBy10")));
   }
 
-  //Visualize value, intensity, luma
-
 
   //test case if the value works
+  @Test
+  public void testvisualizeValue() {
+    c = 0;
+    expectedImage = model.createBuilderThreeChannel(width, height);
+    int increment = 10;
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        expectedImage.addPixelAtPosition(j, i,
+            new threeChannelObject(Math.max(c,Math.max(c,c)), Math.max(c,Math.max(c,c)),
+                Math.max(c,Math.max(c,c))));
+        c += 1;
+      }
+    }
+    //before
+    model.createImageThreeChannel(testImage1, "test+image");
+    model.createImageThreeChannel(expectedImage, "expected+imageValue");
+    assertTrue(
+        model.getObject("test+image").equals(model.getObject("expected+imageValue")));
+
+    //after
+    model.visualizeValueIntensityLuma("test+image", "test-value", MeasurementType.value);
+    assertTrue(
+        model.getObject("test-value").equals(model.getObject("expected+imageValue")));
+  }
   //An image pixel with RGB values (200, 200, 200).o/p:200
   //test case if intensity works
-  //An image pixel with RGB values (200, 200, 200).o/p:200
-  //test case if luma works
-  //Input: An image pixel with RGB values (200, 200, 200),o/p:200
-  //Calculation of Value, Intensity, and Luma for a Pixel with All Maximum RGB Values: o/p:255 all
-  //input: An image pixel with RGB values (0, 0, 0).The value, intensity, and luma of the pixel are all 0.
+  //test case if the value works
+  @Test
+  public void testIntensity() {
+    c = 0;
+    expectedImage = model.createBuilderThreeChannel(width, height);
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        expectedImage.addPixelAtPosition(j, i,
+            new threeChannelObject((c+c+c)/3, (c+c+c)/3, (c+c+c)/3));
+        c += 1;
+      }
+    }
+    //before
+    model.createImageThreeChannel(testImage1, "test+image");
+    model.createImageThreeChannel(expectedImage, "expected+imageValue");
+    assertTrue(
+        model.getObject("test+image").equals(model.getObject("expected+imageValue")));
+
+    //after
+    model.visualizeValueIntensityLuma("test+image", "test-value", MeasurementType.value);
+    assertTrue(
+        model.getObject("test-value").equals(model.getObject("expected+imageValue")));
+  }
+
+  //check for luma
+  @Test
+  public void testLuma() {
+    c = 0;
+    expectedImage = model.createBuilderThreeChannel(width, height);
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        double luma = 0.2126 * c + 0.7152 * c + 0.0722 * c;
+        expectedImage.addPixelAtPosition(j, i,
+            new threeChannelObject((int) luma, (int) luma, (int) luma));
+        c += 1;
+      }
+    }
+    //before
+    model.createImageThreeChannel(testImage1, "test+image");
+    model.createImageThreeChannel(expectedImage, "expected+imageValue");
+    assertFalse(
+        model.getObject("test+image").equals(model.getObject("expected+imageValue")));
+
+    //after
+    model.visualizeValueIntensityLuma("test+image", "test-value", MeasurementType.value);
+    assertTrue(
+        model.getObject("test-value").equals(model.getObject("expected+imageValue")));
+  }
+
+  //combineGreyScaleToRGB
+  //1. all greyscales
+  //2. all rgb
+
+  //createImageThreeChannel
+
+  //
 
 
 
