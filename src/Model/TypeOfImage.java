@@ -1,3 +1,5 @@
+package Model;
+
 public interface TypeOfImage {
 
   public TypeofImageObject[][] getPixels();

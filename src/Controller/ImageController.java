@@ -1,6 +1,10 @@
+package Controller;
+
+import Model.Component;
+import Model.MeasurementType;
+import Model.Model;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class ImageController {

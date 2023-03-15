@@ -1,3 +1,5 @@
+package Model;
+
 public enum Component {
   red("red"),
   blue("blue"),

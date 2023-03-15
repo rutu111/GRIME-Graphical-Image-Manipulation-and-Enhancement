@@ -1,3 +1,5 @@
+package Model;
+
 public interface TypeofImageObject {
 
   public int getChanne11();

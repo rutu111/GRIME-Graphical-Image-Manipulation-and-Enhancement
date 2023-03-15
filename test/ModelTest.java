@@ -3,17 +3,23 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
+import Model.MeasurementType;
+import Model.Model;
 import java.util.NoSuchElementException;
 import org.junit.Before;
 import org.junit.Test;
+import Model.threeChannelImage.threeChannelImageBuilder;
+import Model.threeChannelObject;
+import Model.TypeOfImage;
+import Model.TypeofImageObject;
 
 public class ModelTest {
 
   Model model = new Model();
 
-  threeChannelImage.threeChannelImageBuilder testImage1;
-  threeChannelImage.threeChannelImageBuilder testImage2;
-  threeChannelImage.threeChannelImageBuilder expectedImage;
+  threeChannelImageBuilder testImage1;
+  threeChannelImageBuilder testImage2;
+  threeChannelImageBuilder expectedImage;
 
   int width;
   int height;
@@ -459,7 +465,7 @@ public class ModelTest {
   @Test
   public void testIfDefaultimageGetsCreated() {
     //default image
-    threeChannelImage.threeChannelImageBuilder defaultIamge;
+    threeChannelImageBuilder defaultIamge;
     defaultIamge = model.createBuilderThreeChannel(width, height);
     model.createImageThreeChannel(defaultIamge, "default+image");
 

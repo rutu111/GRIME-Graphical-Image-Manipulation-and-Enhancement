@@ -1,3 +1,5 @@
+package Model;
+
 public class threeChannelImage implements TypeOfImage {
 
   //private constructor that takes in a matrix of type RGB, width and height.

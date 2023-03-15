@@ -1,3 +1,5 @@
+package Model;
+
 public class threeChannelObject implements TypeofImageObject {
 
   public final int red;

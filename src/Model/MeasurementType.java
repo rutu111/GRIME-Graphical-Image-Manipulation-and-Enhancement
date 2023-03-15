@@ -1,3 +1,5 @@
+package Model;
+
 public enum MeasurementType {
   value("value"),
   intensity("intensity"),

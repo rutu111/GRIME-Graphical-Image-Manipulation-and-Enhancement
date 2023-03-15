@@ -1,3 +1,5 @@
+package Model;
+
 public abstract class ImageBuilder <P, T extends ImageBuilder<P, T>>  {
 
   protected final int width;

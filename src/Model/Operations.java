@@ -1,3 +1,5 @@
+package Model;
+
 public interface Operations {
 
   public Operations horizontalFlip();

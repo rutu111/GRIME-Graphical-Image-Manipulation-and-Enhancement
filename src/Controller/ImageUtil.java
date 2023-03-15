@@ -1,8 +1,13 @@
+package Controller;
+
+import Model.Model;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.IllegalFormatException;
 import java.util.Scanner;
-
+import Model.threeChannelImage.threeChannelImageBuilder;
+import Model.threeChannelObject;
+import Model.TypeOfImage;
+import Model.TypeofImageObject;
 /**
  * This class contains utility methods to read a PPM image from file and simply print its contents. Feel free to change this method
  *  as required.
@@ -52,7 +57,7 @@ public class ImageUtil {
       int maxValue = sc.nextInt();
       //System.out.println("Maximum value of a color in this file (usually 255): "+maxValue);
 
-      threeChannelImage.threeChannelImageBuilder builderObject = model.createBuilderThreeChannel(
+      threeChannelImageBuilder builderObject = model.createBuilderThreeChannel(
           width, height);
 
       int k = 0;
