@@ -1,7 +1,6 @@
-package Controller;
-
 import static org.junit.Assert.assertEquals;
 
+import Controller.ImageController;
 import Model.Component;
 import Model.MeasurementType;
 import Model.Operations;
@@ -12,6 +11,9 @@ import java.io.StringReader;
 import java.util.NoSuchElementException;
 import org.junit.Test;
 
+/**'
+ * This is a test class to test the controller in isolation
+ */
 public class ImageControllerTest {
 
 
