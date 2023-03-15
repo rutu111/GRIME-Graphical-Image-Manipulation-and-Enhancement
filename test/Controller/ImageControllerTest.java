@@ -1,13 +1,21 @@
 package Controller;
 
+import static org.junit.Assert.assertEquals;
+
 import Model.Component;
 import Model.MeasurementType;
 import Model.Operations;
 import Model.TypeOfImage;
 import Model.threeChannelImage.threeChannelImageBuilder;
+import java.io.Reader;
+import java.io.StringReader;
 import java.util.NoSuchElementException;
+import org.junit.Test;
+import Model.Model;
 
 public class ImageControllerTest {
+
+  Model model = new Model();
 
   public class MockModel implements Operations {
 
@@ -86,5 +94,19 @@ public class ImageControllerTest {
       log.append("createImageThreeChannel:" + nameOfObject + "\n");
     }
 
+  }
+
+  @Test
+  public void testGo() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "test-image";
+    String newImageName = "updated-image";
+    Reader in = new StringReader("horizontalFlip: " + imageName + " " + newImageName + "\n");
+    ImageController controller6 = new ImageController(model, in, out);
+    StringBuilder log = new StringBuilder(); //log for mock model
+    controller6.run();
+    MockModel mock =  new MockModel(log);
+    mock.horizontalFlip(imageName, newImageName);
+    assertEquals("horizontalFlip: " + imageName + " " + newImageName + "\n", mock.log ); //inputs reached the model correctly
   }
 }
