@@ -5,7 +5,10 @@ import Model.MeasurementType;
 import Model.Operations;
 import Model.TypeOfImage;
 import Model.threeChannelImage.threeChannelImageBuilder;
+import java.io.Reader;
+import java.io.StringReader;
 import java.util.NoSuchElementException;
+import org.junit.Test;
 
 public class ImageControllerTest {
 
@@ -87,4 +90,6 @@ public class ImageControllerTest {
     }
 
   }
+
+
 }

@@ -27,7 +27,7 @@ public class ImageController {
     boolean go = true;
     while (go) {
       try {
-        Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(this.in);
         String command;
         command = scanner.nextLine().trim();
         String[] commandParts = command.split(" ");
