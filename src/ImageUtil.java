@@ -63,7 +63,6 @@ public class ImageUtil {
         builderObject.addPixelAtPosition(j, i, new threeChannelObject(r, g, b));
 
       }
-
       model.createImageThreeChannel(builderObject, nameOfTheObject);
     }
 
