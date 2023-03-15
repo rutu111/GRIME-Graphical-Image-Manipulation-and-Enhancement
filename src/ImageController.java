@@ -11,6 +11,7 @@ public class ImageController {
   }
 
   public void run() {
+    System.out.println("Welcome to image processing with PPM files! You can enter commands here. Type exit to exit the program anytime.");
     boolean go = true;
     while (go) {
       try {
@@ -160,6 +161,9 @@ public class ImageController {
           }
           String imagePath = commands[1];
           String imageName = commands[2];
+          if(!imagePath.split(".")[1].equals("ppm")){
+            throw new IllegalArgumentException("Invalid file format: " + imagePath.split(".")[1]);
+          }
           ImageUtil.writePPM(this.model, imagePath, imageName);
         } catch (FileNotFoundException e) {
           System.out.println("File path does not exist.");

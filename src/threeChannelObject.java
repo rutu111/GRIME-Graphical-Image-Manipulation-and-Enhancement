@@ -5,6 +5,12 @@ public class threeChannelObject implements TypeofImageObject {
   public final int blue;
 
   public threeChannelObject(int red, int green, int blue) throws IllegalArgumentException {
+    if (red < 0 | green < 0 | blue < 0) {
+      throw new IllegalArgumentException("RGB values can't be less negative!");
+    }
+    if (red > 255 | green > 255 | blue > 255) {
+      throw new IllegalArgumentException("RGB values can't be above 255!");
+    }
     this.red = red;
     this.green = green;
     this.blue = blue;
