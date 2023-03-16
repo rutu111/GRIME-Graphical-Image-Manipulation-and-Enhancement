@@ -1,12 +1,29 @@
 package Model;
+import static java.lang.Math.min;
+
 import java.lang.reflect.Field;
 
-public class RGBIntegerImage extends CommonOperations  {
+public class RGBIntegerImage extends ThreeChannelObject <Integer>  {
 
   public RGBIntegerImage(TypeofImageObject[][] pixels, int width, int height) {
     super(pixels, width, height);
-
   }
+
+  @Override
+  protected TypeofImageObject[][] getMatrix(int width, int height) {
+    return new RGBIntegerObject[this.getWidth()][this.getHeight()];
+  }
+
+  @Override
+  protected TypeofImageObject getObject(Integer value1, Integer value2, Integer value3) {
+    return new RGBIntegerObject(value1, value2, value3);
+  }
+
+  @Override
+  protected Field getField(Component channel) throws NoSuchFieldException {
+    return RGBIntegerObject.class.getDeclaredField(channel.toString());
+  }
+
 
   public TypeofImageObject[][] getPixels() {
     return this.pixels;
@@ -45,37 +62,6 @@ public class RGBIntegerImage extends CommonOperations  {
     return true;
   }
 
-  /*
-  @Override
-  public TypeOfImage horizontalFlip() {
-    TypeofImageObject[][] flippedImage = this.getPixels().clone();
-    for(int col = 0;col < flippedImage[0].length; col++){
-      for(int row = 0; row < flippedImage.length/2; row++) {
-        TypeofImageObject temp = flippedImage[row][col];
-        flippedImage[row][col] = flippedImage[flippedImage.length - row - 1][col];
-        flippedImage[flippedImage.length - row - 1][col] = temp;
-      }
-    }
-    return new threeChannelImage(flippedImage, this.getWidth(), this.getHeight());
-  }
-
-
-  @Override
-  public TypeOfImage verticalFlip() {
-    TypeofImageObject[][] flippedImage = this.getPixels().clone();
-    //flip the columns
-    for(int row = 0; row < flippedImage.length; row++){
-      for(int col = 0; col < flippedImage[row].length / 2; col++) {
-        TypeofImageObject temp = flippedImage[row][col];
-        flippedImage[row][col] = flippedImage[row][flippedImage[row].length - col - 1];
-        flippedImage[row][flippedImage[row].length - col - 1] = temp;
-      }
-    }
-    return new threeChannelImage(flippedImage, this.getWidth(), this.getHeight());
-  }
-
-   */
-
 
   @Override
   public TypeOfImage getOImage(TypeofImageObject[][] flippedImage, int width, int height) {
@@ -89,9 +75,9 @@ public class RGBIntegerImage extends CommonOperations  {
       for (int j = 0; j < this.height; j++) {
         TypeofImageObject oldPixel = this.pixels[i][j];
         //Add increment value to RGB values and clamp to [0, 255]
-        int r = (int) Math.min(255, Math.max(0, oldPixel.getChanne11() + increment));
-        int g = (int) Math.min(255, Math.max(0, oldPixel.getChanne12() + increment));
-        int b = (int) Math.min(255, Math.max(0, oldPixel.getChanne13() + increment));
+        Integer r = (int) min(255, Math.max(0, oldPixel.getChanne11() + increment));
+        Integer g = (int) min(255, Math.max(0, oldPixel.getChanne12() + increment));
+        Integer b = (int) min(255, Math.max(0, oldPixel.getChanne13() + increment));
         newPixels[i][j] = new RGBIntegerObject(r, g, b);
       }
     }
@@ -104,14 +90,14 @@ public class RGBIntegerImage extends CommonOperations  {
     for (int i = 0; i < this.getWidth(); i++) {
       for (int j = 0; j < this.getHeight(); j++) {
         if(measure.toString().equals("value")) {
-          int value = Math.max(this.getPixels()[i][j].getChanne11(),
+          Integer value = Math.max(this.getPixels()[i][j].getChanne11(),
               Math.max(this.getPixels()[i][j].getChanne12(),
                   this.getPixels()[i][j].getChanne13()));
           new_image[i][j] = new RGBIntegerObject(value, value, value);
         }
         //intensity
         if(measure.toString().equals("intensity")) {
-          int intensity = (this.getPixels()[i][j].getChanne11() + this.getPixels()[i][j].getChanne12()
+          Integer intensity = (this.getPixels()[i][j].getChanne11() + this.getPixels()[i][j].getChanne12()
               + this.getPixels()[i][j].getChanne13()) / 3;
           new_image[i][j] = new RGBIntegerObject(intensity, intensity, intensity);
         }
@@ -126,6 +112,7 @@ public class RGBIntegerImage extends CommonOperations  {
     }
     return new RGBIntegerImage(new_image, this.getWidth(), this.getHeight());
   }
+
 
   @Override
   public TypeOfImage visIndividualComponent(Component channel)

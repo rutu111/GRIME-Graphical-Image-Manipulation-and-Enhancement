@@ -1,12 +1,14 @@
 package Model;
 
+import java.util.Objects;
+
 public class RGBIntegerObject implements TypeofImageObject {
 
-  protected final int red;
-  protected final int green;
-  protected final int blue;
+  protected final Integer red;
+  protected final Integer green;
+  protected final Integer blue;
 
-  public RGBIntegerObject(int red, int green, int blue) throws IllegalArgumentException {
+  public RGBIntegerObject(Integer red, Integer green, Integer blue) throws IllegalArgumentException {
     if (red < 0 | green < 0 | blue < 0) {
       throw new IllegalArgumentException("RGB values can't be less negative!");
     }
@@ -20,17 +22,17 @@ public class RGBIntegerObject implements TypeofImageObject {
 
 
   @Override
-  public int getChanne11() {
+  public Integer getChanne11() {
     return this.red;
   }
 
   @Override
-  public int getChanne12() {
+  public Integer getChanne12() {
     return this.green;
   }
 
   @Override
-  public int getChanne13() {
+  public Integer getChanne13() {
     return this.blue;
   }
 
@@ -45,7 +47,8 @@ public class RGBIntegerObject implements TypeofImageObject {
     }
 
     RGBIntegerObject other = (RGBIntegerObject) o;
-    return this.getChanne11() == other.getChanne11() & this.getChanne12() == other.getChanne12()
-        & this.getChanne13() == other.getChanne13();
+    return Objects.equals(this.getChanne11(), other.getChanne11()) & Objects.equals(
+        this.getChanne12(), other.getChanne12())
+        & Objects.equals(this.getChanne13(), other.getChanne13());
   }
 }

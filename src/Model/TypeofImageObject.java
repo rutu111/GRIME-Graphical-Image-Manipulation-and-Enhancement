@@ -2,10 +2,10 @@ package Model;
 
 public interface TypeofImageObject {
 
-  public int getChanne11();
+  public Integer getChanne11();
 
-  public int getChanne12();
+  public Integer getChanne12();
 
-  public int getChanne13();
+  public Integer getChanne13();
 
 }

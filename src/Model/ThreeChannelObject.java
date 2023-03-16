@@ -1,19 +1,61 @@
 package Model;
 
-public class ThreeChannelObject implements TypeofImageObject {
+import java.lang.reflect.Field;
 
-  @Override
-  public int getChanne11() {
-    return 0;
+public abstract class ThreeChannelObject <T> extends CommonOperations {
+
+  protected ThreeChannelObject(TypeofImageObject[][] pixels, int width, int height) {
+    super(pixels, width, height);
   }
 
   @Override
-  public int getChanne12() {
-    return 0;
+  public TypeOfImage combineGreyScaleToRGB(TypeOfImage image2,
+      TypeOfImage image3) throws IllegalArgumentException {
+    TypeofImageObject[][] new_image;
+    //check if height and width of all images is the same
+    //if yes, set height and width of RBG the same
+    //if no, throw exception
+    if (this.getPixels().length == image2.getPixels().length
+        & image2.getPixels().length == image3.getPixels().length
+        & this.getPixels().length == image3.getPixels().length &
+        this.getPixels()[0].length == image2.getPixels()[0].length
+        & image2.getPixels()[0].length == image3.getPixels()[0].length
+        & this.getPixels()[0].length == image3.getPixels()[0].length) {
+      new_image = getMatrix(this.getWidth(),this.getHeight());
+      for (int i = 0; i < this.getWidth(); i++) {
+        for (int j = 0; j < this.getHeight(); j++) {
+          new_image[i][j] = getObject((T) this.getPixels()[i][j].getChanne11(),
+              (T) image2.getPixels()[i][j].getChanne12(),
+              (T) image3.getPixels()[i][j].getChanne13());
+        }
+      }
+    } else {
+      throw new IllegalArgumentException("All images must be of the same size!");
+    }
+    return getOImage(new_image, this.getWidth(), this.getHeight());
   }
 
   @Override
-  public int getChanne13() {
-    return 0;
+  public TypeOfImage visIndividualComponent(Component channel)
+      throws NoSuchFieldException, IllegalAccessException {
+    Field field = getField(channel);
+    TypeofImageObject[][] new_image = new RGBIntegerObject[this.getWidth()][this.getHeight()];
+    for (int i = 0; i < this.getWidth(); i++) {
+      for (int j = 0; j < this.getHeight(); j++) {
+        TypeofImageObject object = this.getPixels()[i][j];
+        new_image[i][j] = new RGBIntegerObject((Integer) field.get(object),
+            (Integer) field.get(object), (Integer) field.get(object));
+      }
+    }
+    return new RGBIntegerImage(new_image, this.getWidth(), this.getHeight());
   }
+
+  protected abstract TypeofImageObject[][] getMatrix(int width, int height);
+
+  protected abstract TypeofImageObject getObject(T  value1, T value2, T value3);
+
+  protected abstract Field getField(Component channel) throws NoSuchFieldException;
+
+
+
 }

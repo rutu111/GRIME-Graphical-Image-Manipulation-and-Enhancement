@@ -1,6 +1,7 @@
 package Model;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 public class Model implements  Operations {
 
@@ -26,28 +27,7 @@ public class Model implements  Operations {
     TypeOfImage image1 = imageHashMap.get(imageName1);
     TypeOfImage image2 = imageHashMap.get(imageName2);
     TypeOfImage image3 = imageHashMap.get(imageName3);
-    //check if height and width of all images is the same
-    //if yes, set height and width of RBG the same
-    //if no, throw exception
-    TypeofImageObject[][] new_image;
-    if (image1.getPixels().length == image2.getPixels().length
-        & image2.getPixels().length == image3.getPixels().length
-        & image1.getPixels().length == image3.getPixels().length &
-        image1.getPixels()[0].length == image2.getPixels()[0].length
-        & image2.getPixels()[0].length == image3.getPixels()[0].length
-        & image1.getPixels()[0].length == image3.getPixels()[0].length) {
-      new_image = new RGBIntegerObject[image1.getWidth()][image1.getHeight()];
-      for (int i = 0; i < image1.getWidth(); i++) {
-        for (int j = 0; j < image1.getHeight(); j++) {
-          new_image[i][j] = new RGBIntegerObject(image1.getPixels()[i][j].getChanne11(),
-              image2.getPixels()[i][j].getChanne12(), image3.getPixels()[i][j].getChanne13());
-        }
-      }
-    } else {
-      throw new IllegalArgumentException("All images must be of the same size!");
-    }
-    imageHashMap.put(newImageName,
-        new RGBIntegerImage(new_image, image1.getWidth(), image1.getHeight()));
+    imageHashMap.put(newImageName, image1.combineGreyScaleToRGB(image2, image3));
   }
 
   public void verticalFlip(String imageName, String newImageName)
@@ -127,5 +107,8 @@ public class Model implements  Operations {
     return imageHashMap.size();
   }
 
+  public Set<String> returnKeys() {
+    return imageHashMap.keySet();
+  }
 
 }

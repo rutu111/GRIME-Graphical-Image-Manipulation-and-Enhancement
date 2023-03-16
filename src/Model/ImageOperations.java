@@ -16,5 +16,7 @@ public interface ImageOperations {
   TypeOfImage visualizeValueIntensityLuma(MeasurementType measure)
       throws NoSuchFieldException, IllegalAccessException;
 
+  TypeOfImage combineGreyScaleToRGB(TypeOfImage imageName2, TypeOfImage imageName3) throws IllegalArgumentException;
+
 
 }

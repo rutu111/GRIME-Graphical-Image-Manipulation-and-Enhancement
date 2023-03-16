@@ -1,3 +1,4 @@
+import static java.lang.Math.min;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
@@ -22,7 +23,7 @@ public class ModelTest {
 
   int width;
   int height;
-  int c;
+  Integer c;
 
 
   @Before
@@ -238,13 +239,13 @@ public class ModelTest {
 
     c = 255;
     expectedImage = new threeChannelImageBuilder(width, height);
-    int increment = 10;
+    Integer increment = 10;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         expectedImage.addPixelAtPosition(j, i,
-            new RGBIntegerObject(((int) Math.min(255, Math.max(0, c + increment))),
-                ((int) Math.min(255, Math.max(0, c + increment))),
-                (int) Math.min(255, Math.max(0, c + increment))));
+            new RGBIntegerObject(((Integer) Math.min(255, Math.max(0, c + increment))),
+                ((Integer) Math.min(255, Math.max(0, c + increment))),
+                (Integer) Math.min(255, Math.max(0, c + increment))));
       }
     }
     testImage2 = new threeChannelImageBuilder(width, height);
@@ -271,13 +272,14 @@ public class ModelTest {
   public void testForDarkenAllWhite() {
     c = 255;
     expectedImage = new threeChannelImageBuilder(width, height);
-    int increment = -10;
+    double increment = -10;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        expectedImage.addPixelAtPosition(j, i,
-            new RGBIntegerObject(((int) Math.min(255, Math.max(0, c + increment))),
-                ((int) Math.min(255, Math.max(0, c + increment))),
-                (int) Math.min(255, Math.max(0, c + increment))));
+        Integer r = (int) min(255, Math.max(0, c + increment));
+        Integer g = (int) min(255, Math.max(0, c + increment));
+        Integer b = (int) min(255, Math.max(0, c + increment));
+        expectedImage.addPixelAtPosition(j, i, new RGBIntegerObject(r, g, b));
+
       }
     }
     testImage1 = new threeChannelImageBuilder(width, height);
