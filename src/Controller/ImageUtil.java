@@ -57,12 +57,11 @@ public class ImageUtil {
       int height = sc.nextInt();
       int maxValue = sc.nextInt();
 
-      threeChannelImageBuilder builderObject = new threeChannelImageBuilder(width, height);
-
-
       if(width <= 0 | height <= 0){
         throw new IllegalStateException("Width and Height cannot be zero or negative");
       }
+
+      threeChannelImageBuilder builderObject = new threeChannelImageBuilder(width, height);
 
 
       for (int i = 0; i < height; i++) {
