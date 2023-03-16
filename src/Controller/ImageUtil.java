@@ -1,11 +1,10 @@
 package Controller;
 
-import Model.Model;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
-import Model.threeChannelImage.threeChannelImageBuilder;
-import Model.threeChannelObject;
+import Model.RGBIntegerImage.threeChannelImageBuilder;
+import Model.RGBIntegerObject;
 import Model.TypeOfImage;
 import Model.TypeofImageObject;
 import Model.Operations;
@@ -58,8 +57,7 @@ public class ImageUtil {
       int maxValue = sc.nextInt();
       //System.out.println("Maximum value of a color in this file (usually 255): "+maxValue);
 
-      threeChannelImageBuilder builderObject = model.createBuilderThreeChannel(
-          width, height);
+      threeChannelImageBuilder builderObject = new threeChannelImageBuilder(width, height);
 
       int k = 0;
       //ModelRGB Image = null;
@@ -69,12 +67,13 @@ public class ImageUtil {
           int g = sc.nextInt();
           int b = sc.nextInt();
           //System.out.println("Color of pixel ("+j+","+i+"): "+ r+","+g+","+b);
-          builderObject.addPixelAtPosition(j, i, new threeChannelObject(r, g, b));
+          builderObject.addPixelAtPosition(j, i, new RGBIntegerObject(r, g, b));
 
         }
-
-        model.createImageThreeChannel(builderObject, nameOfTheObject);
       }
+
+      TypeOfImage image = builderObject.buildImage();
+      model.addImageToModel(image, nameOfTheObject);
     } catch (Exception e) {
       throw e;
     }

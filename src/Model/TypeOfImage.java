@@ -6,7 +6,7 @@ package Model;
  * matrix, 2. The width and 3. The height.
  * This interface has getters for all of these.
  */
-public interface TypeOfImage {
+public interface TypeOfImage extends ImageOperations {
 
   /**
    * This method fetches the image matrix.

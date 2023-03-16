@@ -9,16 +9,14 @@ import Model.Model;
 import java.util.NoSuchElementException;
 import org.junit.Before;
 import org.junit.Test;
-import Model.threeChannelImage.threeChannelImageBuilder;
-import Model.threeChannelObject;
-import Model.TypeOfImage;
-import Model.TypeofImageObject;
+import Model.RGBIntegerImage.threeChannelImageBuilder;
+import Model.RGBIntegerObject;
 
 public class ModelTest {
 
   Model model = new Model();
 
-  threeChannelImageBuilder testImage1;
+  threeChannelImageBuilder   testImage1;
   threeChannelImageBuilder testImage2;
   threeChannelImageBuilder expectedImage;
 
@@ -32,34 +30,36 @@ public class ModelTest {
     width = 5;
     height = 5;
 
-    testImage1 = model.createBuilderThreeChannel(width, height);
+     testImage1 = new threeChannelImageBuilder(width, height);
     c = 0;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        testImage1.addPixelAtPosition(j, i, new threeChannelObject(c, c, c));
+        testImage1.addPixelAtPosition(j, i, new RGBIntegerObject(c, c, c));
         c += 1;
       }
     }
+
+
   }
 
   @Test
   public void testIfBrightenWorks() {
 
     c = 0;
-    expectedImage = model.createBuilderThreeChannel(width, height);
+     expectedImage = new threeChannelImageBuilder(width, height);
     int increment = 10;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         expectedImage.addPixelAtPosition(j, i,
-            new threeChannelObject(((int) Math.min(255, Math.max(0, c + increment))),
+            new RGBIntegerObject(((int) Math.min(255, Math.max(0, c + increment))),
                 ((int) Math.min(255, Math.max(0, c + increment))),
                 (int) Math.min(255, Math.max(0, c + increment))));
         c += 1;
       }
     }
     //before brighterning
-    model.createImageThreeChannel(testImage1, "test+image");
-    model.createImageThreeChannel(expectedImage, "expected+imageBrightenBy10");
+    model.addImageToModel(testImage1.buildImage(), "test+image");
+    model.addImageToModel(expectedImage.buildImage(), "expected+imageBrightenBy10");
     assertFalse(
         model.getObject("test+image").equals(model.getObject("expected+imageBrightenBy10")));
 
@@ -74,20 +74,23 @@ public class ModelTest {
   public void testIfDarkenWorks() {
 
     c = 0;
-    expectedImage = model.createBuilderThreeChannel(width, height);
+    expectedImage = new threeChannelImageBuilder(width, height);
     int increment = -10;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         expectedImage.addPixelAtPosition(j, i,
-            new threeChannelObject(((int) Math.min(255, Math.max(0, c + increment))),
+            new RGBIntegerObject(((int) Math.min(255, Math.max(0, c + increment))),
                 ((int) Math.min(255, Math.max(0, c + increment))),
                 (int) Math.min(255, Math.max(0, c + increment))));
         c += 1;
       }
     }
     //before
-    model.createImageThreeChannel(testImage1, "test+image");
-    model.createImageThreeChannel(expectedImage, "expected+imageDarkenBy10");
+    model.addImageToModel(testImage1.buildImage(), "test+image");
+    model.addImageToModel(expectedImage.buildImage(), "expected+imageDarkenBy10");
+    model.getObject("test+image");
+    model.getObject("expected+imageDarkenBy10");
+
     assertFalse(model.getObject("test+image").equals(model.getObject("expected+imageDarkenBy10")));
 
     //after
@@ -100,20 +103,20 @@ public class ModelTest {
   public void testIfBrightenThrowsException() {
 
     c = 0;
-    expectedImage = model.createBuilderThreeChannel(width, height);
+    expectedImage = new threeChannelImageBuilder(width, height);
     int increment = 10;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         expectedImage.addPixelAtPosition(j, i,
-            new threeChannelObject(((int) Math.min(255, Math.max(0, c + increment))),
+            new RGBIntegerObject(((int) Math.min(255, Math.max(0, c + increment))),
                 ((int) Math.min(255, Math.max(0, c + increment))),
                 (int) Math.min(255, Math.max(0, c + increment))));
         c += 1;
       }
     }
     //before brighterning
-    model.createImageThreeChannel(testImage1, "test+image");
-    model.createImageThreeChannel(expectedImage, "expected+imageBrightenBy10");
+    model.addImageToModel(testImage1.buildImage(), "test+image");
+    model.addImageToModel(expectedImage.buildImage(), "expected+imageBrightenBy10");
     assertFalse(
         model.getObject("test+image").equals(model.getObject("expected+imageBrightenBy10")));
 
@@ -129,27 +132,27 @@ public class ModelTest {
   public void testForBrightenNegRGB() {
 
     c = -1;
-    expectedImage = model.createBuilderThreeChannel(width, height);
+    expectedImage = new threeChannelImageBuilder(width, height);
     int increment = 10;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         expectedImage.addPixelAtPosition(j, i,
-            new threeChannelObject(((int) Math.min(255, Math.max(0, c + increment))),
+            new RGBIntegerObject(((int) Math.min(255, Math.max(0, c + increment))),
                 ((int) Math.min(255, Math.max(0, c + increment))),
                 (int) Math.min(255, Math.max(0, c + increment))));
       }
     }
-    testImage1 = model.createBuilderThreeChannel(width, height);
+    testImage1 =new threeChannelImageBuilder(width, height);
     c = -1;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        testImage1.addPixelAtPosition(j, i, new threeChannelObject(c, c, c));
+        testImage1.addPixelAtPosition(j, i, new RGBIntegerObject(c, c, c));
       }
     }
 
     //before
-    model.createImageThreeChannel(testImage1, "test+image");
-    model.createImageThreeChannel(expectedImage, "expected+imageBrightenBy10");
+    model.addImageToModel(testImage1.buildImage(), "test+image");
+    model.addImageToModel(expectedImage.buildImage(), "expected+imageBrightenBy10");
     assertFalse(
         model.getObject("test+image").equals(model.getObject("expected+imageBrightenBy10")));
 
@@ -164,27 +167,27 @@ public class ModelTest {
   public void testForBrightenAllBlack() {
 
     c = 0;
-    expectedImage = model.createBuilderThreeChannel(width, height);
+    expectedImage =new threeChannelImageBuilder(width, height);
     int increment = 10;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         expectedImage.addPixelAtPosition(j, i,
-            new threeChannelObject(((int) Math.min(255, Math.max(0, c + increment))),
+            new RGBIntegerObject(((int) Math.min(255, Math.max(0, c + increment))),
                 ((int) Math.min(255, Math.max(0, c + increment))),
                 (int) Math.min(255, Math.max(0, c + increment))));
       }
     }
-    testImage1 = model.createBuilderThreeChannel(width, height);
+    testImage1 = new threeChannelImageBuilder(width, height);
     c = 0;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        testImage1.addPixelAtPosition(j, i, new threeChannelObject(c, c, c));
+        testImage1.addPixelAtPosition(j, i, new RGBIntegerObject(c, c, c));
       }
     }
 
     //before
-    model.createImageThreeChannel(testImage1, "test+image");
-    model.createImageThreeChannel(expectedImage, "expected+imageBrightenBy10");
+    model.addImageToModel(testImage1.buildImage(), "test+image");
+    model.addImageToModel(expectedImage.buildImage(), "expected+imageBrightenBy10");
     assertFalse(
         model.getObject("test+image").equals(model.getObject("expected+imageBrightenBy10")));
 
@@ -199,27 +202,27 @@ public class ModelTest {
   public void testForDarkenAllBlack() {
 
     c = 0;
-    expectedImage = model.createBuilderThreeChannel(width, height);
+    expectedImage = new threeChannelImageBuilder(width, height);
     int increment = -10;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         expectedImage.addPixelAtPosition(j, i,
-            new threeChannelObject(((int) Math.min(255, Math.max(0, c + increment))),
+            new RGBIntegerObject(((int) Math.min(255, Math.max(0, c + increment))),
                 ((int) Math.min(255, Math.max(0, c + increment))),
                 (int) Math.min(255, Math.max(0, c + increment))));
       }
     }
-    testImage2 = model.createBuilderThreeChannel(width, height);
+    testImage2 = new threeChannelImageBuilder(width, height);
     c = 0;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        testImage1.addPixelAtPosition(j, i, new threeChannelObject(c, c, c));
+        testImage1.addPixelAtPosition(j, i, new RGBIntegerObject(c, c, c));
       }
     }
 
     //before
-    model.createImageThreeChannel(testImage2, "test+image");
-    model.createImageThreeChannel(expectedImage, "expected+imageDarkenBlackBy10");
+    model.addImageToModel(testImage2.buildImage(), "test+image");
+    model.addImageToModel(expectedImage.buildImage(), "expected+imageDarkenBlackBy10");
     assertTrue(
         model.getObject("test+image").equals(model.getObject("expected+imageDarkenBlackBy10")));
 
@@ -234,27 +237,27 @@ public class ModelTest {
   public void testForBrightenAllWhite() {
 
     c = 255;
-    expectedImage = model.createBuilderThreeChannel(width, height);
+    expectedImage = new threeChannelImageBuilder(width, height);
     int increment = 10;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         expectedImage.addPixelAtPosition(j, i,
-            new threeChannelObject(((int) Math.min(255, Math.max(0, c + increment))),
+            new RGBIntegerObject(((int) Math.min(255, Math.max(0, c + increment))),
                 ((int) Math.min(255, Math.max(0, c + increment))),
                 (int) Math.min(255, Math.max(0, c + increment))));
       }
     }
-    testImage2 = model.createBuilderThreeChannel(width, height);
+    testImage2 = new threeChannelImageBuilder(width, height);
     c = 255;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        testImage1.addPixelAtPosition(j, i, new threeChannelObject(c, c, c));
+        testImage1.addPixelAtPosition(j, i, new RGBIntegerObject(c, c, c));
       }
     }
 
     //before
-    model.createImageThreeChannel(testImage1, "test+image");
-    model.createImageThreeChannel(expectedImage, "expected+imageBrightenBy10");
+    model.addImageToModel(testImage1.buildImage(), "test+image");
+    model.addImageToModel(expectedImage.buildImage(), "expected+imageBrightenBy10");
     assertTrue(model.getObject("test+image").equals(model.getObject("expected+imageBrightenBy10")));
 
     //after
@@ -267,26 +270,26 @@ public class ModelTest {
   @Test
   public void testForDarkenAllWhite() {
     c = 255;
-    expectedImage = model.createBuilderThreeChannel(width, height);
+    expectedImage = new threeChannelImageBuilder(width, height);
     int increment = -10;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         expectedImage.addPixelAtPosition(j, i,
-            new threeChannelObject(((int) Math.min(255, Math.max(0, c + increment))),
+            new RGBIntegerObject(((int) Math.min(255, Math.max(0, c + increment))),
                 ((int) Math.min(255, Math.max(0, c + increment))),
                 (int) Math.min(255, Math.max(0, c + increment))));
       }
     }
-    testImage1 = model.createBuilderThreeChannel(width, height);
+    testImage1 = new threeChannelImageBuilder(width, height);
     c = 255;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        testImage1.addPixelAtPosition(j, i, new threeChannelObject(c, c, c));
+        testImage1.addPixelAtPosition(j, i, new RGBIntegerObject(c, c, c));
       }
     }
     //before
-    model.createImageThreeChannel(testImage1, "test+image");
-    model.createImageThreeChannel(expectedImage, "expected+imageBrightenBy10");
+    model.addImageToModel(testImage1.buildImage(), "test+image");
+    model.addImageToModel(expectedImage.buildImage(), "expected+imageBrightenBy10");
     assertFalse(
         model.getObject("test+image").equals(model.getObject("expected+imageBrightenBy10")));
 
@@ -301,26 +304,26 @@ public class ModelTest {
   public void testForRGBValuesGreaterThan255() {
 
     c = 260;
-    expectedImage = model.createBuilderThreeChannel(width, height);
+    expectedImage = new threeChannelImageBuilder(width, height);
     int increment = 10;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         expectedImage.addPixelAtPosition(j, i,
-            new threeChannelObject(((int) Math.min(255, Math.max(0, c + increment))),
+            new RGBIntegerObject(((int) Math.min(255, Math.max(0, c + increment))),
                 ((int) Math.min(255, Math.max(0, c + increment))),
                 (int) Math.min(255, Math.max(0, c + increment))));
       }
     }
-    testImage1 = model.createBuilderThreeChannel(width, height);
+    testImage1 = new threeChannelImageBuilder(width, height);
     c = 260;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        testImage1.addPixelAtPosition(j, i, new threeChannelObject(c, c, c));
+        testImage1.addPixelAtPosition(j, i, new RGBIntegerObject(c, c, c));
       }
     }
     //before
-    model.createImageThreeChannel(testImage1, "test+image");
-    model.createImageThreeChannel(expectedImage, "expected+imageBrightenBy10");
+    model.addImageToModel(testImage1.buildImage(), "test+image");
+    model.addImageToModel(expectedImage.buildImage(), "expected+imageBrightenBy10");
     assertFalse(
         model.getObject("test+image").equals(model.getObject("expected+imageBrightenBy10")));
 
@@ -335,12 +338,12 @@ public class ModelTest {
   public void testForWhenIncrementisDouble() {
 
     c = 0;
-    expectedImage = model.createBuilderThreeChannel(width, height);
+    expectedImage = new threeChannelImageBuilder(width, height);
     double increment = 50.25;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         expectedImage.addPixelAtPosition(j, i,
-            new threeChannelObject(((int) Math.min(255, Math.max(0, c + increment))),
+            new RGBIntegerObject(((int) Math.min(255, Math.max(0, c + increment))),
                 ((int) Math.min(255, Math.max(0, c + increment))),
                 (int) Math.min(255, Math.max(0, c + increment))));
         c += 1;
@@ -348,8 +351,8 @@ public class ModelTest {
     }
 
     //before
-    model.createImageThreeChannel(testImage1, "test+image");
-    model.createImageThreeChannel(expectedImage, "expected+imageBrightenBy10");
+    model.addImageToModel(testImage1.buildImage(), "test+image");
+    model.addImageToModel(expectedImage.buildImage(), "expected+imageBrightenBy10");
     assertFalse(
         model.getObject("test+image").equals(model.getObject("expected+imageBrightenBy10")));
 
@@ -362,21 +365,21 @@ public class ModelTest {
 
   //test case if the value works
   @Test
-  public void testvisualizeValue() {
+  public void testvisualizeValue() throws NoSuchFieldException, IllegalAccessException {
     c = 0;
-    expectedImage = model.createBuilderThreeChannel(width, height);
+    expectedImage = new threeChannelImageBuilder(width, height);
     int increment = 10;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         expectedImage.addPixelAtPosition(j, i,
-            new threeChannelObject(Math.max(c, Math.max(c, c)), Math.max(c, Math.max(c, c)),
+            new RGBIntegerObject(Math.max(c, Math.max(c, c)), Math.max(c, Math.max(c, c)),
                 Math.max(c, Math.max(c, c))));
         c += 1;
       }
     }
     //before
-    model.createImageThreeChannel(testImage1, "test+image");
-    model.createImageThreeChannel(expectedImage, "expected+imageValue");
+    model.addImageToModel(testImage1.buildImage(), "test+image");
+    model.addImageToModel(expectedImage.buildImage(), "expected+imageValue");
     assertTrue(
         model.getObject("test+image").equals(model.getObject("expected+imageValue")));
 
@@ -390,19 +393,19 @@ public class ModelTest {
   //test case if intensity works
   //test case if the value works
   @Test
-  public void testIntensity() {
+  public void testIntensity() throws NoSuchFieldException, IllegalAccessException {
     c = 0;
-    expectedImage = model.createBuilderThreeChannel(width, height);
+    expectedImage = new threeChannelImageBuilder(width, height);
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         expectedImage.addPixelAtPosition(j, i,
-            new threeChannelObject((c + c + c) / 3, (c + c + c) / 3, (c + c + c) / 3));
+            new RGBIntegerObject((c + c + c) / 3, (c + c + c) / 3, (c + c + c) / 3));
         c += 1;
       }
     }
     //before
-    model.createImageThreeChannel(testImage1, "test+image");
-    model.createImageThreeChannel(expectedImage, "expected+imageValue");
+    model.addImageToModel(testImage1.buildImage(), "test+image");
+    model.addImageToModel(expectedImage.buildImage(), "expected+imageValue");
     assertTrue(
         model.getObject("test+image").equals(model.getObject("expected+imageValue")));
 
@@ -414,20 +417,20 @@ public class ModelTest {
 
   //check for luma
   @Test
-  public void testLuma() {
+  public void testLuma() throws NoSuchFieldException, IllegalAccessException {
     c = 0;
-    expectedImage = model.createBuilderThreeChannel(width, height);
+    expectedImage = new threeChannelImageBuilder(width, height);
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         double luma = 0.2126 * c + 0.7152 * c + 0.0722 * c;
         expectedImage.addPixelAtPosition(j, i,
-            new threeChannelObject((int) luma, (int) luma, (int) luma));
+            new RGBIntegerObject((int) luma, (int) luma, (int) luma));
         c += 1;
       }
     }
     //before
-    model.createImageThreeChannel(testImage1, "test+image");
-    model.createImageThreeChannel(expectedImage, "expected+imageValue");
+    model.addImageToModel(testImage1.buildImage(), "test+image");
+    model.addImageToModel(expectedImage.buildImage(), "expected+imageValue");
 
     //after
     model.visualizeValueIntensityLuma("test+image", "test-luma", MeasurementType.luma);
@@ -443,21 +446,21 @@ public class ModelTest {
     int c3 = 2;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        testImage1.addPixelAtPosition(j, i, new threeChannelObject(c, c2, c3));
+        testImage1.addPixelAtPosition(j, i, new RGBIntegerObject(c, c2, c3));
       }
     }
 
-    model.createImageThreeChannel(testImage1, "RGBImage");
-    expectedImage = model.createBuilderThreeChannel(width, height);
+    model.addImageToModel(testImage1.buildImage(), "RGBImage");
+    expectedImage = new threeChannelImageBuilder(width, height);
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         expectedImage.addPixelAtPosition(j, i,
-            new threeChannelObject(c, c, c));
+            new RGBIntegerObject(c, c, c));
       }
     }
     //before
-    model.createImageThreeChannel(testImage1, "test+image");
-    model.createImageThreeChannel(expectedImage, "expected+imageValue");
+    model.addImageToModel(testImage1.buildImage(), "test+image");
+    model.addImageToModel(expectedImage.buildImage(), "expected+imageValue");
     //after
     model.visIndividualComponent("test+image","test-red",Component.red);
     assertTrue(
@@ -472,21 +475,21 @@ public class ModelTest {
     int c3 = 2;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        testImage1.addPixelAtPosition(j, i, new threeChannelObject(c, c2, c3));
+        testImage1.addPixelAtPosition(j, i, new RGBIntegerObject(c, c2, c3));
       }
     }
 
-    model.createImageThreeChannel(testImage1, "RGBImage");
-    expectedImage = model.createBuilderThreeChannel(width, height);
+    model.addImageToModel(testImage1.buildImage(), "RGBImage");
+    expectedImage = new threeChannelImageBuilder(width, height);
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         expectedImage.addPixelAtPosition(j, i,
-            new threeChannelObject(c2, c2, c2));
+            new RGBIntegerObject(c2, c2, c2));
       }
     }
     //before
-    model.createImageThreeChannel(testImage1, "test+image");
-    model.createImageThreeChannel(expectedImage, "expected+imageValue");
+    model.addImageToModel(testImage1.buildImage(), "test+image");
+    model.addImageToModel(expectedImage.buildImage(), "expected+imageValue");
     //after
     model.visIndividualComponent("test+image","test-green",Component.green);
     assertTrue(
@@ -500,21 +503,21 @@ public class ModelTest {
     int c3 = 2;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        testImage1.addPixelAtPosition(j, i, new threeChannelObject(c, c2, c3));
+        testImage1.addPixelAtPosition(j, i, new RGBIntegerObject(c, c2, c3));
       }
     }
 
-    model.createImageThreeChannel(testImage1, "RGBImage");
-    expectedImage = model.createBuilderThreeChannel(width, height);
+    model.addImageToModel(testImage1.buildImage(), "RGBImage");
+    expectedImage = new threeChannelImageBuilder(width, height);
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         expectedImage.addPixelAtPosition(j, i,
-            new threeChannelObject(c3, c3, c3));
+            new RGBIntegerObject(c3, c3, c3));
       }
     }
     //before
-    model.createImageThreeChannel(testImage1, "test+image");
-    model.createImageThreeChannel(expectedImage, "expected+imageValue");
+    model.addImageToModel(testImage1.buildImage(), "test+image");
+    model.addImageToModel(expectedImage.buildImage(), "expected+imageValue");
     //after
     model.visIndividualComponent("test+image","test-blue",Component.blue);
     assertTrue(
@@ -524,48 +527,46 @@ public class ModelTest {
   //combineGreyScaleToRGB
   @Test
   public void testCombineThreeGreyScales() {
-    threeChannelImageBuilder testImageR = model.createBuilderThreeChannel(width,
-        height);
+    threeChannelImageBuilder testImageR = new threeChannelImageBuilder(width, height);
+
     c = 0;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        testImage1.addPixelAtPosition(j, i, new threeChannelObject(c, c, c));
+        testImage1.addPixelAtPosition(j, i, new RGBIntegerObject(c, c, c));
       }
     }
 
-    threeChannelImageBuilder testImageG = model.createBuilderThreeChannel(width,
-        height);
+    threeChannelImageBuilder testImageG = new threeChannelImageBuilder(width, height);
     c = 1;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        testImage1.addPixelAtPosition(j, i, new threeChannelObject(c, c, c));
+        testImage1.addPixelAtPosition(j, i, new RGBIntegerObject(c, c, c));
       }
     }
 
-    threeChannelImageBuilder testImageB = model.createBuilderThreeChannel(width,
-        height);
+    threeChannelImageBuilder testImageB =new threeChannelImageBuilder(width, height);
     c = 2;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        testImage1.addPixelAtPosition(j, i, new threeChannelObject(c, c, c));
+        testImage1.addPixelAtPosition(j, i, new RGBIntegerObject(c, c, c));
       }
     }
 
     c = 0;
-    expectedImage = model.createBuilderThreeChannel(width, height);
+    expectedImage = new threeChannelImageBuilder(width, height);
     for (int i = 0; i < width; i++) {
       for (int j = 0; j < height; j++) {
-            new threeChannelObject(testImageR.buildImage().getPixels()[i][j].getChanne11(),
+            new RGBIntegerObject(testImageR.buildImage().getPixels()[i][j].getChanne11(),
                 testImageR.buildImage().getPixels()[i][j].getChanne12(),
                 testImageR.buildImage().getPixels()[i][j].getChanne13());
         c += 1;
       }
     }
     //before
-    model.createImageThreeChannel(testImageR, "testR");
-    model.createImageThreeChannel(testImageG, "testG");
-    model.createImageThreeChannel(testImageB, "testB");
-    model.createImageThreeChannel(expectedImage, "expected+imageValue");
+    model.addImageToModel(testImageR.buildImage(), "testR");
+    model.addImageToModel(testImageG.buildImage(), "testG");
+    model.addImageToModel(testImageB.buildImage(), "testB");
+    model.addImageToModel(expectedImage.buildImage(), "expected+imageValue");
 
     model.combineGreyScaleToRGB("testR", "testG","testB","RGBNewImage" );
     assertTrue(
@@ -581,45 +582,42 @@ public class ModelTest {
     int c3 = 2;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        testImage1.addPixelAtPosition(j, i, new threeChannelObject(c, c2, c3));
+        testImage1.addPixelAtPosition(j, i, new RGBIntegerObject(c, c2, c3));
       }
     }
 
-    model.createImageThreeChannel(testImage1, "RGBNewImage");
+    model.addImageToModel(testImage1.buildImage(), "RGBNewImage");
     model.splitInto3Images("RGBNewImage","testR",
         "testG","testB");
-    threeChannelImageBuilder expectedtestImageR = model.createBuilderThreeChannel(width,
-        height);
+    threeChannelImageBuilder expectedtestImageR = new threeChannelImageBuilder(width, height);
     c = 0;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        expectedtestImageR.addPixelAtPosition(j, i, new threeChannelObject(c, c, c));
+        expectedtestImageR.addPixelAtPosition(j, i, new RGBIntegerObject(c, c, c));
       }
     }
 
-    threeChannelImageBuilder expectedtestImageG = model.createBuilderThreeChannel(width,
-        height);
+    threeChannelImageBuilder expectedtestImageG = new threeChannelImageBuilder(width, height);
     c = 1;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        expectedtestImageG.addPixelAtPosition(j, i, new threeChannelObject(c, c, c));
+        expectedtestImageG.addPixelAtPosition(j, i, new RGBIntegerObject(c, c, c));
       }
     }
 
-    threeChannelImageBuilder expectedtestImageB = model.createBuilderThreeChannel(width,
-        height);
+    threeChannelImageBuilder expectedtestImageB = new threeChannelImageBuilder(width, height);
     c = 2;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        expectedtestImageB.addPixelAtPosition(j, i, new threeChannelObject(c, c, c));
+        expectedtestImageB.addPixelAtPosition(j, i, new RGBIntegerObject(c, c, c));
       }
     }
 
 
     //before
-    model.createImageThreeChannel(expectedtestImageR, "newtestR");
-    model.createImageThreeChannel(expectedtestImageG, "newtestG");
-    model.createImageThreeChannel(expectedtestImageB, "newtestB");
+    model.addImageToModel(expectedtestImageR.buildImage(), "newtestR");
+    model.addImageToModel(expectedtestImageG.buildImage(), "newtestG");
+    model.addImageToModel(expectedtestImageB.buildImage(), "newtestB");
 
 
     assertTrue(
@@ -646,12 +644,12 @@ public class ModelTest {
   public void testThatHashMapWorks() {
 
     c = 0;
-    expectedImage = model.createBuilderThreeChannel(width, height);
+    expectedImage = new threeChannelImageBuilder(width, height);
     int increment = 10;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         expectedImage.addPixelAtPosition(j, i,
-            new threeChannelObject((Math.max(0, c + increment)),
+            new RGBIntegerObject((Math.max(0, c + increment)),
                 (Math.max(0, c + increment)),
                 (Math.max(0, c + increment))));
         c += 1;
@@ -660,9 +658,9 @@ public class ModelTest {
 
     //before anything is added
     assertEquals(model.numberOfImagesInModel(), 0);
-    model.createImageThreeChannel(testImage1, "test+image");
+    model.addImageToModel(testImage1.buildImage(), "test+image");
     assertEquals(model.numberOfImagesInModel(), 1);
-    model.createImageThreeChannel(expectedImage, "expected+imageBrightenBy10");
+    model.addImageToModel(expectedImage.buildImage(), "expected+imageBrightenBy10");
     assertEquals(model.numberOfImagesInModel(), 2);
   }
 
@@ -675,18 +673,18 @@ public class ModelTest {
   public void testIfDefaultimageGetsCreated() {
     //default image
     threeChannelImageBuilder defaultIamge;
-    defaultIamge = model.createBuilderThreeChannel(width, height);
-    model.createImageThreeChannel(defaultIamge, "default+image");
+    defaultIamge = new threeChannelImageBuilder(width, height);
+    model.addImageToModel(defaultIamge.buildImage(), "default+image");
 
     //image with all 0's
     c = 0;
-    expectedImage = model.createBuilderThreeChannel(width, height);
+    expectedImage = new threeChannelImageBuilder(width, height);
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        expectedImage.addPixelAtPosition(j, i, new threeChannelObject(c, c, c));
+        expectedImage.addPixelAtPosition(j, i, new RGBIntegerObject(c, c, c));
       }
     }
-    model.createImageThreeChannel(expectedImage, "default+image-test");
+    model.addImageToModel(expectedImage.buildImage(), "default+image-test");
 
     assertTrue(model.getObject("default+image").equals(model.getObject("default+image-test")));
 

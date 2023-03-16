@@ -5,7 +5,6 @@ import Model.Component;
 import Model.MeasurementType;
 import Model.Operations;
 import Model.TypeOfImage;
-import Model.threeChannelImage.threeChannelImageBuilder;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.NoSuchElementException;
@@ -97,15 +96,11 @@ public class ImageControllerTest {
 
     }
 
-    @Override
-    public threeChannelImageBuilder createBuilderThreeChannel(int width, int height) {
-      log.append("Received inputs for createBuilderThreeChannel: " + width + " " + height + "\n");
-      return null;
-    }
+
 
     @Override
-    public void createImageThreeChannel(threeChannelImageBuilder image, String nameOfObject) {
-      log.append("Received inputs for createImageThreeChannel:" + nameOfObject + "\n");
+    public void addImageToModel(TypeOfImage image, String nameOfObject) {
+      log.append("Received inputs for createBuilderThreeChannel:" + nameOfObject + "\n");
     }
 
   }
@@ -118,15 +113,13 @@ public class ImageControllerTest {
   public void testLoad() throws Exception {
     StringBuffer out = new StringBuffer();
     String imageName = "koala";
-    int width = 1024;
-    int height = 768;
     Reader in = new StringReader("load koala.ppm koala\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
     ImageController imageController = new ImageController(mockModel, in, out);
     imageController.run();
     String expectedOutput =
-        "Received inputs for createBuilderThreeChannel: " + width + " " + height + "\n";
+        "Received inputs for createBuilderThreeChannel:" + imageName + "\n";
     assertEquals(expectedOutput, mockModel.log.toString()); //inputs reached the model correctly
   }
 

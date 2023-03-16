@@ -1,12 +1,12 @@
 package Model;
 
-public class threeChannelObject implements TypeofImageObject {
+public class RGBIntegerObject implements TypeofImageObject {
 
-  public final int red;
-  public final int green;
-  public final int blue;
+  protected final int red;
+  protected final int green;
+  protected final int blue;
 
-  public threeChannelObject(int red, int green, int blue) throws IllegalArgumentException {
+  public RGBIntegerObject(int red, int green, int blue) throws IllegalArgumentException {
     if (red < 0 | green < 0 | blue < 0) {
       throw new IllegalArgumentException("RGB values can't be less negative!");
     }
@@ -40,11 +40,11 @@ public class threeChannelObject implements TypeofImageObject {
       return true;
     }
 
-    if (!(o instanceof threeChannelObject)) {
+    if (!(o instanceof RGBIntegerObject)) {
       return false;
     }
 
-    threeChannelObject other = (threeChannelObject) o;
+    RGBIntegerObject other = (RGBIntegerObject) o;
     return this.getChanne11() == other.getChanne11() & this.getChanne12() == other.getChanne12()
         & this.getChanne13() == other.getChanne13();
   }
