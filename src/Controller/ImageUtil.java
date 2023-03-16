@@ -77,7 +77,6 @@ public class ImageUtil {
       }
     } catch (Exception e) {
       throw e;
-      //System.out.println("Invalid PPM file format. ");
     }
 
   }
@@ -92,7 +91,6 @@ public class ImageUtil {
       // Write header
       writer.printf("P3" + System.lineSeparator());
       writer.printf(Image.getWidth() + " " + Image.getHeight() + System.lineSeparator());
-      //writer.printf(Image.getMaxValue() + System.lineSeparator());
       int maxValue = 255;
       writer.printf(maxValue + System.lineSeparator());
 
@@ -108,7 +106,6 @@ public class ImageUtil {
           writer.println();
         }
       }
-      System.out.println("Success");
     } catch (FileNotFoundException e) {
       throw e;
     }

@@ -22,7 +22,19 @@ public class ImageController {
 
   public void run() throws IOException {
     Objects.requireNonNull(model);
-    System.out.println("Welcome to image processing with PPM files! You can enter commands here. Type exit to exit the program anytime.");
+    System.out.println("Welcome to image processing with PPM files! You can enter commands here. "
+                      + "Type exit to exit the program anytime.\n");
+    System.out.println("You can use the following commands to perform the following operations:\n");
+    System.out.println("LOAD: load filepath imageName\n");
+    System.out.println("SAVE: save filepath imageName\n");
+    System.out.println("BRIGHTEN: brighten increment-value imageName newimageName\n");
+    System.out.println("HORIZONTAL-FLIP: horizontal-flip imageName newimageName\n");
+    System.out.println("VERTICAL-FLIP: vertical-flip imageName newimageName\n");
+    System.out.println("GREYSCALE component: greyscale component-type imageName newimageName\n");
+    System.out.println("RGB TO GREYSCALE: rgb-split imageName newimageNameR newimageNameG "
+        + "newimageNameB\n");
+    System.out.println("GREYSCALE TO RGB: rgb-combine imageNameR imageNameG imageNameB"
+        + "newimageName \n");
     boolean go = true;
     Scanner scanner = new Scanner(this.in);
     while (go) {
@@ -60,7 +72,7 @@ public class ImageController {
   public void commandExecution(String[] commands) throws IOException{
     //to run even if the nextline is blank
     if (commands.length == 0 || commands[0].trim().isEmpty()) {
-      return;
+      this.out.append("Please enter appropriate command.");
     }
     switch (commands[0]) {
       case "load":
@@ -151,8 +163,9 @@ public class ImageController {
           model.splitInto3Images(imageName, updatedimageName1, updatedimageName2,
               updatedimageName3);
           System.out.println(
-              "Image '" + imageName + "'has been split into greyscale images: '"
-                  + updatedimageName1 + "'" + updatedimageName2 + "'and" + updatedimageName3 + "'" + "\n");
+              "Image '" + imageName + "' has been split into greyscale images: '"
+                  + updatedimageName1 + "'" + updatedimageName2 + "' and " + updatedimageName3 +
+                  "' \n");
         } catch (NoSuchFieldException | IllegalAccessException e) {
           throw new RuntimeException(e);
         }
@@ -177,6 +190,7 @@ public class ImageController {
           }
           String imagePath = commands[1];
           String imageName = commands[2];
+          this.out.append("Image" + " imageName" + " saved as file:" + " imagePath");
           if(!imagePath.split("\\.")[1].equals("ppm")){
             throw new IllegalArgumentException("Invalid file format: " + imagePath.split("\\.")[1]);
           }
@@ -203,7 +217,7 @@ public class ImageController {
         }
       }
     }catch(FileNotFoundException e){
-      this.out.append("File not found \n");
+      throw e;
     }
 
   }

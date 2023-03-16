@@ -110,7 +110,10 @@ public class ImageControllerTest {
 
   }
 
-  //LOAD
+  /**
+   * This method tests the load operation that reads the PPM file from ImageUtil and give
+   * appropriate logs when passed to the model.
+   */
   @Test
   public void testLoad() throws Exception {
     StringBuffer out = new StringBuffer();
@@ -127,7 +130,11 @@ public class ImageControllerTest {
     assertEquals(expectedOutput, mockModel.log.toString()); //inputs reached the model correctly
   }
 
-  //should not give an output
+  /**
+   * This method is used to check if the output throws an exception with appropriate message if
+   * the file passed is a non-ppm file.
+   * @throws Exception illegal argument exception
+   */
   @Test
   public void testLoadNonPPMFile() throws Exception {
     StringBuffer out = new StringBuffer();
@@ -137,11 +144,85 @@ public class ImageControllerTest {
     MockModel mockModel = new MockModel(log);
     ImageController imageController = new ImageController(mockModel, in, out);
     imageController.run();
-    String expectedOutput = "";
-    assertEquals(expectedOutput, mockModel.log.toString()); //inputs reached the model correctly
+    String expectedOutput = "Error: Invalid file format: jpg\n"
+                            + "Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
   }
 
+  /**
+   * This method is used to check if the output throws an exception with appropriate message
+   * if the command is incorrect.
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testInvalidLoadCommand() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    Reader in = new StringReader("load koala.jpg as koala\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    ImageController imageController = new ImageController(mockModel, in, out);
+    imageController.run();
+    String expectedOutput = "Error: Invalid command format.\n"
+                            +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
 
+  /**
+   * This method is used to check if the output throws an exception with appropriate message
+   * if the filename is incorrect.
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testInvalidFileLoad() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    Reader in = new StringReader("load koala.pmm koala\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    ImageController imageController = new ImageController(mockModel, in, out);
+    imageController.run();
+    String expectedOutput = "Error: Invalid file format: pmm\n"
+        +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This method is used to check if the output throws an exception with appropriate message
+   * if the filename is incorrect.
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testInvalidCommandWithWhitespace() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    Reader in = new StringReader("load koala.pmm      koala\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    ImageController imageController = new ImageController(mockModel, in, out);
+    imageController.run();
+    String expectedOutput = "Error: Invalid command format.\n"
+        +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This method is used to check if the command works after empty line
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testWithNextLineEmpty() throws Exception {
+    StringBuffer out = new StringBuffer();
+
+    Reader in = new StringReader(" \nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    ImageController imageController = new ImageController(mockModel, in, out);
+    imageController.run();
+    String expectedOutput = "Please enter appropriate command.Error: Invalid command: \n"
+        +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
   //VERTICAL FLIP
   @Test
   public void testVerticalFlip() throws Exception {
@@ -188,7 +269,7 @@ public class ImageControllerTest {
     ImageController imageController = new ImageController(mockModel, in, out);
     imageController.run();
     String expectedOutput =
-        "Received inputs for brighten: " + imageName + " " + newImageName + " " + increment +"\n";
+        "Received inputs for brighten: " + imageName + " " + newImageName + " " + increment + "\n";
     assertEquals(expectedOutput, mockModel.log.toString()); //inputs reached the model correctly
   }
 
@@ -235,7 +316,8 @@ public class ImageControllerTest {
     String imageName = "koala";
     String newImageName = "koala-greyscale-intensity";
     String measure = "intensity";
-    Reader in = new StringReader("greyscale intensity-component koala koala-greyscale-intensity\nexit");
+    Reader in = new StringReader(
+        "greyscale intensity-component koala koala-greyscale-intensity\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
     ImageController imageController = new ImageController(mockModel, in, out);
