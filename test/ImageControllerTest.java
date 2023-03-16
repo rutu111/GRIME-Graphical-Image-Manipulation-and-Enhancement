@@ -103,10 +103,6 @@ public class ImageControllerTest {
       log.append("Received inputs for createBuilderThreeChannel:" + nameOfObject + "\n");
     }
 
-    @Override
-    public Set<String> returnKeys() {
-      return null;
-    }
 
   }
 

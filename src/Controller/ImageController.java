@@ -23,7 +23,7 @@ public class ImageController {
   public void run() throws IOException {
     Objects.requireNonNull(model);
     System.out.println("Welcome to image processing with PPM files! You can enter commands here. "
-                      + "Type exit to exit the program anytime.\n");
+        + "Type exit to exit the program anytime.\n");
     System.out.println("You can use the following commands to perform the following operations:\n");
     System.out.println("LOAD: load filepath imageName\n");
     System.out.println("SAVE: save filepath imageName\n");
@@ -72,7 +72,7 @@ public class ImageController {
   public void commandExecution(String[] commands) throws IOException{
     //to run even if the nextline is blank
     if (commands.length == 0 || commands[0].trim().isEmpty()) {
-      this.out.append("Please enter appropriate command.");
+      this.out.append("Please enter appropriate command. \n");
     }
     switch (commands[0]) {
       case "load":
@@ -100,9 +100,9 @@ public class ImageController {
         String updatedImageName = commands[3];
         model.brighten(imageName, updatedImageName, increment);
         this.out.append(
-            "Image brightened '" + imageName + "'stored as'" + updatedImageName + "'" + "\n");
+            "Image brightened '" + imageName + "' stored as '" + updatedImageName + "'" + "\n");
       }
-        break;
+      break;
       case "vertical-flip": {
         if (commands.length != 3) {
           throw new IllegalArgumentException("Invalid command format.");
@@ -112,9 +112,10 @@ public class ImageController {
         model.verticalFlip(imageName,
             updatedImageName);
         this.out.append(
-            "Image vertically flipped'" + imageName + "'stored as'" + updatedImageName + "'" + "\n");
+            "Image vertically flipped '" + imageName + "' stored as '" + updatedImageName + "'" +
+                "\n");
       }
-        break;
+      break;
       case "horizontal-flip": {
         if (commands.length != 3) {
           throw new IllegalArgumentException("Invalid command format.");
@@ -124,9 +125,10 @@ public class ImageController {
         model.horizontalFlip(imageName,
             updatedImageName);
         this.out.append(
-            "Image horizontally flipped'" + imageName + "'stored as'" + updatedImageName + "'" + "\n");
+            "Image horizontally flipped '" + imageName + "' stored as '" + updatedImageName + "'" +
+                "\n");
       }
-        break;
+      break;
       case "greyscale":
         try {
           if (commands.length != 4) {
@@ -145,7 +147,7 @@ public class ImageController {
                 MeasurementType.valueOf(componentParts[0]));
           }
           this.out.append(
-              "Image '" + imageName + "'stored as greyscale'" + updatedImageName + "'" + "\n");
+              "Image '" + imageName + "' stored as greyscale '" + updatedImageName + "'" + "\n");
 
         } catch (NoSuchFieldException | IllegalAccessException e) {
           throw new RuntimeException(e);
@@ -162,10 +164,10 @@ public class ImageController {
           String updatedimageName3 = commands[4];
           model.splitInto3Images(imageName, updatedimageName1, updatedimageName2,
               updatedimageName3);
-          System.out.println(
+          this.out.append(
               "Image '" + imageName + "' has been split into greyscale images: '"
                   + updatedimageName1 + "'" + updatedimageName2 + "' and " + updatedimageName3 +
-                  "' \n");
+                  "'" + "\n");
         } catch (NoSuchFieldException | IllegalAccessException e) {
           throw new RuntimeException(e);
         }
@@ -180,8 +182,8 @@ public class ImageController {
         String imageName3 = commands[4];
         model.combineGreyScaleToRGB(imageName1, imageName2, imageName3, updatedimageName);
         this.out.append(
-            "Image '" + updatedimageName + "was created by combining greyscale images: '"
-                + imageName1 + "'" + imageName2 + "'and" + imageName3 + "'" + "\n");
+            "Image '" + updatedimageName + " was created by combining greyscale images: '"
+                + imageName1 + "'" + imageName2 + "' and '" + imageName3 + "'" + "\n");
         break;
       case "save":
         try {
@@ -190,11 +192,12 @@ public class ImageController {
           }
           String imagePath = commands[1];
           String imageName = commands[2];
+          this.out.append("Image " + imageName + " saved as file: " + imagePath + "\n");
           if(!imagePath.split("\\.")[1].equals("ppm")){
-            throw new IllegalArgumentException("Invalid file format: " + imagePath.split("\\.")[1]);
+            throw new IllegalArgumentException("Invalid file format: " + imagePath.split(
+                "\\.")[1]);
           }
           ImageUtil.writePPM(this.model, imagePath, imageName);
-          this.out.append("Image" + imageName + " saved as file:" + imagePath);
         } catch (FileNotFoundException e) {
           this.out.append("File path does not exist.\n");
         }
@@ -202,9 +205,9 @@ public class ImageController {
       default:
         //throws exception when the command is invalid
         throw new IllegalArgumentException("Invalid command: " + commands[0]);
-
     }
   }
+
   public void readScriptFile(String filename) throws IOException{
     try{
       File file = new File(filename);
@@ -212,7 +215,7 @@ public class ImageController {
 
       while(scanner.hasNextLine()){
         String line = scanner.nextLine().trim();
-        if (!line.isEmpty() && !line.startsWith("//") && !line.startsWith("#")) { // Ignore comments and empty lines
+        if (!line.isEmpty() && !line.startsWith("//") && !line.startsWith("#")) {
           String[] words = line.split("\\s+");
           commandExecution(words);
         }
@@ -223,6 +226,3 @@ public class ImageController {
 
   }
 }
-
-
-
