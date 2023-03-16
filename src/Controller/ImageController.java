@@ -1,8 +1,8 @@
 package Controller;
 
 import Model.ComponentRGB;
-import Model.Operations;
 import Model.MeasurementType;
+import Model.Operations;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -10,6 +10,7 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class ImageController {
+
   private final Operations model;
   final Readable in;
   final Appendable out;
@@ -33,8 +34,8 @@ public class ImageController {
     System.out.println("GREYSCALE component: greyscale component-type imageName newimageName\n");
     System.out.println("RGB TO GREYSCALE: rgb-split imageName newimageNameR newimageNameG "
         + "newimageNameB\n");
-    System.out.println("GREYSCALE TO RGB: rgb-combine imageNameR imageNameG imageNameB"
-        + "newimageName \n");
+    System.out.println("GREYSCALE TO RGB: rgb-combine newimageName imageNameR imageNameG imageNameB"
+        + "\n");
     boolean go = true;
     Scanner scanner = new Scanner(this.in);
     while (go) {
@@ -44,7 +45,7 @@ public class ImageController {
         String[] commandParts = command.split(" ");
         if (commandParts.length == 0) {
           return;
-        }else {
+        } else {
           if (commandParts[0].equals("run")) {
             if (commandParts.length != 2) {
               throw new IllegalArgumentException("Invalid command format.");
@@ -62,14 +63,14 @@ public class ImageController {
             commandExecution(commandParts);
           }
         }
-      }catch(Exception e){
+      } catch (Exception e) {
         this.out.append("Error: " + e.getMessage() + "\n");
       }
     }
     scanner.close();
   }
 
-  public void commandExecution(String[] commands) throws IOException{
+  public void commandExecution(String[] commands) throws IOException {
     //to run even if the nextline is blank
     if (commands.length == 0 || commands[0].trim().isEmpty()) {
       this.out.append("Please enter appropriate command. \n");
@@ -82,7 +83,7 @@ public class ImageController {
           }
           String imagePath = commands[1];
           String imageName = commands[2];
-          if(!imagePath.split("\\.")[1].equals("ppm")){
+          if (!imagePath.split("\\.")[1].equals("ppm")) {
             throw new IllegalArgumentException("Invalid file format: " + imagePath.split("\\.")[1]);
           }
           ImageUtil.readPPM(this.model, imagePath, imageName);
@@ -183,7 +184,7 @@ public class ImageController {
         model.combineGreyScaleToRGB(imageName1, imageName2, imageName3, updatedimageName);
         this.out.append(
             "Image '" + updatedimageName + " was created by combining greyscale images: '"
-                + imageName1 + "'" + imageName2 + "' and '" + imageName3 + "'" + "\n");
+                + imageName1 + " '" + imageName2 + "' and '" + imageName3 + "'" + "\n");
         break;
       case "save":
         try {
@@ -193,7 +194,7 @@ public class ImageController {
           String imagePath = commands[1];
           String imageName = commands[2];
           this.out.append("Image " + imageName + " saved as file: " + imagePath + "\n");
-          if(!imagePath.split("\\.")[1].equals("ppm")){
+          if (!imagePath.split("\\.")[1].equals("ppm")) {
             throw new IllegalArgumentException("Invalid file format: " + imagePath.split(
                 "\\.")[1]);
           }
@@ -208,19 +209,19 @@ public class ImageController {
     }
   }
 
-  public void readScriptFile(String filename) throws IOException{
-    try{
+  public void readScriptFile(String filename) throws IOException {
+    try {
       File file = new File(filename);
       Scanner scanner = new Scanner(file);
 
-      while(scanner.hasNextLine()){
+      while (scanner.hasNextLine()) {
         String line = scanner.nextLine().trim();
         if (!line.isEmpty() && !line.startsWith("//") && !line.startsWith("#")) {
           String[] words = line.split("\\s+");
           commandExecution(words);
         }
       }
-    }catch(FileNotFoundException e){
+    } catch (FileNotFoundException e) {
       throw e;
     }
 

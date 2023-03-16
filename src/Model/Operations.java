@@ -1,5 +1,6 @@
 package Model;
 
+import java.util.HashMap;
 import java.util.NoSuchElementException;
 
 /**
@@ -108,4 +109,6 @@ public interface Operations {
    */
   void addImageToModel(TypeOfImage image,
       String nameOfObject);
+
+  boolean checkKeyInHashmap(String imageName);
 }

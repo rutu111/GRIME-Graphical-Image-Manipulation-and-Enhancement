@@ -7,8 +7,8 @@ import Model.Operations;
 import Model.TypeOfImage;
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.HashMap;
 import java.util.NoSuchElementException;
-import java.util.Set;
 import org.junit.Test;
 
 /**
@@ -101,6 +101,11 @@ public class ImageControllerTest {
     @Override
     public void addImageToModel(TypeOfImage image, String nameOfObject) {
       log.append("Received inputs for createBuilderThreeChannel:" + nameOfObject + "\n");
+    }
+
+    @Override
+    public boolean checkKeyInHashmap(String imageName) {
+      return false;
     }
 
 

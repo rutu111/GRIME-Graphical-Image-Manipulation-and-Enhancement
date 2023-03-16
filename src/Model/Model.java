@@ -125,4 +125,8 @@ public class Model implements Operations {
     return imageHashMap.size();
   }
 
+  public boolean checkKeyInHashmap(String imageName) {
+    return imageHashMap.containsKey(imageName);
+  }
+
 }
