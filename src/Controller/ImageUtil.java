@@ -43,24 +43,28 @@ public class ImageUtil {
 
     //now set up the scanner to read from the string we just built
     sc = new Scanner(builder.toString());
+    if(!sc.hasNextLine()){
+      throw new IllegalStateException("Invalid file: Cannot be empty");
+    }
     String token;
 
     token = sc.next();
-    if (!token.equals("P3")) {
+    if (!token.equals("P3") || token.isEmpty()) {
       throw new IllegalStateException("Invalid PPM file: plain RAW file should begin with P3");
     }
     try {
       int width = sc.nextInt();
-      //System.out.println("Width of image: "+width);
       int height = sc.nextInt();
-      //System.out.println("Height of image: "+height);
       int maxValue = sc.nextInt();
-      //System.out.println("Maximum value of a color in this file (usually 255): "+maxValue);
 
       threeChannelImageBuilder builderObject = new threeChannelImageBuilder(width, height);
 
-      int k = 0;
-      //ModelRGB Image = null;
+
+      if(width <= 0 | height <= 0){
+        throw new IllegalStateException("Width and Height cannot be zero or negative");
+      }
+
+
       for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
           int r = sc.nextInt();

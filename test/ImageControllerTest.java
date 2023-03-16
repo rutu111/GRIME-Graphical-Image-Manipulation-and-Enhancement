@@ -90,9 +90,8 @@ public class ImageControllerTest {
     @Override
     public void combineGreyScaleToRGB(String imageName1, String imageName2, String imageName3,
         String newImageName) throws IllegalArgumentException, NoSuchElementException {
-      log.append("Received inputs for combineGreyScaleToRGB: " + imageName1 + " " + imageName2 + " "
-          + imageName3 + " "
-          + newImageName + "\n");
+      log.append("Received inputs for combineGreyScaleToRGB: " + newImageName + " " + imageName1 + " " + imageName2 + " "
+          + imageName3 + "\n");
 
     }
 
@@ -151,13 +150,70 @@ public class ImageControllerTest {
   public void testInvalidLoadCommand() throws Exception {
     StringBuffer out = new StringBuffer();
     String imageName = "koala";
-    Reader in = new StringReader("load koala.jpg as koala\nexit");
+    Reader in = new StringReader("load koala.ppm as koala\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
     ImageController imageController = new ImageController(mockModel, in, out);
     imageController.run();
     String expectedOutput = "Error: Invalid command format.\n"
                             +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This method is used to check if the output throws an exception with appropriate message
+   * if the command is incorrect.
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testInvalidSpellingLoadCommand() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    Reader in = new StringReader("laodd koala.ppm as koala\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    ImageController imageController = new ImageController(mockModel, in, out);
+    imageController.run();
+    String expectedOutput = "Error: Invalid command: laodd\n"
+        +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This method is used to check if the output throws an exception with appropriate message
+   * if the value of the pixel is greater than 255.
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testInvalidPixelFileLoadCommand() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    Reader in = new StringReader("load greater255.ppm as koala\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    ImageController imageController = new ImageController(mockModel, in, out);
+    imageController.run();
+    String expectedOutput = "Error: Invalid command format.\n"
+        +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This method is used to check if the output throws an exception with appropriate message
+   * if the value of the pixel is less than 0.
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testInvalidPixelFileLoadCommand2() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    Reader in = new StringReader("load greater255.ppm as koala\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    ImageController imageController = new ImageController(mockModel, in, out);
+    imageController.run();
+    String expectedOutput = "Error: Invalid command format.\n"
+        +"Exit the program \n";
     assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
   }
 
@@ -182,6 +238,61 @@ public class ImageControllerTest {
 
   /**
    * This method is used to check if the output throws an exception with appropriate message
+   * if an empty file is loaded.
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testEmptyFileLoad() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    Reader in = new StringReader("load empty.ppm koala\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    ImageController imageController = new ImageController(mockModel, in, out);
+    imageController.run();
+    String expectedOutput = "Error: Invalid file: Cannot be empty\n"
+        +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This method is used to check if the output throws an exception with appropriate message
+   * if a file with zero height and width is loaded.
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testZeroDimensionFileLoad() throws Exception {
+    StringBuffer out = new StringBuffer();
+    Reader in = new StringReader("load zeroDim.ppm koala\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    ImageController imageController = new ImageController(mockModel, in, out);
+    imageController.run();
+    String expectedOutput = "Error: Width and Height cannot be zero or negative\n"
+        +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This method is used to check if the output throws an exception with appropriate message
+   * if a file with does not have one of the pixels channel
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testlessPixelFileLoad() throws Exception {
+    StringBuffer out = new StringBuffer();
+    Reader in = new StringReader("load lessPixels.ppm koala\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    ImageController imageController = new ImageController(mockModel, in, out);
+    imageController.run();
+    String expectedOutput = "Error: null\n"
+        +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This method is used to check if the output throws an exception with appropriate message
    * if the filename is incorrect.
    * @throws Exception illegal argument exception
    */
@@ -189,7 +300,7 @@ public class ImageControllerTest {
   public void testInvalidCommandWithWhitespace() throws Exception {
     StringBuffer out = new StringBuffer();
     String imageName = "koala";
-    Reader in = new StringReader("load koala.pmm      koala\nexit");
+    Reader in = new StringReader("load koala.ppm      koala\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
     ImageController imageController = new ImageController(mockModel, in, out);
@@ -216,7 +327,29 @@ public class ImageControllerTest {
         +"Exit the program \n";
     assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
   }
-  //VERTICAL FLIP
+
+  /**
+   * This method is used to check if the output throws an exception with appropriate message
+   * if a file with zero height and width is loaded.
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testNoDimensionFileLoad() throws Exception {
+    StringBuffer out = new StringBuffer();
+    Reader in = new StringReader("load noDim.ppm koala\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    ImageController imageController = new ImageController(mockModel, in, out);
+    imageController.run();
+    String expectedOutput = "Error: null\n"
+        +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This is a test for the Controller for the vertical flip function.
+   * @throws Exception handling different type of exceptions
+   */
   @Test
   public void testVerticalFlip() throws Exception {
     StringBuffer out = new StringBuffer();
@@ -232,7 +365,29 @@ public class ImageControllerTest {
     assertEquals(expectedOutput, mockModel.log.toString()); //inputs reached the model correctly
   }
 
-  //HORIZONTAL FLIP
+  /**
+   * This is a test for the Controller for the vertical flip function.
+   * @throws Exception handling different type of exceptions
+   */
+  @Test
+  public void testInvalidCommandVerticalFlip() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    String newImageName = "koala-vertical";
+    Reader in = new StringReader("vertical-flip koala as koala-vertical\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    ImageController imageController = new ImageController(mockModel, in, out);
+    imageController.run();
+    String expectedOutput = "Error: Invalid command format.\n"
+        +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This is a test for the Controller for the horizontal flip function.
+   * @throws Exception handling different type of exceptions
+   */
   @Test
   public void testHorizontalFlip() throws Exception {
     StringBuffer out = new StringBuffer();
@@ -248,8 +403,29 @@ public class ImageControllerTest {
     assertEquals(expectedOutput, mockModel.log.toString()); //inputs reached the model correctly
   }
 
+  /**
+   * This is a test for the Controller for the horizontal flip function when function is invalid.
+   * @throws Exception handling different type of exceptions
+   */
+  @Test
+  public void testInvalidCommandHorizontalFlip() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    String newImageName = "koala-horizontal";
+    Reader in = new StringReader("horizontal-flip koala as koala-horizontal\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    ImageController imageController = new ImageController(mockModel, in, out);
+    imageController.run();
+    String expectedOutput = "Error: Invalid command format.\n"
+        +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
 
-  //BRIGHTEN
+  /**
+   * This is a test for the Controller for the brighten function.
+   * @throws Exception handling different type of exceptions
+   */
   @Test
   public void testBrighten() throws Exception {
     StringBuffer out = new StringBuffer();
@@ -266,7 +442,31 @@ public class ImageControllerTest {
     assertEquals(expectedOutput, mockModel.log.toString()); //inputs reached the model correctly
   }
 
-  //GREYSCALE VISUALIZE:value
+  /**
+   * This is a test for the Controller for the brighten function when the fucntion is invalid.
+   * @throws Exception handling different type of exceptions
+   */
+  @Test
+  public void testBrightenInvalidCommand() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    String newImageName = "koala-brighten";
+    double increment = 10;
+    Reader in = new StringReader("brighten 10 koala as koala-brighten\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    ImageController imageController = new ImageController(mockModel, in, out);
+    imageController.run();
+    String expectedOutput = "Error: Invalid command format.\n"
+        +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This is a method to test Controller to make sure the Visualize each value component for RGB
+   * image works as expected.
+   * @throws Exception handles any type of exception
+   */
   @Test
   public void testGreyScaleValue() throws Exception {
     StringBuffer out = new StringBuffer();
@@ -284,7 +484,33 @@ public class ImageControllerTest {
     assertEquals(expectedOutput, mockModel.log.toString()); //inputs reached the model correctly
   }
 
-  //GREYSCALE VISUALIZE:luma
+  /**
+   * This is a method to test Controller to make sure the Visualize each value component for RGB
+   * image, the output should show and error for invalid command
+   * @throws Exception handles any type of exception
+   */
+  @Test
+  public void testGreyScaleValueInvalidCommand() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    String newImageName = "koala-greyscale-value";
+    String measure = "value";
+    Reader in = new StringReader("greyscale value-component koala as koala-greyscale-value\n"
+        + "exit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    ImageController imageController = new ImageController(mockModel, in, out);
+    imageController.run();
+    String expectedOutput = "Error: Invalid command format.\n"
+        +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This is a method to test Controller to make sure the Visualize each luma component for RGB
+   * image works as expected.
+   * @throws Exception handles any type of exception
+   */
   @Test
   public void testGreyScaleLuma() throws Exception {
     StringBuffer out = new StringBuffer();
@@ -302,7 +528,11 @@ public class ImageControllerTest {
     assertEquals(expectedOutput, mockModel.log.toString()); //inputs reached the model correctly
   }
 
-  //GREYSCALE VISUALIZE:intensity
+  /**
+   * This is a method to test Controller to make sure the Visualize each intensity component for RGB
+   * image works as expected.
+   * @throws Exception handles any type of exception
+   */
   @Test
   public void testGreyScaleIntensity() throws Exception {
     StringBuffer out = new StringBuffer();
@@ -321,7 +551,11 @@ public class ImageControllerTest {
     assertEquals(expectedOutput, mockModel.log.toString()); //inputs reached the model correctly
   }
 
-  //GREYSCALE VISUALIZE:Red
+  /**
+   * This is a method to test Controller to make sure the Visualize each red component for RGB
+   * image works as expected.
+   * @throws Exception handles any type of exception
+   */
   @Test
   public void testGreyScaleRed() throws Exception {
     StringBuffer out = new StringBuffer();
@@ -339,6 +573,11 @@ public class ImageControllerTest {
     assertEquals(expectedOutput, mockModel.log.toString()); //inputs reached the model correctly
   }
 
+  /**
+   * This is a method to test Controller to make sure the Visualize each green component for RGB
+   * image works as expected.
+   * @throws Exception handles any type of exception
+   */
   @Test
   public void testGreyScaleGreen() throws Exception {
     StringBuffer out = new StringBuffer();
@@ -356,6 +595,11 @@ public class ImageControllerTest {
     assertEquals(expectedOutput, mockModel.log.toString()); //inputs reached the model correctly
   }
 
+  /**
+   * This is a method to test Controller to make sure the Visualize each blue component for RGB
+   * image works as expected.
+   * @throws Exception handles any type of exception
+   */
   @Test
   public void testGreyScaleBlue() throws Exception {
     StringBuffer out = new StringBuffer();
@@ -372,5 +616,59 @@ public class ImageControllerTest {
             + component + "\n";
     assertEquals(expectedOutput, mockModel.log.toString()); //inputs reached the model correctly
   }
+
+  /**
+   * This is a method to test Controller to make sure splitting RGB into greyscale works as
+   * expected.
+   * image works as expected.
+   * @throws Exception handles any type of exception
+   */
+  @Test
+  public void testSplitRGB() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    String newImageNameR = "koala-greyscale-red";
+    String newImageNameG = "koala-greyscale-green";
+    String newImageNameB = "koala-greyscale-blue";
+
+    Reader in = new StringReader("rgb-split koala koala-greyscale-red koala-greyscale-green "
+        + "koala-greyscale-blue\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    ImageController imageController = new ImageController(mockModel, in, out);
+    imageController.run();
+    String expectedOutput = "Received inputs for splitInto3Images: " + imageName + " "
+            + newImageNameR + " "
+            + newImageNameG + " "
+            + newImageNameB + "\n";
+    assertEquals(expectedOutput, mockModel.log.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This is a method to test Controller to make sure combining greyscale into RBG works as
+   * expected.
+   * image works as expected.
+   * @throws Exception handles any type of exception
+   */
+  @Test
+  public void testGreyScaleCombine() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageNameR = "koala-greyscale-red";
+    String imageNameG = "koala-greyscale-green";
+    String imageNameB = "koala-greyscale-blue";
+    String newimageName = "koalaNew";
+
+    Reader in = new StringReader("rgb-combine koalaNew koala-greyscale-red koala-greyscale-green "
+        + "koala-greyscale-blue\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    ImageController imageController = new ImageController(mockModel, in, out);
+    imageController.run();
+    String expectedOutput = "Received inputs for combineGreyScaleToRGB: "
+        + newimageName +" " + imageNameR + " " + imageNameG + " " + imageNameB + "\n";
+    assertEquals(expectedOutput, mockModel.log.toString()); //inputs reached the model correctly
+  }
 }
+
+
 
