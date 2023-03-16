@@ -1,0 +1,8 @@
+#load koala.ppm and call it 'koala'
+load images/koala.ppm koalanew
+
+#brighten koala by adding 10
+brighten 10 koalanew koalanew-brighter 
+
+#save koala-greyscale
+save images/koalanew-brighter.ppm koalanew-brighter

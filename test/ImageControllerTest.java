@@ -8,10 +8,11 @@ import Model.TypeOfImage;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import org.junit.Test;
 
 /**
- * ' This is a test class to test the controller in isolation.
+ * This is a test class to test the controller in isolation.
  */
 public class ImageControllerTest {
 
@@ -102,6 +103,11 @@ public class ImageControllerTest {
       log.append("Received inputs for createBuilderThreeChannel:" + nameOfObject + "\n");
     }
 
+    @Override
+    public Set<String> returnKeys() {
+      return null;
+    }
+
   }
 
   /**
@@ -169,7 +175,7 @@ public class ImageControllerTest {
   public void testInvalidSpellingLoadCommand() throws Exception {
     StringBuffer out = new StringBuffer();
     String imageName = "koala";
-    Reader in = new StringReader("laodd koala.ppm as koala\nexit");
+    Reader in = new StringReader("laodd koala.ppm koala\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
     ImageController imageController = new ImageController(mockModel, in, out);
@@ -188,12 +194,12 @@ public class ImageControllerTest {
   public void testInvalidPixelFileLoadCommand() throws Exception {
     StringBuffer out = new StringBuffer();
     String imageName = "koala";
-    Reader in = new StringReader("load greater255.ppm as koala\nexit");
+    Reader in = new StringReader("load less0.ppm koala\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
     ImageController imageController = new ImageController(mockModel, in, out);
     imageController.run();
-    String expectedOutput = "Error: Invalid command format.\n"
+    String expectedOutput = "Error: RGB values can't be less negative!\n"
         +"Exit the program \n";
     assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
   }
@@ -207,12 +213,31 @@ public class ImageControllerTest {
   public void testInvalidPixelFileLoadCommand2() throws Exception {
     StringBuffer out = new StringBuffer();
     String imageName = "koala";
-    Reader in = new StringReader("load greater255.ppm as koala\nexit");
+    Reader in = new StringReader("load greater255.ppm koala\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
     ImageController imageController = new ImageController(mockModel, in, out);
     imageController.run();
-    String expectedOutput = "Error: Invalid command format.\n"
+    String expectedOutput = "Error: RGB values can't be above 255!\n"
+        +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This method is used to check if the output throws an exception with appropriate message
+   * if the value of the pixel is less than 0.
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testInvalidMaxValueLoadCommand() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    Reader in = new StringReader("load invalidMaxval.ppm koala\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    ImageController imageController = new ImageController(mockModel, in, out);
+    imageController.run();
+    String expectedOutput = "Error: Invalid maxValue: -255\n"
         +"Exit the program \n";
     assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
   }
@@ -323,7 +348,8 @@ public class ImageControllerTest {
     MockModel mockModel = new MockModel(log);
     ImageController imageController = new ImageController(mockModel, in, out);
     imageController.run();
-    String expectedOutput = "Please enter appropriate command.Error: Invalid command: \n"
+    String expectedOutput = "Please enter appropriate command. \n"
+        +"Error: Invalid command: \n"
         +"Exit the program \n";
     assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
   }
@@ -667,6 +693,177 @@ public class ImageControllerTest {
     String expectedOutput = "Received inputs for combineGreyScaleToRGB: "
         + newimageName +" " + imageNameR + " " + imageNameG + " " + imageNameB + "\n";
     assertEquals(expectedOutput, mockModel.log.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This method is used to check if the output throws exception with appropriate message if
+   * command is incorrect.
+   * @throws Exception handles exception
+   */
+  @Test
+  public void testRunCommand() throws Exception {
+    StringBuffer out = new StringBuffer();
+    Reader in = new StringReader("run script1.txt\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    ImageController imageController = new ImageController(mockModel, in, out);
+    imageController.run();
+    String expectedOutput = "Loaded image 'koalanew' from 'images/koala.ppm'\n"
+    +"Image brightened 'koalanew' stored as 'koalanew-brighter'\n"
+    +"Image koalanew-brighter saved as file: images/koalanew-brighter.ppm\n"
+    +"Error: null\n"
+    +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This method is used to check if the output throws exception with appropriate message if
+   * command is incorrect.
+   * @throws Exception handles exception
+   */
+  @Test
+  public void testRunInvalidCommand() throws Exception {
+    StringBuffer out = new StringBuffer();
+    Reader in = new StringReader("run as script1.txt\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    ImageController imageController = new ImageController(mockModel, in, out);
+    imageController.run();
+    String expectedOutput = "Error: Invalid command format.\n"
+        +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This method is used to check if the output gives an appropriate message when saved.
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testSaveCommand() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    Reader in = new StringReader("save koala1.ppm koala\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    ImageController imageController = new ImageController(mockModel, in, out);
+    imageController.run();
+    String expectedOutput = "Image koala saved as file: koala1.ppm\n"
+    +"Error: null\n"
+    +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This method is used to check if the output throws exception with appropriate message if
+   * command is incorrect.
+   * @throws Exception handles exception
+   */
+  @Test
+  public void testSaveInvalidCommand() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    Reader in = new StringReader("save koala1.ppm as koala\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    ImageController imageController = new ImageController(mockModel, in, out);
+    imageController.run();
+    String expectedOutput = "Error: Invalid command format.\n"
+        +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This method is used to check if the output throws exception with appropriate message if
+   * command is incorrect.
+   * @throws Exception handles exception
+   */
+  @Test
+  public void testSaveInvalidFilepath() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    Reader in = new StringReader("save allimages/koala1.ppm koala\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    ImageController imageController = new ImageController(mockModel, in, out);
+    imageController.run();
+    String expectedOutput = "Image koala saved as file: allimages/koala1.ppm\n"
+        +"File path does not exist.\n"
+        +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This method is used to check if the output throws exception with appropriate message if
+   * command is incorrect.
+   * @throws Exception handles exception
+   */
+  @Test
+  public void testSaveInvalidFiletype() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    Reader in = new StringReader("save images/koala1.jpg koala\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    ImageController imageController = new ImageController(mockModel, in, out);
+    imageController.run();
+    String expectedOutput = "Image koala saved as file: images/koala1.jpg\n"
+    +"Error: Invalid file format: jpg\n"
+    +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This method is used to check if the output throws exception with appropriate message if
+   * command is incorrect.
+   * @throws Exception handles exception
+   */
+  @Test
+  public void testSaveNestedFilepath() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala1";
+    Reader in = new StringReader("save image/rgbimage/new/koala.ppm koala1\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    ImageController imageController = new ImageController(mockModel, in, out);
+    imageController.run();
+    String expectedOutput = "Image koala1 saved as file: image/rgbimage/new/koala.ppm\n"
+    +"Error: null\n"
+    +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This method is used to check if the output for exit command.
+   * @throws Exception handles exception
+   */
+  @Test
+  public void testExitcommand() throws Exception {
+    StringBuffer out = new StringBuffer();
+    Reader in = new StringReader("exit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    ImageController imageController = new ImageController(mockModel, in, out);
+    imageController.run();
+    String expectedOutput = "Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This method is used to check if the output throws exception with appropriate message if
+   * command is incorrect.
+   * @throws Exception handles exception
+   */
+  @Test
+  public void testExitInvalidcommand() throws Exception {
+    StringBuffer out = new StringBuffer();
+    Reader in = new StringReader("exit program\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    ImageController imageController = new ImageController(mockModel, in, out);
+    imageController.run();
+    String expectedOutput = "Error: Invalid command format.\n"
+        +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
   }
 }
 

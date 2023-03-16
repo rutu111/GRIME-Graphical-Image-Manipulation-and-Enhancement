@@ -12,6 +12,11 @@ public class Model implements  Operations {
     imageHashMap.put(nameOfObject, image);
   }
 
+  @Override
+  public Set<String> returnKeys() {
+    return null;
+  }
+
   public void combineGreyScaleToRGB(String imageName1, String imageName2, String imageName3,
       String newImageName) throws IllegalArgumentException, NoSuchElementException {
     if (!imageHashMap.containsKey(imageName1)) {
