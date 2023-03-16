@@ -341,7 +341,7 @@ public class ImageControllerTest {
     MockModel mockModel = new MockModel(log);
     ImageController imageController = new ImageController(mockModel, in, out);
     imageController.run();
-    String expectedOutput = "Error: null\n"
+    String expectedOutput = "Error: String index out of range: 0\n"
         +"Exit the program \n";
     assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
   }

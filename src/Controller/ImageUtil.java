@@ -32,6 +32,10 @@ public class ImageUtil {
     Scanner sc;
     sc = new Scanner(new FileInputStream(filename));
 
+    int width;
+    int height;
+    int maxValue;
+
     StringBuilder builder = new StringBuilder();
     //read the file line by line, and populate a string. This will throw away any comment lines
     while (sc.hasNextLine()) {
@@ -53,12 +57,16 @@ public class ImageUtil {
       throw new IllegalStateException("Invalid PPM file: plain RAW file should begin with P3");
     }
     try {
-      int width = sc.nextInt();
-      int height = sc.nextInt();
-      int maxValue = sc.nextInt();
+      width = sc.nextInt();
+      height = sc.nextInt();
+      maxValue = sc.nextInt();
 
       if(width <= 0 | height <= 0){
         throw new IllegalStateException("Width and Height cannot be zero or negative");
+      }
+
+      if(maxValue!=255){
+        throw new IllegalStateException("Invalid maxValue: "+maxValue);
       }
 
       threeChannelImageBuilder builderObject = new threeChannelImageBuilder(width, height);
