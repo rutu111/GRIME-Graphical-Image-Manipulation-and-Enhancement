@@ -1,13 +1,13 @@
 package Model;
 
-public enum Component {
+public enum ComponentRGB {
   red("red"),
-  blue("blue"),
-  green("green");
+  green("green"),
+  blue("blue");
 
   private final String channel;
 
-  Component(String channel) {
+  ComponentRGB(String channel) {
     this.channel = channel;
   }
 

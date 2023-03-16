@@ -5,7 +5,7 @@ import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 import Model.MeasurementType;
-import Model.Component;
+import Model.ComponentRGB;
 import Model.Model;
 import java.util.NoSuchElementException;
 import org.junit.Before;
@@ -464,7 +464,7 @@ public class ModelTest {
     model.addImageToModel(testImage1.buildImage(), "test+image");
     model.addImageToModel(expectedImage.buildImage(), "expected+imageValue");
     //after
-    model.visIndividualComponent("test+image","test-red",Component.red);
+    model.visIndividualComponent("test+image","test-red", ComponentRGB.red);
     assertTrue(
         model.getObject("test-red").equals(model.getObject("expected+imageValue")));
   }
@@ -493,7 +493,7 @@ public class ModelTest {
     model.addImageToModel(testImage1.buildImage(), "test+image");
     model.addImageToModel(expectedImage.buildImage(), "expected+imageValue");
     //after
-    model.visIndividualComponent("test+image","test-green",Component.green);
+    model.visIndividualComponent("test+image","test-green", ComponentRGB.green);
     assertTrue(
         model.getObject("test-green").equals(model.getObject("expected+imageValue")));
   }
@@ -521,7 +521,7 @@ public class ModelTest {
     model.addImageToModel(testImage1.buildImage(), "test+image");
     model.addImageToModel(expectedImage.buildImage(), "expected+imageValue");
     //after
-    model.visIndividualComponent("test+image","test-blue",Component.blue);
+    model.visIndividualComponent("test+image","test-blue", ComponentRGB.blue);
     assertTrue(
         model.getObject("test-blue").equals(model.getObject("expected+imageValue")));
   }

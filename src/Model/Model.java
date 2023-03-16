@@ -1,7 +1,6 @@
 package Model;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
-import java.util.Set;
 
 public class Model implements  Operations {
 
@@ -24,10 +23,13 @@ public class Model implements  Operations {
     if (!imageHashMap.containsKey(imageName3)) {
       throw new NoSuchElementException("Image: " + imageName3 + "does not exist.");
     }
+
     TypeOfImage image1 = imageHashMap.get(imageName1);
     TypeOfImage image2 = imageHashMap.get(imageName2);
     TypeOfImage image3 = imageHashMap.get(imageName3);
-    imageHashMap.put(newImageName, image1.combineGreyScaleToRGB(image2, image3));
+    if (image1 instanceof ThreeChannelObject & image2 instanceof ThreeChannelObject & image3 instanceof ThreeChannelObject) {
+      imageHashMap.put(newImageName, image1.combineGreyScaleToRGB(image2, image3));
+    }
   }
 
   public void verticalFlip(String imageName, String newImageName)
@@ -48,13 +50,15 @@ public class Model implements  Operations {
     imageHashMap.put(newImageName, image.horizontalFlip());
   }
 
-  public void visIndividualComponent(String imageName, String newImageName, Component channel)
+  public void visIndividualComponent(String imageName, String newImageName, ComponentRGB channel)
       throws NoSuchFieldException, IllegalAccessException, NoSuchElementException {
     if (!imageHashMap.containsKey(imageName)) {
       throw new NoSuchElementException("Image: " + imageName + "does not exist.");
     }
     TypeOfImage image = imageHashMap.get(imageName);
-    imageHashMap.put(newImageName, image.visIndividualComponent(channel));
+    if (image instanceof RGBIntegerImage) {
+      imageHashMap.put(newImageName, image.visIndividualComponent(channel));
+    }
   }
 
 
@@ -87,10 +91,10 @@ public class Model implements  Operations {
     }
     //creates a hashmap having channels as keys and greyscale image as values.
     //loop through the value of components and put the greyscale image in hashmap.
+      visIndividualComponent(imageName, newImageName1, ComponentRGB.red);
+      visIndividualComponent(imageName, newImageName2, ComponentRGB.green);
+      visIndividualComponent(imageName, newImageName3, ComponentRGB.blue);
 
-    visIndividualComponent(imageName, newImageName1, Component.red);
-    visIndividualComponent(imageName, newImageName2, Component.green);
-    visIndividualComponent(imageName, newImageName3, Component.blue);
 
   }
 

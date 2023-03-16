@@ -42,7 +42,7 @@ public abstract class CommonOperations implements TypeOfImage {
   public abstract TypeOfImage brighten(double increment);
 
   @Override
-  public abstract TypeOfImage visIndividualComponent(Component channel)
+  public abstract TypeOfImage visIndividualComponent(ComponentRGB channel)
       throws NoSuchFieldException, IllegalAccessException;
 
   @Override

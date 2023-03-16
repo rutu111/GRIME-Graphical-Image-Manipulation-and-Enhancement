@@ -1,7 +1,6 @@
 package Model;
 
 import java.util.NoSuchElementException;
-import java.util.Set;
 
 public interface Operations {
 
@@ -11,7 +10,7 @@ public interface Operations {
 
   public void brighten(String imageName, String newImageName, double increment);
 
-  public void visIndividualComponent(String imageName, String newImageName, Component channel)
+  public void visIndividualComponent(String imageName, String newImageName, ComponentRGB channel)
       throws NoSuchFieldException, IllegalAccessException;
 
   public void visualizeValueIntensityLuma(String imageName, String newImageName,

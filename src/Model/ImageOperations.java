@@ -1,7 +1,5 @@
 package Model;
 
-import java.util.NoSuchElementException;
-
 public interface ImageOperations {
 
   TypeOfImage horizontalFlip();
@@ -10,7 +8,7 @@ public interface ImageOperations {
 
   TypeOfImage brighten(double increment);
 
-  TypeOfImage visIndividualComponent(Component channel)
+  TypeOfImage visIndividualComponent(ComponentRGB channel)
       throws NoSuchFieldException, IllegalAccessException;
 
   TypeOfImage visualizeValueIntensityLuma(MeasurementType measure)

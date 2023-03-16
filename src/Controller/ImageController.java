@@ -1,6 +1,6 @@
 package Controller;
 
-import Model.Component;
+import Model.ComponentRGB;
 import Model.Operations;
 import Model.MeasurementType;
 import java.io.File;
@@ -139,7 +139,7 @@ public class ImageController {
           if (componentParts[0].equals("red") || componentParts[0].equals("green")
               || componentParts[0].equals("blue")) {
             model.visIndividualComponent(imageName, updatedImageName,
-                Component.valueOf(componentParts[0]));
+                ComponentRGB.valueOf(componentParts[0]));
           } else {
             model.visualizeValueIntensityLuma(imageName, updatedImageName,
                 MeasurementType.valueOf(componentParts[0]));
@@ -190,11 +190,11 @@ public class ImageController {
           }
           String imagePath = commands[1];
           String imageName = commands[2];
-          this.out.append("Image" + imageName + " saved as file:" + imagePath);
           if(!imagePath.split("\\.")[1].equals("ppm")){
             throw new IllegalArgumentException("Invalid file format: " + imagePath.split("\\.")[1]);
           }
           ImageUtil.writePPM(this.model, imagePath, imageName);
+          this.out.append("Image" + imageName + " saved as file:" + imagePath);
         } catch (FileNotFoundException e) {
           this.out.append("File path does not exist.\n");
         }
@@ -202,6 +202,7 @@ public class ImageController {
       default:
         //throws exception when the command is invalid
         throw new IllegalArgumentException("Invalid command: " + commands[0]);
+
     }
   }
   public void readScriptFile(String filename) throws IOException{

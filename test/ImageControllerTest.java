@@ -1,7 +1,7 @@
 import static org.junit.Assert.assertEquals;
 
 import Controller.ImageController;
-import Model.Component;
+import Model.ComponentRGB;
 import Model.MeasurementType;
 import Model.Operations;
 import Model.TypeOfImage;
@@ -48,7 +48,7 @@ public class ImageControllerTest {
     }
 
     @Override
-    public void visIndividualComponent(String imageName, String newImageName, Component channel)
+    public void visIndividualComponent(String imageName, String newImageName, ComponentRGB channel)
         throws NoSuchFieldException, IllegalAccessException {
       log.append(
           "Received inputs for visIndividualComponent: " + imageName + " " + newImageName + " "

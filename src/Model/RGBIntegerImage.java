@@ -19,11 +19,6 @@ public class RGBIntegerImage extends ThreeChannelObject <Integer>  {
     return new RGBIntegerObject(value1, value2, value3);
   }
 
-  @Override
-  protected Field getField(Component channel) throws NoSuchFieldException {
-    return RGBIntegerObject.class.getDeclaredField(channel.toString());
-  }
-
 
   public TypeofImageObject[][] getPixels() {
     return this.pixels;
@@ -115,7 +110,7 @@ public class RGBIntegerImage extends ThreeChannelObject <Integer>  {
 
 
   @Override
-  public TypeOfImage visIndividualComponent(Component channel)
+  public TypeOfImage visIndividualComponent(ComponentRGB channel)
       throws NoSuchFieldException, IllegalAccessException {
     Field field = RGBIntegerObject.class.getDeclaredField(channel.toString());
     TypeofImageObject[][] new_image = new RGBIntegerObject[this.getWidth()][this.getHeight()];
@@ -128,6 +123,8 @@ public class RGBIntegerImage extends ThreeChannelObject <Integer>  {
     }
     return new RGBIntegerImage(new_image, this.getWidth(), this.getHeight());
   }
+
+
 
 
   public threeChannelImageBuilder createBuilderThreeChannel (int width, int height) {

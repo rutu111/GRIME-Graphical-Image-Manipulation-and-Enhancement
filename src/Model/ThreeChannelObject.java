@@ -35,24 +35,9 @@ public abstract class ThreeChannelObject <T> extends CommonOperations {
     return getOImage(new_image, this.getWidth(), this.getHeight());
   }
 
-  @Override
-  public TypeOfImage visIndividualComponent(Component channel)
-      throws NoSuchFieldException, IllegalAccessException {
-    Field field = getField(channel);
-    TypeofImageObject[][] new_image = new RGBIntegerObject[this.getWidth()][this.getHeight()];
-    for (int i = 0; i < this.getWidth(); i++) {
-      for (int j = 0; j < this.getHeight(); j++) {
-        TypeofImageObject object = this.getPixels()[i][j];
-        new_image[i][j] = new RGBIntegerObject((Integer) field.get(object),
-            (Integer) field.get(object), (Integer) field.get(object));
-      }
-    }
-    return new RGBIntegerImage(new_image, this.getWidth(), this.getHeight());
-  }
 
   protected abstract TypeofImageObject getObject(T  value1, T value2, T value3);
 
-  protected abstract Field getField(Component channel) throws NoSuchFieldException;
 
 
 
