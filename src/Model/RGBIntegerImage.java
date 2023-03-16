@@ -1,11 +1,28 @@
 package Model;
+
 import static java.lang.Math.min;
 
 import java.lang.reflect.Field;
 
-public class RGBIntegerImage extends ThreeChannelObject <Integer>  {
+/**
+ * The following class represents an RGB image of type integers. This extends
+ * ThreeChannelObjectOperations because this is a 3 channel image.
+ * <p>
+ * The matrix represented in this class is of TypeofImageObject which contains object of type
+ * RGBIntegerObject. This matrix can be created through the builder (inner class) or directly
+ * through the constructor (constructor is private so object can only be created from inside the
+ * class or through bulder).
+ */
+public class RGBIntegerImage extends ThreeChannelObjectOperations<Integer> {
 
-  public RGBIntegerImage(TypeofImageObject[][] pixels, int width, int height) {
+  /**
+   * Creates a matrix containing RGBIntegerObjects.
+   *
+   * @param pixels matrix of type RGBIntegerObjects
+   * @param width  width of the image.
+   * @param height height of the image.
+   */
+  private RGBIntegerImage(TypeofImageObject[][] pixels, int width, int height) {
     super(pixels, width, height);
   }
 
@@ -19,44 +36,20 @@ public class RGBIntegerImage extends ThreeChannelObject <Integer>  {
     return new RGBIntegerObject(value1, value2, value3);
   }
 
-
+  @Override
   public TypeofImageObject[][] getPixels() {
     return this.pixels;
   }
 
+  @Override
   public int getHeight() {
     return this.height;
   }
 
+  @Override
   public int getWidth() {
     return this.width;
   }
-
-  @Override
-  public boolean equals(Object o) {
-    // Fast path for pointer equality:
-    if (this == o) { //backward compatibility with default equals
-      return true;
-    }
-    // Check if the type of o is the same as the type of "this"
-    if (!(o instanceof TypeOfImage)) {
-      return false;
-    }
-    TypeOfImage other = (TypeOfImage) o;
-    if (this.getWidth() == other.getWidth() & this.getHeight() == other.getHeight()) {
-      for (int i = 0; i < this.getWidth(); i++) {
-        for (int j = 0; j < this.getHeight(); j++) {
-          if (!this.getPixels()[i][j].equals(other.getPixels()[i][j])) {
-            return false;
-          }
-        }
-      }
-    } else {
-      return false;
-    }
-    return true;
-  }
-
 
   @Override
   public TypeOfImage getOImage(TypeofImageObject[][] flippedImage, int width, int height) {
@@ -80,24 +73,26 @@ public class RGBIntegerImage extends ThreeChannelObject <Integer>  {
   }
 
   @Override
-  public TypeOfImage visualizeValueIntensityLuma(MeasurementType measure) throws  NoSuchFieldException, IllegalAccessException  {
+  public TypeOfImage visualizeValueIntensityLuma(MeasurementType measure)
+      throws NoSuchFieldException, IllegalAccessException {
     TypeofImageObject[][] new_image = new RGBIntegerObject[this.getWidth()][this.getHeight()];
     for (int i = 0; i < this.getWidth(); i++) {
       for (int j = 0; j < this.getHeight(); j++) {
-        if(measure.toString().equals("value")) {
+        if (measure.toString().equals("value")) {
           Integer value = Math.max(this.getPixels()[i][j].getChanne11(),
               Math.max(this.getPixels()[i][j].getChanne12(),
                   this.getPixels()[i][j].getChanne13()));
           new_image[i][j] = new RGBIntegerObject(value, value, value);
         }
         //intensity
-        if(measure.toString().equals("intensity")) {
-          Integer intensity = (this.getPixels()[i][j].getChanne11() + this.getPixels()[i][j].getChanne12()
-              + this.getPixels()[i][j].getChanne13()) / 3;
+        if (measure.toString().equals("intensity")) {
+          Integer intensity =
+              (this.getPixels()[i][j].getChanne11() + this.getPixels()[i][j].getChanne12()
+                  + this.getPixels()[i][j].getChanne13()) / 3;
           new_image[i][j] = new RGBIntegerObject(intensity, intensity, intensity);
         }
         //luma
-        if(measure.toString().equals("luma")){
+        if (measure.toString().equals("luma")) {
           double luma = 0.2126 * this.getPixels()[i][j].getChanne11()
               + 0.7152 * this.getPixels()[i][j].getChanne12() +
               0.0722 * this.getPixels()[i][j].getChanne13();
@@ -125,22 +120,27 @@ public class RGBIntegerImage extends ThreeChannelObject <Integer>  {
   }
 
 
+  /**
+   * The following is a builder class that builds a RGBIntegerImage containing objects of type
+   * RGBIntegerObject.
+   */
+  public static class RGBIntegerImageBuilder extends ImageBuilder<RGBIntegerObject> {
 
 
-  public threeChannelImageBuilder createBuilderThreeChannel (int width, int height) {
-    return new threeChannelImageBuilder(width, height);
-  }
-
-  public static class threeChannelImageBuilder extends ImageBuilder <RGBIntegerObject> {
-
-
-    public threeChannelImageBuilder(int width, int height) throws IllegalArgumentException {
+    /**
+     * The constructor takes in a width and height and creates a default matrix of that size in the
+     * constructor. The addPixelByPosition method is used subsequently to manipulate the default
+     * matrix created.
+     *
+     * @param width  width of the matrix..
+     * @param height height of the matrix.
+     * @throws IllegalArgumentException
+     */
+    public RGBIntegerImageBuilder(int width, int height) throws IllegalArgumentException {
       super(width, height);
       if (width <= 0 | height <= 0) {
         throw new IllegalArgumentException("Width and height need to be greater then 0. ");
       }
-      //here create a 2D matrix using width and height given with dummy values of type RGB. (default)
-      // Initialize the 2D matrix with dummy RGB values
       this.pixels = new RGBIntegerObject[width][height];
       for (int i = 0; i < width; i++) {
         for (int j = 0; j < height; j++) {
@@ -150,8 +150,6 @@ public class RGBIntegerImage extends ThreeChannelObject <Integer>  {
       }
     }
 
-
-    //this method takes in an object of type RGB.
     @Override
     public void addPixelAtPosition(int width, int height, RGBIntegerObject pixel) {
       if (this.pixels == null) {
@@ -163,7 +161,6 @@ public class RGBIntegerImage extends ThreeChannelObject <Integer>  {
     }
 
 
-    //create an object of the outer class, passing it the matrix of type RGB, height and width.
     @Override
     public TypeOfImage buildImage() {
       return new RGBIntegerImage(this.pixels, width, height);

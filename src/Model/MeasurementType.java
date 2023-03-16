@@ -1,5 +1,9 @@
 package Model;
 
+/**
+ * This is an enum that represents operations
+ * such as value, intensity and luma.
+ */
 public enum MeasurementType {
   value("value"),
   intensity("intensity"),

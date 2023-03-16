@@ -1,5 +1,8 @@
 package Model;
 
+/**
+ * This is an enum to represent rgb components.
+ */
 public enum ComponentRGB {
   red("red"),
   green("green"),

@@ -1,11 +1,31 @@
 package Model;
 
+/**
+ * The following interface represents a TypeofImageObject.
+ * The image object could be have any number
+ * of channels and each channel can be represented
+ * as any type: int, bytes, double etc.
+ */
 public interface TypeofImageObject {
 
-  public Integer getChanne11();
+  /**
+   * Gets the value held inside the first channel.
+   *
+   * @return value inside first channel;
+   */
+  Integer getChanne11();
 
-  public Integer getChanne12();
+  /**
+   * Gets the value held inside the third channel.
+   *
+   * @return value inside second channel;
+   */
+  Integer getChanne12();
 
-  public Integer getChanne13();
-
+  /**
+   * Gets the value held inside the third channel.
+   *
+   * @return value inside third channel;
+   */
+  Integer getChanne13();
 }

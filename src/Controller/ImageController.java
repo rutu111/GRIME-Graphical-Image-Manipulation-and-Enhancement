@@ -85,7 +85,7 @@ public class ImageController {
           if(!imagePath.split("\\.")[1].equals("ppm")){
             throw new IllegalArgumentException("Invalid file format: " + imagePath.split("\\.")[1]);
           }
-          ImageUtil.readPPM(this.model, imagePath, imageName);
+          PPMImageUtil.readPPM(this.model, imagePath, imageName);
           this.out.append("Loaded image '" + imageName + "' from '" + imagePath + "'" + "\n");
         } catch (FileNotFoundException e) {
           this.out.append("File not found: " + commands[1] + "\n");
@@ -197,7 +197,7 @@ public class ImageController {
             throw new IllegalArgumentException("Invalid file format: " + imagePath.split(
                 "\\.")[1]);
           }
-          ImageUtil.writePPM(this.model, imagePath, imageName);
+          PPMImageUtil.writePPM(this.model, imagePath, imageName);
         } catch (FileNotFoundException e) {
           this.out.append("File path does not exist.\n");
         }

@@ -10,16 +10,16 @@ import Model.Model;
 import java.util.NoSuchElementException;
 import org.junit.Before;
 import org.junit.Test;
-import Model.RGBIntegerImage.threeChannelImageBuilder;
 import Model.RGBIntegerObject;
+import Model.RGBIntegerImage;
 
 public class ModelTest {
 
   Model model = new Model();
 
-  threeChannelImageBuilder   testImage1;
-  threeChannelImageBuilder testImage2;
-  threeChannelImageBuilder expectedImage;
+  RGBIntegerImage.RGBIntegerImageBuilder testImage1;
+  RGBIntegerImage.RGBIntegerImageBuilder testImage2;
+  RGBIntegerImage.RGBIntegerImageBuilder expectedImage;
 
   int width;
   int height;
@@ -31,7 +31,7 @@ public class ModelTest {
     width = 5;
     height = 5;
 
-     testImage1 = new threeChannelImageBuilder(width, height);
+     testImage1 = new RGBIntegerImage.RGBIntegerImageBuilder(width, height);
     c = 0;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
@@ -47,7 +47,7 @@ public class ModelTest {
   public void testIfBrightenWorks() {
 
     c = 0;
-     expectedImage = new threeChannelImageBuilder(width, height);
+     expectedImage = new RGBIntegerImage.RGBIntegerImageBuilder(width, height);
     int increment = 10;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
@@ -75,7 +75,7 @@ public class ModelTest {
   public void testIfDarkenWorks() {
 
     c = 0;
-    expectedImage = new threeChannelImageBuilder(width, height);
+    expectedImage = new RGBIntegerImage.RGBIntegerImageBuilder(width, height);
     int increment = -10;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
@@ -104,7 +104,7 @@ public class ModelTest {
   public void testIfBrightenThrowsException() {
 
     c = 0;
-    expectedImage = new threeChannelImageBuilder(width, height);
+    expectedImage = new RGBIntegerImage.RGBIntegerImageBuilder(width, height);
     int increment = 10;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
@@ -133,7 +133,7 @@ public class ModelTest {
   public void testForBrightenNegRGB() {
 
     c = -1;
-    expectedImage = new threeChannelImageBuilder(width, height);
+    expectedImage = new RGBIntegerImage.RGBIntegerImageBuilder(width, height);
     int increment = 10;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
@@ -143,7 +143,7 @@ public class ModelTest {
                 (int) Math.min(255, Math.max(0, c + increment))));
       }
     }
-    testImage1 =new threeChannelImageBuilder(width, height);
+    testImage1 =new RGBIntegerImage.RGBIntegerImageBuilder(width, height);
     c = -1;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
@@ -168,7 +168,7 @@ public class ModelTest {
   public void testForBrightenAllBlack() {
 
     c = 0;
-    expectedImage =new threeChannelImageBuilder(width, height);
+    expectedImage =new RGBIntegerImage.RGBIntegerImageBuilder(width, height);
     int increment = 10;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
@@ -178,7 +178,7 @@ public class ModelTest {
                 (int) Math.min(255, Math.max(0, c + increment))));
       }
     }
-    testImage1 = new threeChannelImageBuilder(width, height);
+    testImage1 = new RGBIntegerImage.RGBIntegerImageBuilder(width, height);
     c = 0;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
@@ -203,7 +203,7 @@ public class ModelTest {
   public void testForDarkenAllBlack() {
 
     c = 0;
-    expectedImage = new threeChannelImageBuilder(width, height);
+    expectedImage = new RGBIntegerImage.RGBIntegerImageBuilder(width, height);
     int increment = -10;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
@@ -213,7 +213,7 @@ public class ModelTest {
                 (int) Math.min(255, Math.max(0, c + increment))));
       }
     }
-    testImage2 = new threeChannelImageBuilder(width, height);
+    testImage2 = new RGBIntegerImage.RGBIntegerImageBuilder(width, height);
     c = 0;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
@@ -238,7 +238,7 @@ public class ModelTest {
   public void testForBrightenAllWhite() {
 
     c = 255;
-    expectedImage = new threeChannelImageBuilder(width, height);
+    expectedImage = new RGBIntegerImage.RGBIntegerImageBuilder(width, height);
     Integer increment = 10;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
@@ -248,7 +248,7 @@ public class ModelTest {
                 (Integer) Math.min(255, Math.max(0, c + increment))));
       }
     }
-    testImage2 = new threeChannelImageBuilder(width, height);
+    testImage2 = new RGBIntegerImage.RGBIntegerImageBuilder(width, height);
     c = 255;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
@@ -271,7 +271,7 @@ public class ModelTest {
   @Test
   public void testForDarkenAllWhite() {
     c = 255;
-    expectedImage = new threeChannelImageBuilder(width, height);
+    expectedImage = new RGBIntegerImage.RGBIntegerImageBuilder(width, height);
     double increment = -10;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
@@ -282,7 +282,7 @@ public class ModelTest {
 
       }
     }
-    testImage1 = new threeChannelImageBuilder(width, height);
+    testImage1 = new RGBIntegerImage.RGBIntegerImageBuilder(width, height);
     c = 255;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
@@ -306,7 +306,7 @@ public class ModelTest {
   public void testForRGBValuesGreaterThan255() {
 
     c = 260;
-    expectedImage = new threeChannelImageBuilder(width, height);
+    expectedImage = new RGBIntegerImage.RGBIntegerImageBuilder(width, height);
     int increment = 10;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
@@ -316,7 +316,7 @@ public class ModelTest {
                 (int) Math.min(255, Math.max(0, c + increment))));
       }
     }
-    testImage1 = new threeChannelImageBuilder(width, height);
+    testImage1 = new RGBIntegerImage.RGBIntegerImageBuilder(width, height);
     c = 260;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
@@ -340,7 +340,7 @@ public class ModelTest {
   public void testForWhenIncrementisDouble() {
 
     c = 0;
-    expectedImage = new threeChannelImageBuilder(width, height);
+    expectedImage = new RGBIntegerImage.RGBIntegerImageBuilder(width, height);
     double increment = 50.25;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
@@ -369,7 +369,7 @@ public class ModelTest {
   @Test
   public void testvisualizeValue() throws NoSuchFieldException, IllegalAccessException {
     c = 0;
-    expectedImage = new threeChannelImageBuilder(width, height);
+    expectedImage = new RGBIntegerImage.RGBIntegerImageBuilder(width, height);
     int increment = 10;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
@@ -397,7 +397,7 @@ public class ModelTest {
   @Test
   public void testIntensity() throws NoSuchFieldException, IllegalAccessException {
     c = 0;
-    expectedImage = new threeChannelImageBuilder(width, height);
+    expectedImage = new RGBIntegerImage.RGBIntegerImageBuilder(width, height);
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         expectedImage.addPixelAtPosition(j, i,
@@ -421,7 +421,7 @@ public class ModelTest {
   @Test
   public void testLuma() throws NoSuchFieldException, IllegalAccessException {
     c = 0;
-    expectedImage = new threeChannelImageBuilder(width, height);
+    expectedImage = new RGBIntegerImage.RGBIntegerImageBuilder(width, height);
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         double luma = 0.2126 * c + 0.7152 * c + 0.0722 * c;
@@ -453,7 +453,7 @@ public class ModelTest {
     }
 
     model.addImageToModel(testImage1.buildImage(), "RGBImage");
-    expectedImage = new threeChannelImageBuilder(width, height);
+    expectedImage = new RGBIntegerImage.RGBIntegerImageBuilder(width, height);
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         expectedImage.addPixelAtPosition(j, i,
@@ -482,7 +482,7 @@ public class ModelTest {
     }
 
     model.addImageToModel(testImage1.buildImage(), "RGBImage");
-    expectedImage = new threeChannelImageBuilder(width, height);
+    expectedImage = new RGBIntegerImage.RGBIntegerImageBuilder(width, height);
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         expectedImage.addPixelAtPosition(j, i,
@@ -510,7 +510,7 @@ public class ModelTest {
     }
 
     model.addImageToModel(testImage1.buildImage(), "RGBImage");
-    expectedImage = new threeChannelImageBuilder(width, height);
+    expectedImage = new RGBIntegerImage.RGBIntegerImageBuilder(width, height);
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         expectedImage.addPixelAtPosition(j, i,
@@ -529,7 +529,7 @@ public class ModelTest {
   //combineGreyScaleToRGB
   @Test
   public void testCombineThreeGreyScales() {
-    threeChannelImageBuilder testImageR = new threeChannelImageBuilder(width, height);
+    RGBIntegerImage.RGBIntegerImageBuilder testImageR = new RGBIntegerImage.RGBIntegerImageBuilder(width, height);
 
     c = 0;
     for (int i = 0; i < height; i++) {
@@ -538,7 +538,7 @@ public class ModelTest {
       }
     }
 
-    threeChannelImageBuilder testImageG = new threeChannelImageBuilder(width, height);
+    RGBIntegerImage.RGBIntegerImageBuilder testImageG = new RGBIntegerImage.RGBIntegerImageBuilder(width, height);
     c = 1;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
@@ -546,7 +546,7 @@ public class ModelTest {
       }
     }
 
-    threeChannelImageBuilder testImageB =new threeChannelImageBuilder(width, height);
+    RGBIntegerImage.RGBIntegerImageBuilder testImageB =new RGBIntegerImage.RGBIntegerImageBuilder(width, height);
     c = 2;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
@@ -555,7 +555,7 @@ public class ModelTest {
     }
 
     c = 0;
-    expectedImage = new threeChannelImageBuilder(width, height);
+    expectedImage = new RGBIntegerImage.RGBIntegerImageBuilder(width, height);
     for (int i = 0; i < width; i++) {
       for (int j = 0; j < height; j++) {
             new RGBIntegerObject(testImageR.buildImage().getPixels()[i][j].getChanne11(),
@@ -591,7 +591,7 @@ public class ModelTest {
     model.addImageToModel(testImage1.buildImage(), "RGBNewImage");
     model.splitInto3Images("RGBNewImage","testR",
         "testG","testB");
-    threeChannelImageBuilder expectedtestImageR = new threeChannelImageBuilder(width, height);
+    RGBIntegerImage.RGBIntegerImageBuilder expectedtestImageR = new RGBIntegerImage.RGBIntegerImageBuilder(width, height);
     c = 0;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
@@ -599,7 +599,7 @@ public class ModelTest {
       }
     }
 
-    threeChannelImageBuilder expectedtestImageG = new threeChannelImageBuilder(width, height);
+    RGBIntegerImage.RGBIntegerImageBuilder expectedtestImageG = new RGBIntegerImage.RGBIntegerImageBuilder(width, height);
     c = 1;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
@@ -607,7 +607,7 @@ public class ModelTest {
       }
     }
 
-    threeChannelImageBuilder expectedtestImageB = new threeChannelImageBuilder(width, height);
+    RGBIntegerImage.RGBIntegerImageBuilder expectedtestImageB = new RGBIntegerImage.RGBIntegerImageBuilder(width, height);
     c = 2;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
@@ -638,7 +638,7 @@ public class ModelTest {
   public void testIfHorizontalWorks() {
 
     c = 0;
-    expectedImage = new threeChannelImageBuilder(width, height);
+    expectedImage = new RGBIntegerImage.RGBIntegerImageBuilder(width, height);
     int increment = 10;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
@@ -670,7 +670,7 @@ public class ModelTest {
   public void testThatHashMapWorks() {
 
     c = 0;
-    expectedImage = new threeChannelImageBuilder(width, height);
+    expectedImage = new RGBIntegerImage.RGBIntegerImageBuilder(width, height);
     int increment = 10;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
@@ -698,13 +698,13 @@ public class ModelTest {
   @Test
   public void testIfDefaultimageGetsCreated() {
     //default image
-    threeChannelImageBuilder defaultIamge;
-    defaultIamge = new threeChannelImageBuilder(width, height);
+    RGBIntegerImage.RGBIntegerImageBuilder defaultIamge;
+    defaultIamge = new RGBIntegerImage.RGBIntegerImageBuilder(width, height);
     model.addImageToModel(defaultIamge.buildImage(), "default+image");
 
     //image with all 0's
     c = 0;
-    expectedImage = new threeChannelImageBuilder(width, height);
+    expectedImage = new RGBIntegerImage.RGBIntegerImageBuilder(width, height);
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         expectedImage.addPixelAtPosition(j, i, new RGBIntegerObject(c, c, c));
