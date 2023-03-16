@@ -72,7 +72,7 @@ public class ImageController {
   public void commandExecution(String[] commands) throws IOException{
     //to run even if the nextline is blank
     if (commands.length == 0 || commands[0].trim().isEmpty()) {
-      this.out.append("Please enter appropriate command.");
+      this.out.append("Please enter appropriate command. \n");
     }
     switch (commands[0]) {
       case "load":
@@ -100,7 +100,7 @@ public class ImageController {
         String updatedImageName = commands[3];
         model.brighten(imageName, updatedImageName, increment);
         this.out.append(
-            "Image brightened '" + imageName + "'stored as'" + updatedImageName + "'" + "\n");
+            "Image brightened '" + imageName + "' stored as '" + updatedImageName + "'" + "\n");
       }
         break;
       case "vertical-flip": {
@@ -112,7 +112,8 @@ public class ImageController {
         model.verticalFlip(imageName,
             updatedImageName);
         this.out.append(
-            "Image vertically flipped'" + imageName + "'stored as'" + updatedImageName + "'" + "\n");
+            "Image vertically flipped '" + imageName + "' stored as '" + updatedImageName + "'" +
+                "\n");
       }
         break;
       case "horizontal-flip": {
@@ -124,7 +125,8 @@ public class ImageController {
         model.horizontalFlip(imageName,
             updatedImageName);
         this.out.append(
-            "Image horizontally flipped'" + imageName + "'stored as'" + updatedImageName + "'" + "\n");
+            "Image horizontally flipped '" + imageName + "' stored as '" + updatedImageName + "'" +
+                "\n");
       }
         break;
       case "greyscale":
@@ -145,7 +147,7 @@ public class ImageController {
                 MeasurementType.valueOf(componentParts[0]));
           }
           this.out.append(
-              "Image '" + imageName + "'stored as greyscale'" + updatedImageName + "'" + "\n");
+              "Image '" + imageName + "' stored as greyscale '" + updatedImageName + "'" + "\n");
 
         } catch (NoSuchFieldException | IllegalAccessException e) {
           throw new RuntimeException(e);
@@ -162,10 +164,10 @@ public class ImageController {
           String updatedimageName3 = commands[4];
           model.splitInto3Images(imageName, updatedimageName1, updatedimageName2,
               updatedimageName3);
-          System.out.println(
+          this.out.append(
               "Image '" + imageName + "' has been split into greyscale images: '"
                   + updatedimageName1 + "'" + updatedimageName2 + "' and " + updatedimageName3 +
-                  "' \n");
+                  "'" + "\n");
         } catch (NoSuchFieldException | IllegalAccessException e) {
           throw new RuntimeException(e);
         }
@@ -180,8 +182,8 @@ public class ImageController {
         String imageName3 = commands[4];
         model.combineGreyScaleToRGB(imageName1, imageName2, imageName3, updatedimageName);
         this.out.append(
-            "Image '" + updatedimageName + "was created by combining greyscale images: '"
-                + imageName1 + "'" + imageName2 + "'and" + imageName3 + "'" + "\n");
+            "Image '" + updatedimageName + " was created by combining greyscale images: '"
+                + imageName1 + "'" + imageName2 + "' and '" + imageName3 + "'" + "\n");
         break;
       case "save":
         try {
@@ -190,9 +192,10 @@ public class ImageController {
           }
           String imagePath = commands[1];
           String imageName = commands[2];
-          this.out.append("Image" + imageName + " saved as file:" + imagePath);
+          this.out.append("Image " + imageName + " saved as file: " + imagePath + "\n");
           if(!imagePath.split("\\.")[1].equals("ppm")){
-            throw new IllegalArgumentException("Invalid file format: " + imagePath.split("\\.")[1]);
+            throw new IllegalArgumentException("Invalid file format: " + imagePath.split(
+                "\\.")[1]);
           }
           ImageUtil.writePPM(this.model, imagePath, imageName);
         } catch (FileNotFoundException e) {
@@ -204,6 +207,7 @@ public class ImageController {
         throw new IllegalArgumentException("Invalid command: " + commands[0]);
     }
   }
+
   public void readScriptFile(String filename) throws IOException{
     try{
       File file = new File(filename);
@@ -211,7 +215,7 @@ public class ImageController {
 
       while(scanner.hasNextLine()){
         String line = scanner.nextLine().trim();
-        if (!line.isEmpty() && !line.startsWith("//") && !line.startsWith("#")) { // Ignore comments and empty lines
+        if (!line.isEmpty() && !line.startsWith("//") && !line.startsWith("#")) {
           String[] words = line.split("\\s+");
           commandExecution(words);
         }

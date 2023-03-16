@@ -634,6 +634,30 @@ public class ModelTest {
   }
 
   //horizontal
+  @Test
+  public void testIfHorizontalWorks() {
+
+    c = 0;
+    expectedImage = new threeChannelImageBuilder(width, height);
+    int increment = 10;
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        expectedImage.addPixelAtPosition(j, i, new RGBIntegerObject(c, c, c));
+        c += 1;
+      }
+    }
+    //before brightening
+    model.addImageToModel(testImage1.buildImage(), "test+image");
+    model.addImageToModel(expectedImage.buildImage(), "expected+imageBrightenBy10");
+    assertFalse(
+        model.getObject("test+image").equals(model.getObject("expected+imageBrightenBy10")));
+
+    //after brightening
+    model.horizontalFlip("test+image", "test-bright");
+    assertTrue(
+        model.getObject("test-bright").equals(model.getObject("expected+imageBrightenBy10")));
+  }
+
   //horizontal img - horizontal
   //horizontal img - vertical
 

@@ -31,4 +31,5 @@ public interface Operations {
   void addImageToModel(TypeOfImage image,
       String nameOfObject);
 
+  Set<String> returnKeys();
 }
