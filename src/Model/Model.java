@@ -107,8 +107,4 @@ public class Model implements  Operations {
     return imageHashMap.size();
   }
 
-  public Set<String> returnKeys() {
-    return imageHashMap.keySet();
-  }
-
 }

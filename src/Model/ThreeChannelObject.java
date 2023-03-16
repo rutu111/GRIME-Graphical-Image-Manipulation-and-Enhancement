@@ -50,8 +50,6 @@ public abstract class ThreeChannelObject <T> extends CommonOperations {
     return new RGBIntegerImage(new_image, this.getWidth(), this.getHeight());
   }
 
-  protected abstract TypeofImageObject[][] getMatrix(int width, int height);
-
   protected abstract TypeofImageObject getObject(T  value1, T value2, T value3);
 
   protected abstract Field getField(Component channel) throws NoSuchFieldException;

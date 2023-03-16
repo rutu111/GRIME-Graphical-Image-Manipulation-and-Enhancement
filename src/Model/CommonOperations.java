@@ -13,12 +13,12 @@ public abstract class CommonOperations implements TypeOfImage {
   }
 
   public TypeOfImage verticalFlip() {
-    TypeofImageObject[][] flippedImage = this.pixels.clone();
+    TypeofImageObject[][] flippedImage = getMatrix(this.width, this.height);
     //flip the columns
-    for(int row = 0; row < flippedImage.length; row++){
-      for(int col = 0; col < flippedImage[row].length / 2; col++) {
-        TypeofImageObject temp = flippedImage[row][col];
-        flippedImage[row][col] = flippedImage[row][flippedImage[row].length - col - 1];
+    for(int row = 0; row < this.pixels.length; row++){
+      for(int col = 0; col < this.pixels[row].length/ 2; col++) {
+        TypeofImageObject temp = this.pixels[row][col];
+        flippedImage[row][col] = this.pixels[row][this.pixels[row].length - col - 1];
         flippedImage[row][flippedImage[row].length - col - 1] = temp;
       }
     }
@@ -27,11 +27,11 @@ public abstract class CommonOperations implements TypeOfImage {
   }
 
   public TypeOfImage horizontalFlip() {
-    TypeofImageObject[][] flippedImage =this.pixels.clone();
-    for(int col = 0;col < flippedImage[0].length; col++){
-      for(int row = 0; row < flippedImage.length/2; row++) {
-        TypeofImageObject temp = flippedImage[row][col];
-        flippedImage[row][col] = flippedImage[flippedImage.length - row - 1][col];
+    TypeofImageObject[][] flippedImage = getMatrix(this.width, this.height);
+    for(int col = 0;col < this.pixels[0].length; col++){
+      for(int row = 0; row < this.pixels.length/2; row++) {
+        TypeofImageObject temp = this.pixels[row][col];
+        flippedImage[row][col] = this.pixels[this.pixels.length - row - 1][col];
         flippedImage[flippedImage.length - row - 1][col] = temp;
       }
     }
@@ -50,6 +50,9 @@ public abstract class CommonOperations implements TypeOfImage {
       throws NoSuchFieldException, IllegalAccessException;
 
   public abstract TypeOfImage getOImage(TypeofImageObject[][] flippedImage, int width, int height);
+  protected abstract TypeofImageObject[][] getMatrix(int width, int height);
+
+
 
 
 }

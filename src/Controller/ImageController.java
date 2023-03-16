@@ -74,7 +74,6 @@ public class ImageController {
     if (commands.length == 0 || commands[0].trim().isEmpty()) {
       this.out.append("Please enter appropriate command.");
     }
-    model.returnKeys();
     switch (commands[0]) {
       case "load":
         try {
@@ -191,7 +190,7 @@ public class ImageController {
           }
           String imagePath = commands[1];
           String imageName = commands[2];
-          this.out.append("Image" + " imageName" + " saved as file:" + " imagePath");
+          this.out.append("Image" + imageName + " saved as file:" + imagePath);
           if(!imagePath.split("\\.")[1].equals("ppm")){
             throw new IllegalArgumentException("Invalid file format: " + imagePath.split("\\.")[1]);
           }
