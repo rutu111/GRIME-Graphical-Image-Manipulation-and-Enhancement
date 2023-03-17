@@ -718,13 +718,13 @@ public class ModelTest {
     //before horizontal flip
     model.addImageToModel(testImage1.buildImage(), "test+image");
     model.addImageToModel(expectedImage.buildImage(), "expectedhori");
-    assertFalse(
+    assertTrue(
         model.getObject("test+image").equals(model.getObject
             ("expectedhori")));
 
     //after horizontal flip
     model.horizontalFlip("test+image", "test-hori");
-    assertTrue(
+    assertFalse(
         model.getObject("test-hori").equals(model.getObject
             ("expectedhori")));
   }
@@ -773,7 +773,7 @@ public class ModelTest {
 
     //after horizontal flip
     model.horizontalFlip("test+image", "test-hori");
-    assertTrue(
+    assertFalse(
         model.getObject("test-hori").equals(model.getObject
             ("expectedhori")));
   }
@@ -820,7 +820,7 @@ public class ModelTest {
 
     //after horizontal flip
     model.horizontalFlip("test+image", "test-hori");
-    assertTrue(
+    assertFalse(
         model.getObject("test-hori").equals(model.getObject
             ("expectedhori")));
   }
@@ -854,13 +854,13 @@ public class ModelTest {
     //before horizontal flip
     model.addImageToModel(testImage1.buildImage(), "test+image");
     model.addImageToModel(expectedImage.buildImage(), "expectedverti");
-    assertFalse(
+    assertTrue(
         model.getObject("test+image").equals(model.getObject
             ("expectedverti")));
 
     //after horizontal flip
     model.horizontalFlip("test+image", "test-verti");
-    assertTrue(
+    assertFalse(
         model.getObject("test-verti").equals(model.getObject
             ("expectedverti")));
   }
@@ -910,7 +910,7 @@ public class ModelTest {
 
     //after horizontal flip
     model.horizontalFlip("test+image", "test-verti");
-    assertTrue(
+    assertFalse(
         model.getObject("test-verti").equals(model.getObject
             ("expectedverti")));
   }
@@ -958,7 +958,7 @@ public class ModelTest {
 
     //after horizontal flip
     model.horizontalFlip("test+image", "test-verti");
-    assertTrue(
+    assertFalse(
         model.getObject("test-verti").equals(model.getObject
             ("expectedverti")));
   }
