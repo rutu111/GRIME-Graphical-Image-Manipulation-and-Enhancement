@@ -87,6 +87,9 @@ public interface TypeOfImage {
   TypeOfImage combineGreyScaleToRGB(TypeOfImage imageName2, TypeOfImage imageName3)
       throws IllegalArgumentException;
 
+  TypeOfImage blur();
+  TypeOfImage sharpen();
+
 
   TypeOfImage colorTransformationSepia();
 

@@ -114,9 +114,11 @@ public interface Operations {
 
   void colorTransformationSepia(String imageName, String newImageName);
 
-  void colorTransformationLuma(String imageName, String newImageName) throws NoSuchFieldException, IllegalAccessException;
+  void colorTransformationLuma(String imageName, String newImageName) throws NoSuchFieldException,
+      IllegalAccessException;
 
 
+  void blur(String imageName, String newImageName);
 
-
+  void sharpen(String imageName, String newImageName);
 }

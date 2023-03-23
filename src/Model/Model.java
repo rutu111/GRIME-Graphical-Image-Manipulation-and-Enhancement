@@ -89,6 +89,8 @@ public class Model implements Operations {
     imageHashMap.put(newImageName, image.brighten(increment));
   }
 
+
+
   @Override
   public void visualizeValueIntensityLuma(String imageName, String newImageName,
       MeasurementType measure)
@@ -152,6 +154,25 @@ public class Model implements Operations {
     TypeOfImage image = imageHashMap.get(imageName);
 
     imageHashMap.put(newImageName, image.visualizeValueIntensityLuma(MeasurementType.luma));
+  }
+
+  @Override
+  public void blur(String imageName, String newImageName)
+      throws NoSuchElementException {
+    if (!imageHashMap.containsKey(imageName)) {
+      throw new NoSuchElementException("Image: " + imageName + " does not exist.");
+    }
+    TypeOfImage image = imageHashMap.get(imageName);
+    imageHashMap.put(newImageName, image.blur());
+  }
+
+  @Override
+  public void sharpen(String imageName, String newImageName) {
+    if (!imageHashMap.containsKey(imageName)) {
+      throw new NoSuchElementException("Image: " + imageName + " does not exist.");
+    }
+    TypeOfImage image = imageHashMap.get(imageName);
+    imageHashMap.put(newImageName, image.sharpen());
   }
 
 }

@@ -110,6 +110,27 @@ public class ImageControllerTest {
       return false;
     }
 
+    @Override
+    public void colorTransformationSepia(String imageName, String newImageName) {
+
+    }
+
+    @Override
+    public void colorTransformationLuma(String imageName, String newImageName)
+        throws NoSuchFieldException, IllegalAccessException {
+
+    }
+
+    @Override
+    public void blur(String imageName, String newImageName) {
+
+    }
+
+    @Override
+    public void sharpen(String imageName, String newImageName) {
+
+    }
+
 
   }
 

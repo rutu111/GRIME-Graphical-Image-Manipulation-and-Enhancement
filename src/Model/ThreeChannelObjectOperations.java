@@ -168,5 +168,90 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
    */
   protected abstract TypeofImageObject getObject(int value1, int value2, int value3, Integer value4);
 
+  public TypeOfImage blur() {
+    TypeofImageObject[][] newPixels = getMatrix(this.width, this.height);
 
+    // Create a 3x3 Gaussian filter
+    int[][] filter = {
+        {1/16, 1/8, 1/16},
+        {1/8, 1/4, 1/8},
+        {1/16, 1/8, 1/16}
+    };
+
+    // Iterate over each pixel in the image
+    for (int x = 0; x < this.width; x++) {
+      for (int y = 0; y < this.height; y++) {
+        // Apply the Gaussian filter to the pixel and its neighbors
+        double r = 0, g = 0, b = 0;
+        TypeofImageObject oldPixel = null;
+        for (int i = -1; i <= 1; i++) {
+          for (int j = -1; j <= 1; j++) {
+            int xx = x + i;
+            int yy = y + j;
+            if (xx >= 0 && xx < this.width && yy >= 0 && yy < this.height) {
+              oldPixel = this.pixels[xx][yy];
+              double weight = filter[i + 1][j + 1];
+              r += weight * oldPixel.getChanne11();
+              g += weight * oldPixel.getChanne12();
+              b += weight * oldPixel.getChanne13();
+            }
+          }
+        }
+
+        // Set the value of the corresponding pixel in the new image object
+        newPixels[x][y] = getObject((int) r, (int) g, (int) b, oldPixel.hasAlpha());
+      }
+    }
+
+    return getOImage(newPixels, this.getWidth(), this.getHeight());
+  }
+
+
+  public TypeOfImage sharpen(){
+    TypeofImageObject[][] newPixels = getMatrix(this.width, this.height);
+
+    // Create a 3x3 Laplacian filter
+    int[][] filter = {
+        {-1/8, -1/8, -1/8, -1/8, -1/8},
+        {-1/8, 1/4, 1/4, 1/4, -1/8},
+        {-1/8, 1/4, 1, 1/4, -1/8},
+        {-1/8, 1/4, 1/4, 1/4, -1/8},
+        {-1/8, -1/8, -1/8, -1/8, -1/8}
+    };
+
+    // Iterate over each pixel in the image
+    for (int x = 0; x < this.width; x++) {
+      for (int y = 0; y < this.height; y++) {
+        // Apply the Laplacian filter to the pixel and its neighbors
+        double r = 0, g = 0, b = 0;
+        TypeofImageObject oldPixel = null;
+        for (int i = 0; i <= 2; i++) {
+          for (int j = 0; j <= 2; j++) {
+            int xx = x + i;
+            int yy = y + j;
+            if (xx >= 0 && xx < this.width && yy >= 0 && yy < this.height) {
+              oldPixel = this.pixels[xx][yy];
+              double weight = filter[i + 1][j + 1];
+              r += weight * oldPixel.getChanne11();
+              g += weight * oldPixel.getChanne12();
+              b += weight * oldPixel.getChanne13();
+            }
+          }
+        }
+
+        // Add the amount parameter to the filtered values and clamp to [0, 255]
+        Integer r2 = (int) Math.min(255, Math.max(0, r));
+        Integer g2 = (int) Math.min(255, Math.max(0, g));
+        Integer b2 = (int) Math.min(255, Math.max(0, b));
+
+        // Set the value of the corresponding pixel in the new image object
+        newPixels[x][y] = getObject(r2, g2, b2, oldPixel.hasAlpha());
+      }
+    }
+
+    return getOImage(newPixels, this.getWidth(), this.getHeight());
+  }
 }
+
+
+
