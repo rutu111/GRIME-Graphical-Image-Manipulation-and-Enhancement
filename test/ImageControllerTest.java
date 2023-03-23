@@ -18,8 +18,10 @@ public class ImageControllerTest {
 
 
   /**
-   * This is a MockModel class used to test the controller in isolation that implements the
-   * Operations interface from the model. The mockmodel is used to make sure the controller
+   * This is a MockModel class used to test the controller
+   * in isolation that implements the
+   * Operations interface from the model. The mockmodel is
+   * used to make sure the controller
    * transcends inputs to the model and receives the outputs from the model.
    */
   public class MockModel implements Operations {
@@ -112,7 +114,8 @@ public class ImageControllerTest {
   }
 
   /**
-   * This method tests the load operation that reads the PPM file from ImageUtil and give
+   * This method tests the load operation that reads the PPM file
+   * from ImageUtil and give
    * appropriate logs when passed to the model.
    */
   @Test
@@ -130,7 +133,8 @@ public class ImageControllerTest {
   }
 
   /**
-   * This method is used to check if the output throws an exception with appropriate message if
+   * This method is used to check if the output throws an exception
+   * with appropriate message if
    * the file passed is a non-ppm file.
    * @throws Exception illegal argument exception
    */
@@ -149,7 +153,8 @@ public class ImageControllerTest {
   }
 
   /**
-   * This method is used to check if the output throws an exception with appropriate message
+   * This method is used to check if the output throws an
+   * exception with appropriate message
    * if the command is incorrect.
    * @throws Exception illegal argument exception
    */
@@ -168,7 +173,8 @@ public class ImageControllerTest {
   }
 
   /**
-   * This method is used to check if the output throws an exception with appropriate message
+   * This method is used to check if the output throws an
+   * exception with appropriate message
    * if the command is incorrect.
    * @throws Exception illegal argument exception
    */
@@ -187,7 +193,8 @@ public class ImageControllerTest {
   }
 
   /**
-   * This method is used to check if the output throws an exception with appropriate message
+   * This method is used to check if the output throws an
+   * exception with appropriate message
    * if the value of the pixel is greater than 255.
    * @throws Exception illegal argument exception
    */
@@ -206,7 +213,8 @@ public class ImageControllerTest {
   }
 
   /**
-   * This method is used to check if the output throws an exception with appropriate message
+   * This method is used to check if the output throws an
+   * exception with appropriate message
    * if the value of the pixel is less than 0.
    * @throws Exception illegal argument exception
    */
@@ -225,7 +233,8 @@ public class ImageControllerTest {
   }
 
   /**
-   * This method is used to check if the output throws an exception with appropriate message
+   * This method is used to check if the output throws an
+   * exception with appropriate message
    * if the value of the pixel is less than 0.
    * @throws Exception illegal argument exception
    */
@@ -244,7 +253,8 @@ public class ImageControllerTest {
   }
 
   /**
-   * This method is used to check if the output throws an exception with appropriate message
+   * This method is used to check if the output throws an
+   * exception with appropriate message
    * if the filename is incorrect.
    * @throws Exception illegal argument exception
    */
@@ -263,8 +273,10 @@ public class ImageControllerTest {
   }
 
   /**
-   * This method is used to check if the output throws an exception with appropriate message
+   * This method is used to check if the output throws an
+   * exception with appropriate message
    * if an empty file is loaded.
+   *
    * @throws Exception illegal argument exception
    */
   @Test
@@ -282,7 +294,8 @@ public class ImageControllerTest {
   }
 
   /**
-   * This method is used to check if the output throws an exception with appropriate message
+   * This method is used to check if the output throws an
+   * exception with appropriate message
    * if a file with zero height and width is loaded.
    * @throws Exception illegal argument exception
    */
@@ -300,7 +313,8 @@ public class ImageControllerTest {
   }
 
   /**
-   * This method is used to check if the output throws an exception with appropriate message
+   * This method is used to check if the output throws an
+   * exception with appropriate message
    * if a file with does not have one of the pixels channel
    * @throws Exception illegal argument exception
    */
@@ -318,7 +332,8 @@ public class ImageControllerTest {
   }
 
   /**
-   * This method is used to check if the output throws an exception with appropriate message
+   * This method is used to check if the output throws an
+   * exception with appropriate message
    * if the filename is incorrect.
    * @throws Exception illegal argument exception
    */
@@ -356,7 +371,8 @@ public class ImageControllerTest {
   }
 
   /**
-   * This method is used to check if the output throws an exception with appropriate message
+   * This method is used to check if the output throws an
+   * exception with appropriate message
    * if a file with zero height and width is loaded.
    * @throws Exception illegal argument exception
    */
@@ -431,7 +447,8 @@ public class ImageControllerTest {
   }
 
   /**
-   * This is a test for the Controller for the horizontal flip function when function is invalid.
+   * This is a test for the Controller for the horizontal flip
+   * function when function is invalid.
    * @throws Exception handling different type of exceptions
    */
   @Test
@@ -470,7 +487,8 @@ public class ImageControllerTest {
   }
 
   /**
-   * This is a test for the Controller for the brighten function when the fucntion is invalid.
+   * This is a test for the Controller for the brighten function
+   * when the fucntion is invalid.
    * @throws Exception handling different type of exceptions
    */
   @Test
@@ -490,7 +508,8 @@ public class ImageControllerTest {
   }
 
   /**
-   * This is a method to test Controller to make sure the Visualize each value component for RGB
+   * This is a method to test Controller to make sure the Visualize
+   * each value component for RGB
    * image works as expected.
    * @throws Exception handles any type of exception
    */
@@ -512,7 +531,8 @@ public class ImageControllerTest {
   }
 
   /**
-   * This is a method to test Controller to make sure the Visualize each value component for RGB
+   * This is a method to test Controller to make sure the Visualize each
+   * value component for RGB
    * image, the output should show and error for invalid command
    * @throws Exception handles any type of exception
    */
@@ -534,7 +554,8 @@ public class ImageControllerTest {
   }
 
   /**
-   * This is a method to test Controller to make sure the Visualize each luma component for RGB
+   * This is a method to test Controller to make sure the Visualize each
+   * luma component for RGB
    * image works as expected.
    * @throws Exception handles any type of exception
    */
@@ -556,7 +577,8 @@ public class ImageControllerTest {
   }
 
   /**
-   * This is a method to test Controller to make sure the Visualize each intensity component for RGB
+   * This is a method to test Controller to make sure the Visualize
+   * each intensity component for RGB
    * image works as expected.
    * @throws Exception handles any type of exception
    */
@@ -579,7 +601,8 @@ public class ImageControllerTest {
   }
 
   /**
-   * This is a method to test Controller to make sure the Visualize each red component for RGB
+   * This is a method to test Controller to make sure the
+   * Visualize each red component for RGB
    * image works as expected.
    * @throws Exception handles any type of exception
    */
@@ -601,7 +624,8 @@ public class ImageControllerTest {
   }
 
   /**
-   * This is a method to test Controller to make sure the Visualize each green component for RGB
+   * This is a method to test Controller to make sure the
+   * Visualize each green component for RGB
    * image works as expected.
    * @throws Exception handles any type of exception
    */
@@ -623,7 +647,8 @@ public class ImageControllerTest {
   }
 
   /**
-   * This is a method to test Controller to make sure the Visualize each blue component for RGB
+   * This is a method to test Controller to make sure the
+   * Visualize each blue component for RGB
    * image works as expected.
    * @throws Exception handles any type of exception
    */
@@ -645,7 +670,8 @@ public class ImageControllerTest {
   }
 
   /**
-   * This is a method to test Controller to make sure splitting RGB into greyscale works as
+   * This is a method to test Controller to make sure splitting
+   * RGB into greyscale works as
    * expected.
    * image works as expected.
    * @throws Exception handles any type of exception
@@ -672,7 +698,8 @@ public class ImageControllerTest {
   }
 
   /**
-   * This is a method to test Controller to make sure combining greyscale into RBG works as
+   * This is a method to test Controller to make sure combining
+   * greyscale into RBG works as
    * expected.
    * image works as expected.
    * @throws Exception handles any type of exception
@@ -697,7 +724,8 @@ public class ImageControllerTest {
   }
 
   /**
-   * This method is used to check if the output throws exception with appropriate message if
+   * This method is used to check if the output throws exception
+   * with appropriate message if
    * command is incorrect.
    * @throws Exception handles exception
    */
@@ -718,7 +746,8 @@ public class ImageControllerTest {
   }
 
   /**
-   * This method is used to check if the output throws exception with appropriate message if
+   * This method is used to check if the output throws exception
+   * with appropriate message if
    * command is incorrect.
    * @throws Exception handles exception
    */
@@ -736,7 +765,8 @@ public class ImageControllerTest {
   }
 
   /**
-   * This method is used to check if the output gives an appropriate message when saved.
+   * This method is used to check if the output gives an appropriate
+   * message when saved.
    * @throws Exception illegal argument exception
    */
   @Test
@@ -755,7 +785,8 @@ public class ImageControllerTest {
   }
 
   /**
-   * This method is used to check if the output throws exception with appropriate message if
+   * This method is used to check if the output throws exception
+   * with appropriate message if
    * command is incorrect.
    * @throws Exception handles exception
    */
@@ -774,7 +805,8 @@ public class ImageControllerTest {
   }
 
   /**
-   * This method is used to check if the output throws exception with appropriate message if
+   * This method is used to check if the output throws exception
+   * with appropriate message if
    * command is incorrect.
    * @throws Exception handles exception
    */
@@ -794,7 +826,8 @@ public class ImageControllerTest {
   }
 
   /**
-   * This method is used to check if the output throws exception with appropriate message if
+   * This method is used to check if the output throws
+   * exception with appropriate message if
    * command is incorrect.
    * @throws Exception handles exception
    */
@@ -814,7 +847,8 @@ public class ImageControllerTest {
   }
 
   /**
-   * This method is used to check if the output throws exception with appropriate message if
+   * This method is used to check if the output throws
+   * exception with appropriate message if
    * command is incorrect.
    * @throws Exception handles exception
    */
@@ -850,7 +884,8 @@ public class ImageControllerTest {
   }
 
   /**
-   * This method is used to check if the output throws exception with appropriate message if
+   * This method is used to check if the output throws exception
+   * with appropriate message if
    * command is incorrect.
    * @throws Exception handles exception
    */

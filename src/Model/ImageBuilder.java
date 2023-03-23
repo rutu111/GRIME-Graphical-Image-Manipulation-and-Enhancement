@@ -34,7 +34,7 @@ public abstract class ImageBuilder<P extends TypeofImageObject> {
    * @param height is the height of the image.
    * @param pixel  is the TyepofImageObject to input.
    */
-  public abstract void addPixelAtPosition(int width, int height, P pixel);
+  protected abstract void addPixelAtPosition(int width, int height, P pixel);
 
 
   /**
@@ -42,7 +42,7 @@ public abstract class ImageBuilder<P extends TypeofImageObject> {
    *
    * @return an TypeOfImage object.
    */
-  public abstract TypeOfImage buildImage();
+  protected abstract TypeOfImage buildImage();
 
 
 }

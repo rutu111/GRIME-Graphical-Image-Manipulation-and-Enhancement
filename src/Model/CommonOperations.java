@@ -1,7 +1,8 @@
 package Model;
 
 /**
- * The following class has implementations for operations that are common for any TypeOfImageObject.
+ * The following class has implementations for
+ * operations that are common for any TypeOfImageObject.
  * It implements the operations in the TypeOfImage interface.
  */
 public abstract class CommonOperations implements TypeOfImage {
@@ -70,7 +71,7 @@ public abstract class CommonOperations implements TypeOfImage {
    * @param height       height of matrix.
    * @return an object of type TypeOfImage.
    */
-  public abstract TypeOfImage getOImage(TypeofImageObject[][] flippedImage, int width, int height);
+  protected abstract TypeOfImage getOImage(TypeofImageObject[][] flippedImage, int width, int height);
 
   /**
    * Abstract method creates a matrix of the class that extends this class.

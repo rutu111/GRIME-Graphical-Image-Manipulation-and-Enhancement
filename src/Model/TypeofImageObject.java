@@ -28,4 +28,6 @@ public interface TypeofImageObject {
    * @return value inside third channel;
    */
   Integer getChanne13();
+
+  Integer hasAlpha();
 }

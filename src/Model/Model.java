@@ -4,15 +4,18 @@ import java.util.HashMap;
 import java.util.NoSuchElementException;
 
 /**
- * The following class is the main Model class that the controller deals with.
+ * The following class is the main Model class
+ * that the controller deals with.
  *
- * Each method signature throws an exception if the object does nto exist
+ * Each method signature throws an exception
+ * if the object does nto exist
  * in the hashmap.
  */
 public class Model implements Operations {
 
   /**
-   * The following hashmap holds images as values and their names as keys.
+   * The following hashmap holds images as values and
+   * their names as keys.
    */
   private HashMap<String, TypeOfImage> imageHashMap = new HashMap<String, TypeOfImage>();
 
@@ -125,6 +128,7 @@ public class Model implements Operations {
     return imageHashMap.size();
   }
 
+  @Override
   public boolean checkKeyInHashmap(String imageName) {
     return imageHashMap.containsKey(imageName);
   }

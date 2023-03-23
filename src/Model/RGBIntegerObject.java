@@ -3,13 +3,15 @@ package Model;
 import java.util.Objects;
 
 /**
- * The following class represents a RGB object where the RGB values are represented as integers.
+ * The following class represents a RGB object where
+ * the RGB values are represented as integers.
  */
 public class RGBIntegerObject implements TypeofImageObject {
 
   protected final Integer red;
   protected final Integer green;
   protected final Integer blue;
+
 
   /**
    * @param red   the value of the red component.
@@ -46,8 +48,14 @@ public class RGBIntegerObject implements TypeofImageObject {
     return this.blue;
   }
 
+  public Integer hasAlpha() {
+    return null;
+  }
+
+
   /**
-   * Equals method checks if two RGBIntegerObject integer objects are the same.
+   * Equals method checks if two RGBIntegerObject integer
+   * objects are the same.
    *
    * @param o which is object we want to compare with.
    * @return true or false.

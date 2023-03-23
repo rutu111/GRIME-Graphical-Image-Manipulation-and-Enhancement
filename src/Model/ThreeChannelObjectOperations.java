@@ -1,11 +1,13 @@
 package Model;
 
+import static java.lang.Math.min;
+
+import java.lang.reflect.Field;
+
 /**
  * The following class contains implements that are common for all 3 channel objects.
- *
- * @param <T> takes in the type of the channel.
  */
-public abstract class ThreeChannelObjectOperations<T> extends CommonOperations {
+public abstract class ThreeChannelObjectOperations extends CommonOperations {
 
   /**
    * Constructor represents a TypeOfImage containing TypeofImageObject objects.
@@ -17,6 +19,7 @@ public abstract class ThreeChannelObjectOperations<T> extends CommonOperations {
   protected ThreeChannelObjectOperations(TypeofImageObject[][] pixels, int width, int height) {
     super(pixels, width, height);
   }
+
 
   @Override
   public TypeOfImage combineGreyScaleToRGB(TypeOfImage image2,
@@ -32,15 +35,94 @@ public abstract class ThreeChannelObjectOperations<T> extends CommonOperations {
         & image2.getPixels()[0].length == image3.getPixels()[0].length
         & this.getPixels()[0].length == image3.getPixels()[0].length) {
       new_image = getMatrix(this.getWidth(), this.getHeight());
-      for (int i = 0; i < this.getWidth(); i++) {
-        for (int j = 0; j < this.getHeight(); j++) {
-          new_image[i][j] = getObject((T) this.getPixels()[i][j].getChanne11(),
-              (T) image2.getPixels()[i][j].getChanne12(),
-              (T) image3.getPixels()[i][j].getChanne13());
+      if (this.getPixels()[0][0] != null & image2.getPixels()[0][0] != null
+          & image3.getPixels()[0][0] != null) {
+        for (int i = 0; i < this.getWidth(); i++) {
+          for (int j = 0; j < this.getHeight(); j++) {
+            new_image[i][j] = getObject(this.getPixels()[i][j].getChanne11(),
+                image2.getPixels()[i][j].getChanne12(),
+                image3.getPixels()[i][j].getChanne13(),
+                (this.getPixels()[i][j].hasAlpha() + image2.getPixels()[i][j].hasAlpha()
+                    + image3.getPixels()[i][j].hasAlpha()) / 3);
+          }
+        }
+      } else {
+        for (int i = 0; i < this.getWidth(); i++) {
+          for (int j = 0; j < this.getHeight(); j++) {
+            new_image[i][j] = getObject(this.getPixels()[i][j].getChanne11(),
+                image2.getPixels()[i][j].getChanne12(),
+                image3.getPixels()[i][j].getChanne13(), null);
+          }
         }
       }
-    } else {
-      throw new IllegalArgumentException("All images must be of the same size!");
+        } else {
+          throw new IllegalArgumentException("All images must be of the same size!");
+        }
+        return getOImage(new_image, this.getWidth(), this.getHeight());
+      }
+
+
+
+  @Override
+  public TypeOfImage brighten(double increment) {
+    TypeofImageObject[][] newPixels = getMatrix(this.width, this.height);
+    for (int i = 0; i < this.width; i++) {
+      for (int j = 0; j < this.height; j++) {
+        TypeofImageObject oldPixel = this.pixels[i][j];
+        //Add increment value to RGB values and clamp to [0, 255]
+        Integer r = (int) min(255, Math.max(0, oldPixel.getChanne11() + increment));
+        Integer g = (int) min(255, Math.max(0, oldPixel.getChanne12() + increment));
+        Integer b = (int) min(255, Math.max(0, oldPixel.getChanne13() + increment));
+        newPixels[i][j] = getObject(r, g, b, oldPixel.hasAlpha());
+      }
+    }
+    return getOImage(newPixels, this.width, this.height);
+  }
+
+  @Override
+  public TypeOfImage visIndividualComponent(ComponentRGB channel)
+      throws NoSuchFieldException, IllegalAccessException {
+    Field field = RGBIntegerObject.class.getDeclaredField(channel.toString());
+    TypeofImageObject[][] new_image = getMatrix(this.width, this.height);
+    for (int i = 0; i < this.getWidth(); i++) {
+      for (int j = 0; j < this.getHeight(); j++) {
+        TypeofImageObject object = this.getPixels()[i][j];
+        new_image[i][j] = getObject((Integer) field.get(object),
+            (Integer) field.get(object), (Integer) field.get(object), object.hasAlpha());
+      }
+    }
+    return getOImage(new_image, this.getWidth(), this.getHeight());
+  }
+
+  @Override
+  public TypeOfImage visualizeValueIntensityLuma(MeasurementType measure)
+      throws NoSuchFieldException, IllegalAccessException {
+    TypeofImageObject[][] new_image = getMatrix(this.width, this.height);
+    for (int i = 0; i < this.getWidth(); i++) {
+      for (int j = 0; j < this.getHeight(); j++) {
+        if (measure.toString().equals("value")) {
+          Integer value = Math.max(this.getPixels()[i][j].getChanne11(),
+              Math.max(this.getPixels()[i][j].getChanne12(),
+                  this.getPixels()[i][j].getChanne13()));
+          new_image[i][j] = getObject(value, value, value, this.getPixels()[i][j].hasAlpha());
+        }
+        //intensity
+        if (measure.toString().equals("intensity")) {
+          Integer intensity =
+              (this.getPixels()[i][j].getChanne11() + this.getPixels()[i][j].getChanne12()
+                  + this.getPixels()[i][j].getChanne13()) / 3;
+          new_image[i][j] = getObject(intensity, intensity, intensity,
+              this.getPixels()[i][j].hasAlpha());
+        }
+        //luma
+        if (measure.toString().equals("luma")) {
+          double luma = 0.2126 * this.getPixels()[i][j].getChanne11()
+              + 0.7152 * this.getPixels()[i][j].getChanne12() +
+              0.0722 * this.getPixels()[i][j].getChanne13();
+          new_image[i][j] = getObject((int) luma, (int) luma, (int) luma,
+              this.getPixels()[i][j].hasAlpha());
+        }
+      }
     }
     return getOImage(new_image, this.getWidth(), this.getHeight());
   }
@@ -54,7 +136,7 @@ public abstract class ThreeChannelObjectOperations<T> extends CommonOperations {
    * @param value3 value of the third channel, of type T
    * @return
    */
-  protected abstract TypeofImageObject getObject(T value1, T value2, T value3);
+  protected abstract TypeofImageObject getObject(int value1, int value2, int value3, Integer value4);
 
 
 }

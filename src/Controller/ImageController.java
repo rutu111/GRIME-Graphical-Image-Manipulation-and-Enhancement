@@ -9,18 +9,32 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.Scanner;
 
+/**
+ * This is the controller class. It interacts
+ * with the view (command line), tells the model what to do
+ * and returns output to the user.
+ */
 public class ImageController {
 
-  private final Operations model;
   final Readable in;
   final Appendable out;
+  private final Operations model;
 
+  /**
+   * This constructor creates a controller object.
+   * @param model takes the model instance as input.
+   * @param in input stream.
+   * @param out output stream.
+   */
   public ImageController(Operations model, Readable in, Appendable out) {
     this.model = model;
     this.in = in;
     this.out = out;
   }
 
+  /**
+   Run method should run the command based on user input.
+   */
   public void run() throws IOException {
     Objects.requireNonNull(model);
     System.out.println("Welcome to image processing with PPM files! You can enter commands here. "
@@ -70,6 +84,13 @@ public class ImageController {
     scanner.close();
   }
 
+  /**
+   * This method has the list of commands that can be
+   * inputted by the user in command line or run through a
+   * script.
+   * @param commands string array of commands.
+   * @throws IOException thrown when there's error in input and output.
+   */
   public void commandExecution(String[] commands) throws IOException {
     //to run even if the nextline is blank
     if (commands.length == 0 || commands[0].trim().isEmpty()) {
@@ -209,6 +230,11 @@ public class ImageController {
     }
   }
 
+  /**
+   * This methods is used read the script.txt file.
+   * @param filename file to save
+   * @throws IOException throws IO exception.
+   */
   public void readScriptFile(String filename) throws IOException {
     try {
       File file = new File(filename);

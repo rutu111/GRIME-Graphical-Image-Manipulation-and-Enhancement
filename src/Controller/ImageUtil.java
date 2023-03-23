@@ -9,21 +9,25 @@ import Model.TypeOfImage;
 import Model.TypeofImageObject;
 import Model.Operations;
 /**
- * This class contains utility methods to read a PPM image from file and simply print its contents. Feel free to change this method
+ * This class contains utility methods to read a PPM image
+ * from file and simply print its contents. Feel free to change this method
  *  as required.
  */
 import java.io.PrintWriter;
 
 
 /**
- * This class contains utility methods to read a PPM image from file and simply print its contents.
+ * This class contains utility methods to read a PPM image
+ * from file and simply print its contents.
  * Feel free to change this method as required.
  */
 public class ImageUtil {
 
   /**
-   * Read an image file in the PPM format and print the colors. We return ModelRGB type for now,
-   * when the scope is expanded we can make the abstract class type to be returned.
+   * Read an image file in the PPM format and print the colors.
+   * We return ModelRGB type for now,
+   * when the scope is expanded we can make the abstract class
+   * type to be returned.
    *
    * @param filename the path of the file.
    */
@@ -47,7 +51,7 @@ public class ImageUtil {
 
     //now set up the scanner to read from the string we just built
     sc = new Scanner(builder.toString());
-    if(!sc.hasNextLine()){
+    if (!sc.hasNextLine()) {
       throw new IllegalStateException("Invalid file: Cannot be empty");
     }
     String token;
@@ -61,16 +65,15 @@ public class ImageUtil {
       height = sc.nextInt();
       maxValue = sc.nextInt();
 
-      if(width <= 0 | height <= 0){
+      if (width <= 0 | height <= 0) {
         throw new IllegalStateException("Width and Height cannot be zero or negative");
       }
 
-      if(maxValue!=255){
-        throw new IllegalStateException("Invalid maxValue: "+maxValue);
+      if (maxValue != 255) {
+        throw new IllegalStateException("Invalid maxValue: " + maxValue);
       }
 
       RGBIntegerImageBuilder builderObject = new RGBIntegerImageBuilder(width, height);
-
 
       for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
@@ -92,6 +95,13 @@ public class ImageUtil {
   }
 
 
+  /**
+   * This method creates a new PPM file on save.
+   * @param model model instance.
+   * @param filePath path to save the file.
+   * @param imageName save of the image to save.
+   * @throws FileNotFoundException if image object does not exist.
+   */
   public static void writePPM(Operations model, String filePath, String imageName)
       throws FileNotFoundException {
     try (PrintWriter writer = new PrintWriter(filePath)) {

@@ -33,7 +33,8 @@ public class ModelTest {
 
 
   /**
-   * This method is used to setup all the images required for testing purposes.
+   * This method is used to setup all the images required for
+   * testing purposes.
    */
   @Before
   public void setUp() {
@@ -51,7 +52,8 @@ public class ModelTest {
   }
 
   /**
-   * This is a method used to test if the brighten method in the model works.
+   * This is a method used to test if the brighten method in
+   * the model works.
    */
   @Test
   public void testIfBrightenWorks() {
@@ -81,7 +83,8 @@ public class ModelTest {
   }
 
   /**
-   * This is a method used to test if the brighten method works by performing darken using the
+   * This is a method used to test if the brighten method works
+   * by performing darken using the
    * increment value in the model works.
    */
   @Test
@@ -144,7 +147,8 @@ public class ModelTest {
   }
 
   /**
-   * This is a method to test exception thrown when rgb values are negative.
+   * This is a method to test exception thrown when rgb
+   * values are negative.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testForBrightenNegRGB() {
@@ -218,7 +222,8 @@ public class ModelTest {
   }
 
   /**
-   * This method is used to test if the darken method works to darken an all balck image or if
+   * This method is used to test if the darken method works to darken
+   * an all balck image or if
    * the value is the same.
    */
   @Test
@@ -256,7 +261,8 @@ public class ModelTest {
   }
 
   /**
-   * This method is used to test if the brighten method works for all white image.
+   * This method is used to test if the brighten method works
+   * for all white image.
    */
   @Test
   public void testForBrightenAllWhite() {
@@ -292,7 +298,8 @@ public class ModelTest {
   }
 
   /**
-   * This method is used to test if the darken method works for all white image.
+   * This method is used to test if the darken method works
+   * for all white image.
    */
   @Test
   public void testForDarkenAllWhite() {
