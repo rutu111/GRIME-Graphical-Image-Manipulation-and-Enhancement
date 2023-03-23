@@ -251,6 +251,67 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
 
     return getOImage(newPixels, this.getWidth(), this.getHeight());
   }
+
+  public TypeOfImage dither() {
+    TypeofImageObject[][] newPixels = getMatrix(this.width, this.height);
+    double[][] errors = new double[this.width][this.height];
+
+    for (int y = 0; y < this.height; y++) {
+      for (int x = 0; x < this.width; x++) {
+        TypeofImageObject oldPixel = this.pixels[x][y];
+
+
+        // Compute the error for each channel
+        double oldChannelValue_1 = oldPixel.getChanne11();
+        double newChannelValue_1 = Math.floor(oldChannelValue_1 * 256.0 / 255.0);
+        double quantizationError_1 = oldChannelValue_1 - newChannelValue_1 * 255.0 / 256.0;
+        errors[x][y] += quantizationError_1 * quantizationError_1;
+        double newValues_1 = newChannelValue_1 * 255.0 / 256.0;
+
+        // Compute the error for each channel
+        double oldChannelValue_2 = oldPixel.getChanne12();
+        double newChannelValue_2 = Math.floor(oldChannelValue_2 * 256.0 / 255.0);
+        double quantizationError_2 = oldChannelValue_2 - newChannelValue_2 * 255.0 / 256.0;
+        errors[x][y] += quantizationError_2 * quantizationError_2;
+        double newValues_2 = newChannelValue_2 * 255.0 / 256.0;
+
+        // Compute the error for each channel
+        double oldChannelValue_3 = oldPixel.getChanne13();
+        double newChannelValue_3 = Math.floor(oldChannelValue_3 * 256.0 / 255.0);
+        double quantizationError_3 = oldChannelValue_3 - newChannelValue_3 * 255.0 / 256.0;
+        errors[x][y] += quantizationError_3 * quantizationError_3;
+        double newValues_3 = newChannelValue_1 * 255.0 / 256.0;
+
+
+        // Set the value of the corresponding pixel in the new image object
+        newPixels[x][y] = getObject((int) newValues_1, (int) newValues_2, (int) newValues_3,
+            oldPixel.hasAlpha());
+
+        // Propagate the error to neighboring pixels
+        if (x < this.width - 1) {
+          errors[x + 1][y] += 7.0 / 16.0 * errors[x][y];
+          if (y < this.height - 1) {
+            errors[x + 1][y + 1] += 1.0 / 16.0 * errors[x][y];
+          }
+        }
+        if (y < this.height - 1) {
+          errors[x][y + 1] += 5.0 / 16.0 * errors[x][y];
+          if (x > 0) {
+            errors[x - 1][y + 1] += 3.0 / 16.0 * errors[x][y];
+          }
+        }
+      }
+    }
+
+    return getOImage(newPixels, this.getWidth(), this.getHeight());
+  }
+
+
+
+
+
+
+
 }
 
 

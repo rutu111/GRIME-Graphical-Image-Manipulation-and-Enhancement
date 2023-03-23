@@ -175,4 +175,14 @@ public class Model implements Operations {
     imageHashMap.put(newImageName, image.sharpen());
   }
 
+  @Override
+  public void dither(String imageName, String newImageName) {
+    if (!imageHashMap.containsKey(imageName)) {
+      throw new NoSuchElementException("Image: " + imageName + " does not exist.");
+    }
+    TypeOfImage image = imageHashMap.get(imageName);
+    imageHashMap.put(newImageName, image.dither());
+
+  }
+
 }

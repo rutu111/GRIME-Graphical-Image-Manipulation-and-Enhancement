@@ -90,6 +90,7 @@ public interface TypeOfImage {
   TypeOfImage blur();
   TypeOfImage sharpen();
 
+  TypeOfImage dither();
 
   TypeOfImage colorTransformationSepia();
 

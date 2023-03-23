@@ -121,4 +121,6 @@ public interface Operations {
   void blur(String imageName, String newImageName);
 
   void sharpen(String imageName, String newImageName);
+
+  void dither(String imageName, String newImageName);
 }
