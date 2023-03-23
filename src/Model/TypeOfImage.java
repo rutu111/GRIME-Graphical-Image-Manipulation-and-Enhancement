@@ -88,4 +88,6 @@ public interface TypeOfImage {
       throws IllegalArgumentException;
 
 
+  TypeOfImage colorTransformationSepia();
+
 }

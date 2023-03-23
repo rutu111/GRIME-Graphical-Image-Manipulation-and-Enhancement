@@ -133,4 +133,25 @@ public class Model implements Operations {
     return imageHashMap.containsKey(imageName);
   }
 
+  @Override
+  public void colorTransformationSepia(String imageName, String newImageName) {
+    if (!imageHashMap.containsKey(imageName)) {
+      throw new NoSuchElementException("Image: " + imageName + "does not exist.");
+    }
+    TypeOfImage image = imageHashMap.get(imageName);
+
+    imageHashMap.put(newImageName, image.colorTransformationSepia());
+  }
+
+  @Override
+  public void colorTransformationLuma(String imageName, String newImageName)
+      throws NoSuchFieldException, IllegalAccessException {
+    if (!imageHashMap.containsKey(imageName)) {
+      throw new NoSuchElementException("Image: " + imageName + "does not exist.");
+    }
+    TypeOfImage image = imageHashMap.get(imageName);
+
+    imageHashMap.put(newImageName, image.visualizeValueIntensityLuma(MeasurementType.luma));
+  }
+
 }

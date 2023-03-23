@@ -127,6 +127,36 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
     return getOImage(new_image, this.getWidth(), this.getHeight());
   }
 
+  @Override
+  public TypeOfImage colorTransformationSepia() {
+    //sepia matrix
+    double[][] sepia = {{0.393, 0.769, 0.189}, {0.349, 0.686, 0.168}, {0.272, 0.534, 0.131}};
+    TypeofImageObject[][] new_image = getMatrix(this.width, this.height);
+
+    for (int i = 0; i < this.getWidth(); i++) {
+      for (int j = 0; j < this.getHeight(); j++) {
+        //get each pixel (3x1 matrix).
+        double[][] result = new double[3][1];
+        int[][] pixelValues = new int[3][1];
+        pixelValues[0][0] = this.getPixels()[i][j].getChanne11();
+        pixelValues[1][0] = this.getPixels()[i][j].getChanne12();
+        pixelValues[2][0] = this.getPixels()[i][j].getChanne13();
+        for (int m = 0; m < 3; m++) {
+          for (int n = 0; n < 1; n++) {
+            for (int k = 0; k < 3; k++) {
+              result[m][n] += sepia[m][k] * pixelValues[k][n];
+            }
+          }
+        }
+        new_image[i][j] = getObject((int) result[0][0], (int) result[1][0], (int) result[2][0],
+            this.getPixels()[i][j].hasAlpha());
+      }
+    }
+    return getOImage(new_image, this.getWidth(), this.getHeight());
+  }
+
+
+
 
   /**
    * Abstract method returns an object of the class extending it.

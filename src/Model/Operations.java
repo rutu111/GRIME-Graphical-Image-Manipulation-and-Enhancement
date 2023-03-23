@@ -111,4 +111,12 @@ public interface Operations {
       String nameOfObject);
 
   boolean checkKeyInHashmap(String imageName);
+
+  void colorTransformationSepia(String imageName, String newImageName);
+
+  void colorTransformationLuma(String imageName, String newImageName) throws NoSuchFieldException, IllegalAccessException;
+
+
+
+
 }
