@@ -197,8 +197,12 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
             }
           }
         }
+        // Add the amount parameter to the filtered values and clamp to [0, 255]
+        Integer r2 = (int) Math.min(255, Math.max(0, r));
+        Integer g2 = (int) Math.min(255, Math.max(0, g));
+        Integer b2 = (int) Math.min(255, Math.max(0, b));
         // Set the value of the corresponding pixel in the new image object
-        newPixels[x][y] = getObject((int) r, (int) g, (int) b, oldPixel.hasAlpha());
+        newPixels[x][y] = getObject((int) r2, (int) g2, (int) b2, oldPixel.hasAlpha());
       }
     }
 
