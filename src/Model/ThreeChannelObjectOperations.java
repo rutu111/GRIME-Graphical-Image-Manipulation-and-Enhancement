@@ -35,8 +35,8 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
         & image2.getPixels()[0].length == image3.getPixels()[0].length
         & this.getPixels()[0].length == image3.getPixels()[0].length) {
       new_image = getMatrix(this.getWidth(), this.getHeight());
-      if (this.getPixels()[0][0] != null & image2.getPixels()[0][0] != null
-          & image3.getPixels()[0][0] != null) {
+      if (this.getPixels()[0][0].equals(null) & image2.getPixels()[0][0].equals(null)
+          & image3.getPixels()[0][0].equals(null)) {
         for (int i = 0; i < this.getWidth(); i++) {
           for (int j = 0; j < this.getHeight(); j++) {
             new_image[i][j] = getObject(this.getPixels()[i][j].getChanne11(),
@@ -51,7 +51,7 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
           for (int j = 0; j < this.getHeight(); j++) {
             new_image[i][j] = getObject(this.getPixels()[i][j].getChanne11(),
                 image2.getPixels()[i][j].getChanne12(),
-                image3.getPixels()[i][j].getChanne13(), null);
+                image3.getPixels()[i][j].getChanne13(), this.getPixels()[i][j].hasAlpha());
           }
         }
       }

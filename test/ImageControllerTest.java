@@ -131,6 +131,11 @@ public class ImageControllerTest {
 
     }
 
+    @Override
+    public void dither(String imageName, String newImageName) {
+
+    }
+
 
   }
 

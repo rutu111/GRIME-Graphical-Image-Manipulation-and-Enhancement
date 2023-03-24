@@ -106,3 +106,22 @@ public class ImageIOTest {
       if (formatName.equalsIgnoreCase("bmp") | formatName.equalsIgnoreCase("png")) {
         image = ImageIO.read(file);
  */
+
+
+/*
+int width = matrix[0].length;
+  int height = matrix.length;
+  BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+
+  for (int y = 0; y < height; y++) {
+    for (int x = 0; x < width; x++) {
+    int pixelValue = matrix[y][x];
+    image.setRGB(x, y, pixelValue);
+    }
+    }
+
+
+    File output = new File("output.png");
+    ImageIO.write(image, "png", output);
+
+    */

@@ -3,11 +3,18 @@ package Controller;
 import Model.ComponentRGB;
 import Model.MeasurementType;
 import Model.Operations;
+import java.awt.color.ColorSpace;
+import java.awt.color.ICC_ColorSpace;
+import java.awt.color.ICC_Profile;
+import java.awt.image.BufferedImage;
+import java.awt.image.ColorConvertOp;
+import java.awt.image.ColorModel;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.Scanner;
+import javax.imageio.ImageIO;
 
 /**
  * This is the controller class. It interacts
@@ -78,7 +85,7 @@ public class ImageController {
           }
         }
       } catch (Exception e) {
-        this.out.append("Error: " + e.getMessage() + "\n");
+        this.out.append("Error: " + e + "\n");
       }
     }
     scanner.close();
@@ -104,10 +111,11 @@ public class ImageController {
           }
           String imagePath = commands[1];
           String imageName = commands[2];
-          if (!imagePath.split("\\.")[1].equals("ppm")) {
-            throw new IllegalArgumentException("Invalid file format: " + imagePath.split("\\.")[1]);
+          if (imagePath.split("\\.")[1].equals("ppm")) {
+            ImageUtil.readPPM(this.model, imagePath, imageName);
+          }else {
+            ImageUtil.imageIORead(this.model, imagePath, imageName);
           }
-          ImageUtil.readPPM(this.model, imagePath, imageName);
           this.out.append("Loaded image '" + imageName + "' from '" + imagePath + "'" + "\n");
         } catch (FileNotFoundException e) {
           this.out.append("File not found: " + commands[1] + "\n");
@@ -215,11 +223,11 @@ public class ImageController {
           String imagePath = commands[1];
           String imageName = commands[2];
           this.out.append("Image " + imageName + " saved as file: " + imagePath + "\n");
-          if (!imagePath.split("\\.")[1].equals("ppm")) {
-            throw new IllegalArgumentException("Invalid file format: " + imagePath.split(
-                "\\.")[1]);
+          if (imagePath.split("\\.")[1].equals("ppm")) {
+            ImageUtil.writePPM(this.model, imagePath, imageName);
+          }else {
+            ImageUtil.imgeIOWrite(this.model, imagePath, imageName);
           }
-          ImageUtil.writePPM(this.model, imagePath, imageName);
         } catch (FileNotFoundException e) {
           this.out.append("File path does not exist.\n");
         }
@@ -252,4 +260,5 @@ public class ImageController {
     }
 
   }
+
 }
