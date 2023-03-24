@@ -209,7 +209,7 @@ public class ImageController {
             "Image '" + updatedimageName + " was created by combining greyscale images: '"
                 + imageName1 + " '" + imageName2 + "' and '" + imageName3 + "'" + "\n");
         break;
-      case "blur": {
+      case "filter-blur": {
         if (commands.length != 3) {
           throw new IllegalArgumentException("Invalid command format.");
         }
@@ -222,7 +222,7 @@ public class ImageController {
                 "\n");
       }
       break;
-      case "sharpen": {
+      case "filter-sharpen": {
         if (commands.length != 3) {
           throw new IllegalArgumentException("Invalid command format.");
         }
@@ -235,7 +235,7 @@ public class ImageController {
                 "\n");
       }
       break;
-      case "transform-luma": {
+      case "transform-greyscale": {
         if (commands.length != 3) {
           throw new IllegalArgumentException("Invalid command format.");
         }
