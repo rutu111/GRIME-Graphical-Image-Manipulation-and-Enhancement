@@ -148,8 +148,10 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
             }
           }
         }
-        new_image[i][j] = getObject((int) result[0][0], (int) result[1][0], (int) result[2][0],
-            this.getPixels()[i][j].hasAlpha());
+        Integer r = (int) min(255, Math.max(0, result[0][0]));
+        Integer g = (int) min(255, Math.max(0, result[1][0]));
+        Integer b = (int) min(255, Math.max(0, result[2][0]));
+        new_image[i][j] = getObject(r, g, b, this.getPixels()[i][j].hasAlpha());
       }
     }
     return getOImage(new_image, this.getWidth(), this.getHeight());

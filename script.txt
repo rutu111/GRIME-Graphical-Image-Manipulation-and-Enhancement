@@ -32,4 +32,26 @@ brighten 50 koala-red koala-red
 rgb-combine koala-red-tint koala-red koala-green koala-blue
 save images/koala-red-tint.ppm koala-red-tint
 
+#adding the new operations
+
+#blur
+filter-blur koala koala-blur
+
+#sharpen
+filter-sharpen koala koala-sharpen
+
+#greyscale transformation
+transform-greyscale koala koala-trans-greyscale
+
+#sepia transformation
+transform-sepia koala koala-sepia
+
+#dither
+dither koala koala-dither
+
+save images/koala-blur.ppm koala-blur
+save images/koala-sharpen.ppm koala-sharpen
+save images/koala-trans-greyscale.ppm koala-trans-greyscale
+save images/koala-sepia.ppm koala-sepia
+save images/koala-dither.ppm koala-dither
 
