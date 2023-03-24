@@ -197,7 +197,6 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
             }
           }
         }
-
         // Set the value of the corresponding pixel in the new image object
         newPixels[x][y] = getObject((int) r, (int) g, (int) b, oldPixel.hasAlpha());
       }

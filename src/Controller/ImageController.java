@@ -3,23 +3,15 @@ package Controller;
 import Model.ComponentRGB;
 import Model.MeasurementType;
 import Model.Operations;
-import java.awt.color.ColorSpace;
-import java.awt.color.ICC_ColorSpace;
-import java.awt.color.ICC_Profile;
-import java.awt.image.BufferedImage;
-import java.awt.image.ColorConvertOp;
-import java.awt.image.ColorModel;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.Scanner;
-import javax.imageio.ImageIO;
 
 /**
- * This is the controller class. It interacts
- * with the view (command line), tells the model what to do
- * and returns output to the user.
+ * This is the controller class. It interacts with the view (command line), tells the model what to
+ * do and returns output to the user.
  */
 public class ImageController {
 
@@ -29,9 +21,10 @@ public class ImageController {
 
   /**
    * This constructor creates a controller object.
+   *
    * @param model takes the model instance as input.
-   * @param in input stream.
-   * @param out output stream.
+   * @param in    input stream.
+   * @param out   output stream.
    */
   public ImageController(Operations model, Readable in, Appendable out) {
     this.model = model;
@@ -40,7 +33,7 @@ public class ImageController {
   }
 
   /**
-   Run method should run the command based on user input.
+   * Run method should run the command based on user input.
    */
   public void run() throws IOException {
     Objects.requireNonNull(model);
@@ -92,13 +85,14 @@ public class ImageController {
   }
 
   /**
-   * This method has the list of commands that can be
-   * inputted by the user in command line or run through a
-   * script.
+   * This method has the list of commands that can be inputted by the user in command line or run
+   * through a script.
+   *
    * @param commands string array of commands.
    * @throws IOException thrown when there's error in input and output.
    */
-  public void commandExecution(String[] commands) throws IOException {
+  public void commandExecution(String[] commands)
+      throws IOException, NoSuchFieldException, IllegalAccessException {
     //to run even if the nextline is blank
     if (commands.length == 0 || commands[0].trim().isEmpty()) {
       this.out.append("Please enter appropriate command. \n");
@@ -113,7 +107,7 @@ public class ImageController {
           String imageName = commands[2];
           if (imagePath.split("\\.")[1].equals("ppm")) {
             ImageUtil.readPPM(this.model, imagePath, imageName);
-          }else {
+          } else {
             ImageUtil.imageIORead(this.model, imagePath, imageName);
           }
           this.out.append("Loaded image '" + imageName + "' from '" + imagePath + "'" + "\n");
@@ -215,6 +209,74 @@ public class ImageController {
             "Image '" + updatedimageName + " was created by combining greyscale images: '"
                 + imageName1 + " '" + imageName2 + "' and '" + imageName3 + "'" + "\n");
         break;
+      case "blur": {
+        if (commands.length != 3) {
+          throw new IllegalArgumentException("Invalid command format.");
+        }
+        String imageName = commands[1];
+        String updatedImageName = commands[2];
+        model.blur(imageName,
+            updatedImageName);
+        this.out.append(
+            "Image blurred '" + imageName + "' stored as '" + updatedImageName + "'" +
+                "\n");
+      }
+      break;
+      case "sharpen": {
+        if (commands.length != 3) {
+          throw new IllegalArgumentException("Invalid command format.");
+        }
+        String imageName = commands[1];
+        String updatedImageName = commands[2];
+        model.sharpen(imageName,
+            updatedImageName);
+        this.out.append(
+            "Image sharpened '" + imageName + "' stored as '" + updatedImageName + "'" +
+                "\n");
+      }
+      break;
+      case "transform-luma": {
+        if (commands.length != 3) {
+          throw new IllegalArgumentException("Invalid command format.");
+        }
+        String imageName = commands[1];
+        String updatedImageName = commands[2];
+        model.colorTransformationLuma(imageName,
+            updatedImageName);
+        this.out.append(
+            "Image has been colour transformed with luma '" + imageName + "' stored as '"
+                + updatedImageName + "'" +
+                "\n");
+      }
+      break;
+      case "transform-sepia": {
+        if (commands.length != 3) {
+          throw new IllegalArgumentException("Invalid command format.");
+        }
+        String imageName = commands[1];
+        String updatedImageName = commands[2];
+        model.colorTransformationSepia(imageName,
+            updatedImageName);
+        this.out.append(
+            "Image has been provided with sepia tone '" + imageName + "' stored as '"
+                + updatedImageName + "'" +
+                "\n");
+      }
+      break;
+      case "dither": {
+        if (commands.length != 3) {
+          throw new IllegalArgumentException("Invalid command format.");
+        }
+        String imageName = commands[1];
+        String updatedImageName = commands[2];
+        model.dither(imageName,
+            updatedImageName);
+        this.out.append(
+            "Image has been colour transformed with luma '" + imageName + "' stored as '"
+                + updatedImageName + "'" +
+                "\n");
+      }
+      break;
       case "save":
         try {
           if (commands.length != 3) {
@@ -225,7 +287,7 @@ public class ImageController {
           this.out.append("Image " + imageName + " saved as file: " + imagePath + "\n");
           if (imagePath.split("\\.")[1].equals("ppm")) {
             ImageUtil.writePPM(this.model, imagePath, imageName);
-          }else {
+          } else {
             ImageUtil.imgeIOWrite(this.model, imagePath, imageName);
           }
         } catch (FileNotFoundException e) {
@@ -240,10 +302,12 @@ public class ImageController {
 
   /**
    * This methods is used read the script.txt file.
+   *
    * @param filename file to save
    * @throws IOException throws IO exception.
    */
-  public void readScriptFile(String filename) throws IOException {
+  public void readScriptFile(String filename)
+      throws IOException, NoSuchFieldException, IllegalAccessException {
     try {
       File file = new File(filename);
       Scanner scanner = new Scanner(file);
@@ -255,7 +319,7 @@ public class ImageController {
           commandExecution(words);
         }
       }
-    } catch (FileNotFoundException e) {
+    } catch (FileNotFoundException | NoSuchFieldException | IllegalAccessException e) {
       throw e;
     }
 
