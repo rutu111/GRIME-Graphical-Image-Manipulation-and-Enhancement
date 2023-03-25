@@ -132,11 +132,9 @@ public class ImageControllerTest {
     }
 
     @Override
-    public void dither(String imageName, String newImageName) {
+    public void dither(String imageName, String newImageName, ComponentRGB channel) {
 
     }
-
-
   }
 
   /**

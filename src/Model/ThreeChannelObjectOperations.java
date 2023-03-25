@@ -2,6 +2,7 @@ package Model;
 
 import static java.lang.Math.min;
 
+import java.awt.Component;
 import java.lang.reflect.Field;
 
 /**
@@ -174,10 +175,10 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
     TypeofImageObject[][] newPixels = getMatrix(this.width, this.height);
 
     // Create a 3x3 Gaussian filter
-    int[][] filter = {
-        {1/16, 1/8, 1/16},
-        {1/8, 1/4, 1/8},
-        {1/16, 1/8, 1/16}
+    double[][] filter = {
+        {1.0/16.0, 1.0/8.0, 1.0/16.0},
+        {1.0/8.0, 1.0/4.0, 1.0/8.0},
+        {1.0/16.0, 1.0/8.0, 1.0/16.0}
     };
 
     // Iterate over each pixel in the image
@@ -200,11 +201,11 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
           }
         }
         // Add the amount parameter to the filtered values and clamp to [0, 255]
-        Integer r2 = (int) Math.min(255, Math.max(0, r));
-        Integer g2 = (int) Math.min(255, Math.max(0, g));
-        Integer b2 = (int) Math.min(255, Math.max(0, b));
+        int r2 = (int) Math.min(255, Math.max(0, Math.round(r)));
+        int g2 = (int) Math.min(255, Math.max(0, Math.round(g)));
+        int b2 = (int) Math.min(255, Math.max(0, Math.round(b)));
         // Set the value of the corresponding pixel in the new image object
-        newPixels[x][y] = getObject((int) r2, (int) g2, (int) b2, oldPixel.hasAlpha());
+        newPixels[x][y] = getObject(r2, g2, b2, oldPixel.hasAlpha());
       }
     }
 
@@ -216,12 +217,12 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
     TypeofImageObject[][] newPixels = getMatrix(this.width, this.height);
 
     // Create a 3x3 Laplacian filter
-    int[][] filter = {
-        {-1/8, -1/8, -1/8, -1/8, -1/8},
-        {-1/8, 1/4, 1/4, 1/4, -1/8},
-        {-1/8, 1/4, 1, 1/4, -1/8},
-        {-1/8, 1/4, 1/4, 1/4, -1/8},
-        {-1/8, -1/8, -1/8, -1/8, -1/8}
+    double[][] filter = {
+        {-1.0/8.0, -1.0/8.0, -1.0/8.0, -1.0/8.0, -1.0/8.0},
+        {-1.0/8.0, 1.0/4.0, 1.0/4.0, 1.0/4.0, -1.0/8.0},
+        {-1.0/8.0, 1.0/4.0, 1.0, 1.0/4.0, -1.0/8.0},
+        {-1.0/8.0, 1.0/4.0, 1.0/4.0, 1.0/4.0, -1.0/8.0},
+        {-1.0/8.0, -1.0/8.0, -1.0/8.0, -1.0/8.0, -1.0/8.0}
     };
 
     // Iterate over each pixel in the image
@@ -230,8 +231,8 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
         // Apply the Laplacian filter to the pixel and its neighbors
         double r = 0, g = 0, b = 0;
         TypeofImageObject oldPixel = null;
-        for (int i = 0; i <= 2; i++) {
-          for (int j = 0; j <= 2; j++) {
+        for (int i = -1; i <= 1; i++) {
+          for (int j = -1; j <= 1; j++) {
             int xx = x + i;
             int yy = y + j;
             if (xx >= 0 && xx < this.width && yy >= 0 && yy < this.height) {
@@ -257,64 +258,61 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
     return getOImage(newPixels, this.getWidth(), this.getHeight());
   }
 
-  public TypeOfImage dither() {
-    TypeofImageObject[][] newPixels = getMatrix(this.width, this.height);
+  public TypeOfImage dither(ComponentRGB channel) throws
+      NoSuchFieldException, IllegalAccessException {
     double[][] errors = new double[this.width][this.height];
-
-    for (int y = 0; y < this.height; y++) {
-      for (int x = 0; x < this.width; x++) {
-        TypeofImageObject oldPixel = this.pixels[x][y];
-
-
-        // Compute the error for each channel
-        double oldChannelValue_1 = oldPixel.getChanne11();
-        double newChannelValue_1 = Math.floor(oldChannelValue_1 * 256.0 / 255.0);
-        double quantizationError_1 = oldChannelValue_1 - newChannelValue_1 * 255.0 / 256.0;
-        errors[x][y] += quantizationError_1 * quantizationError_1;
-        double newValues_1 = newChannelValue_1 * 255.0 / 256.0;
-
-        // Compute the error for each channel
-        double oldChannelValue_2 = oldPixel.getChanne12();
-        double newChannelValue_2 = Math.floor(oldChannelValue_2 * 256.0 / 255.0);
-        double quantizationError_2 = oldChannelValue_2 - newChannelValue_2 * 255.0 / 256.0;
-        errors[x][y] += quantizationError_2 * quantizationError_2;
-        double newValues_2 = newChannelValue_2 * 255.0 / 256.0;
-
-        // Compute the error for each channel
-        double oldChannelValue_3 = oldPixel.getChanne13();
-        double newChannelValue_3 = Math.floor(oldChannelValue_3 * 256.0 / 255.0);
-        double quantizationError_3 = oldChannelValue_3 - newChannelValue_3 * 255.0 / 256.0;
-        errors[x][y] += quantizationError_3 * quantizationError_3;
-        double newValues_3 = newChannelValue_1 * 255.0 / 256.0;
-
-
-        // Set the value of the corresponding pixel in the new image object
-        newPixels[x][y] = getObject((int) newValues_1, (int) newValues_2, (int) newValues_3,
-            oldPixel.hasAlpha());
-
-        // Propagate the error to neighboring pixels
-        if (x < this.width - 1) {
-          errors[x + 1][y] += 7.0 / 16.0 * errors[x][y];
-          if (y < this.height - 1) {
-            errors[x + 1][y + 1] += 1.0 / 16.0 * errors[x][y];
-          }
+    Field field = RGBIntegerObject.class.getDeclaredField(channel.toString());
+    TypeofImageObject[][] newPixels = getMatrix(this.width, this.height);
+    for (int r = 0; r < this.getHeight(); r++) {
+      for (int c = 0; c < this.getWidth(); c++) {
+        TypeofImageObject oldPixel = this.getPixels()[c][r];
+        Integer oldColor = (Integer) field.get(oldPixel);
+        int newColor = (oldColor > 127) ? 255 : 0;
+        int altColor = (oldColor > 127) ? 0 : 255;
+        if (Math.abs(oldColor - newColor) > Math.abs(oldColor - altColor)) {
+          newColor = altColor;
         }
-        if (y < this.height - 1) {
-          errors[x][y + 1] += 5.0 / 16.0 * errors[x][y];
-          if (x > 0) {
-            errors[x - 1][y + 1] += 3.0 / 16.0 * errors[x][y];
-          }
+
+        newPixels[c][r] = getObject(newColor,newColor,newColor, oldPixel.hasAlpha());
+        int error = oldColor - newColor;
+        if (c < this.width - 1) {
+          // Add to pixel on the right
+          errors[c + 1][r] += (7.0 / 16.0) * error;
+        }
+        if (r < this.height - 1 && c > 0) {
+          // Add to pixel on the next-row-left
+          errors[c - 1][r + 1] += (3.0 / 16.0) * error;
+
+        }
+        if (r < this.height - 1) {
+          // Add to pixel below in next row
+          errors[c][r + 1] += (5.0 / 16.0) * error;
+        }
+        if (r < this.height - 1 && c < this.width - 1) {
+          // Add to pixel on the next-row-right
+          errors[c + 1][r + 1] += (1.0 / 16.0) * error;
         }
       }
     }
+    // propagate error to neighboring pixels
+    for (int r = 0; r < this.height; r++) {
+      for (int c = 0; c < this.width; c++) {
+        TypeofImageObject newPixel = newPixels[c][r];
+        int channelRGB = (Integer) field.get(newPixel);
+
+        // add error to neighboring pixels
+        channelRGB += errors[c][r];
+        // truncate pixel color values to [0, 255]
+        channelRGB = Math.min(Math.max(channelRGB, 0), 255);
+
+        // update pixel color
+        newPixels[c][r] = getObject(channelRGB, channelRGB, channelRGB, newPixel.hasAlpha());
+      }
+    }
+
 
     return getOImage(newPixels, this.getWidth(), this.getHeight());
   }
-
-
-
-
-
 
 
 }

@@ -1,5 +1,5 @@
 #load koala.ppm and call it 'koala'
-load images/sample_image1.jpg koala
+load images/koala.ppm koala
 
 #brighten koala by adding 10
 brighten 10 koala koala-brighter
@@ -14,13 +14,13 @@ horizontal-flip koala-vertical koala-vertical-horizontal
 greyscale value-component koala koala-greyscale
 
 #save koala-brighter
-save images/koala-brighter.jpg koala-brighter
+save images/koala-brighter.ppm koala-brighter
 
 #save koala-greyscale
-save images/koala-gs.jpg koala-greyscale
+save images/koala-gs.ppm koala-greyscale
 
 #overwrite koala with another file
-load images/sample_image1_.jpg koala
+load images/upper.ppm koala
 
 #give the koala a red tint
 rgb-split koala koala-red koala-green koala-blue
@@ -30,7 +30,31 @@ brighten 50 koala-red koala-red
 
 #combine them back, but by using the brightened red we get a red tint
 rgb-combine koala-red-tint koala-red koala-green koala-blue
-save images/koala-red-tint.jpg koala-red-tint
+save images/koala-red-tint.ppm koala-red-tint
+
+#adding the new operations
+#blur
+filter-blur koala koala-blur
+filter-blur koala-blur koala-blur2
+filter-blur koala-blur2 koala-blur3
+
+#sharpen
+filter-sharpen koala koala-sharpen
+
+#greyscale transformation
+transform-greyscale koala koala-trans-greyscale
+
+#sepia transformation
+transform-sepia koala koala-sepia
+
+#dither
+dither red-component koala koala-dither
+
+save images/koala-blur.ppm koala-blur3
+save images/koala-sharpen.ppm koala-sharpen
+save images/koala-trans-greyscale.ppm koala-trans-greyscale
+save images/koala-sepia.ppm koala-sepia
+save images/koala-dither.ppm koala-dither
 
 #adding the new operations
 #blur

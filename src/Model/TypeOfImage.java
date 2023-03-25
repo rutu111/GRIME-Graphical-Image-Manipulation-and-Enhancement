@@ -1,5 +1,7 @@
 package Model;
 
+import java.awt.Component;
+
 /**
  * The following interface represents an image.
  * Common properties that images would have are 1. Tha
@@ -90,7 +92,7 @@ public interface TypeOfImage {
   TypeOfImage blur();
   TypeOfImage sharpen();
 
-  TypeOfImage dither();
+  TypeOfImage dither(ComponentRGB channel) throws NoSuchFieldException, IllegalAccessException;
 
   TypeOfImage colorTransformationSepia();
 

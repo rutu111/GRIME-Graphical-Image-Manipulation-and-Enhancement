@@ -176,12 +176,13 @@ public class Model implements Operations {
   }
 
   @Override
-  public void dither(String imageName, String newImageName) {
+  public void dither(String imageName, String newImageName, ComponentRGB channel)
+      throws NoSuchFieldException, IllegalAccessException {
     if (!imageHashMap.containsKey(imageName)) {
       throw new NoSuchElementException("Image: " + imageName + " does not exist.");
     }
     TypeOfImage image = imageHashMap.get(imageName);
-    imageHashMap.put(newImageName, image.dither());
+    imageHashMap.put(newImageName, image.dither(channel));
 
   }
 
