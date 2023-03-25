@@ -267,9 +267,14 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
       for (int c = 0; c < this.getWidth(); c++) {
         TypeofImageObject oldPixel = this.getPixels()[c][r];
         Integer oldColor = (Integer) field.get(oldPixel);
-        Integer newColor = (oldColor > 127) ? 255 : 0;
-        Integer error = oldColor - newColor;
+        int newColor = (oldColor > 127) ? 255 : 0;
+        int altColor = (oldColor > 127) ? 0 : 255;
+        if (Math.abs(oldColor - newColor) > Math.abs(oldColor - altColor)) {
+          newColor = altColor;
+        }
+
         newPixels[c][r] = getObject(newColor,newColor,newColor, oldPixel.hasAlpha());
+        int error = oldColor - newColor;
         if (c < this.width - 1) {
           // Add to pixel on the right
           errors[c + 1][r] += (7.0 / 16.0) * error;
@@ -289,6 +294,23 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
         }
       }
     }
+    // propagate error to neighboring pixels
+    for (int r = 0; r < this.height; r++) {
+      for (int c = 0; c < this.width; c++) {
+        TypeofImageObject newPixel = newPixels[c][r];
+        int channelRGB = (Integer) field.get(newPixel);
+
+        // add error to neighboring pixels
+        channelRGB += errors[c][r];
+        // truncate pixel color values to [0, 255]
+        channelRGB = Math.min(Math.max(channelRGB, 0), 255);
+
+        // update pixel color
+        newPixels[c][r] = getObject(channelRGB, channelRGB, channelRGB, newPixel.hasAlpha());
+      }
+    }
+
+
     return getOImage(newPixels, this.getWidth(), this.getHeight());
   }
 
