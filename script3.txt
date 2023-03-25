@@ -1,0 +1,62 @@
+#load koala.ppm and call it 'koala'
+load images/sample_image_bmp.bmp koala
+
+#brighten koala by adding 10
+brighten 10 koala koala-brighter 
+
+#flip koala vertically
+vertical-flip koala koala-vertical
+
+#flip the vertically flipped koala horizontally
+horizontal-flip koala-vertical koala-vertical-horizontal
+
+#create a greyscale using only the value component, as an image koala-greyscale
+greyscale value-component koala koala-greyscale
+
+#save koala-brighter
+save images/koala-brighter.bmp koala-brighter
+
+#save koala-greyscale
+save images/koala-gs.bmp koala-greyscale
+
+#overwrite koala with another file
+load images/sample_image_bmp_.bmp koala
+
+#give the koala a red tint
+rgb-split koala koala-red koala-green koala-blue
+
+#brighten just the red image
+brighten 50 koala-red koala-red
+
+#combine them back, but by using the brightened red we get a red tint
+rgb-combine koala-red-tint koala-red koala-green koala-blue
+save images/koala-red-tint.bmp koala-red-tint
+
+#adding the new operations
+
+#blur
+filter-blur koala koala-blur
+
+#sharpen
+filter-sharpen koala koala-sharpen
+
+#greyscale transformation
+transform-greyscale koala koala-trans-greyscale
+
+#sepia transformation
+transform-sepia koala koala-sepia
+
+#dither
+dither koala koala-dither
+
+save images/koala-blur.bmp koala-blur
+save images/koala-sharpen.bmp koala-sharpen
+save images/koala-trans-greyscale.bmp koala-trans-greyscale
+save images/koala-sepia.bmp koala-sepia
+save images/koala-dither.bmp koala-dither
+
+#load greyscale and do a vertical flip and save
+load images/koala-gs.bmp koala-greyscale_loaded
+vertical-flip koala-greyscale_loaded koala-greyscale_loaded_vertical
+save images/koala-greyscale_loaded_vertical.bmp koala-greyscale_loaded_vertical
+

@@ -1,0 +1,95 @@
+#load as ppm and save as other formats
+load images/koala.ppm koala
+
+rgb-split koala koala-red koala-green koala-blue
+brighten 50 koala-red koala-red
+rgb-combine koala-red-tint koala-red koala-green koala-blue
+save images/koala-red-tint.jpg koala-red-tint
+
+rgb-split koala koala-red koala-green koala-blue
+brighten 50 koala-red koala-red
+rgb-combine koala-red-tint koala-red koala-green koala-blue
+save images/koala-red-tint.bmp koala-red-tint
+
+rgb-split koala koala-red koala-green koala-blue
+brighten 50 koala-red koala-red
+rgb-combine koala-red-tint koala-red koala-green koala-blue
+save images/koala-red-tint.png koala-red-tint
+
+#load as png and save as other formats
+load images/sample_image_png.png koala
+
+rgb-split koala koala-red koala-green koala-blue
+brighten 50 koala-green koala-red
+rgb-combine koala-red-tint koala-red koala-green koala-blue
+save images/koala-red-tint.jpg koala-red-tint
+
+rgb-split koala koala-red koala-green koala-blue
+brighten 50 koala-green koala-red
+rgb-combine koala-red-tint koala-red koala-green koala-blue
+save images/koala-red-tint.bmp koala-red-tint
+
+rgb-split koala koala-red koala-green koala-blue
+brighten 50 koala-green koala-red
+rgb-combine koala-red-tint koala-red koala-green koala-blue
+save images/koala-red-tint.ppm koala-red-tint
+
+#load as bmp and save as other formats
+load images/sample_image_bmp.bmp koala
+
+rgb-split koala koala-red koala-green koala-blue
+brighten 50 koala-blue koala-red
+rgb-combine koala-red-tint koala-red koala-green koala-blue
+save images/koala-red-tint.jpg koala-red-tint
+
+rgb-split koala koala-red koala-green koala-blue
+brighten 50 koala-blue koala-red
+rgb-combine koala-red-tint koala-red koala-green koala-blue
+save images/koala-red-tint.png koala-red-tint
+
+rgb-split koala koala-red koala-green koala-blue
+brighten 50 koala-blue koala-red
+rgb-combine koala-red-tint koala-red koala-green koala-blue
+save images/koala-red-tint.ppm koala-red-tint
+
+#load as jpg and save as other formats
+load images/sample_image1.jpg koala
+
+rgb-split koala koala-red koala-green koala-blue
+brighten 50 koala-green koala-red
+rgb-combine koala-red-tint koala-red koala-green koala-blue
+save images/koala-red-tint.ppm koala-red-tint
+
+rgb-split koala koala-red koala-green koala-blue
+brighten 50 koala-green koala-red
+rgb-combine koala-red-tint koala-red koala-green koala-blue
+save images/koala-red-tint.png koala-red-tint
+
+rgb-split koala koala-red koala-green koala-blue
+brighten 50 koala-green koala-red
+rgb-combine koala-red-tint koala-red koala-green koala-blue
+save images/koala-red-tint.bmp koala-red-tint
+
+#from alpha channel to non-alpha channels
+load images/sample_image_alpha.png koala
+brighten 10 koala koala-brighter
+vertical-flip koala-brighter koala-vertical_brighter
+save images/koala-brighter_vertical_alpha.ppm koala-vertical_brighter
+
+load images/sample_image_alpha.png koala
+brighten 10 koala koala-brighter
+vertical-flip koala-brighter koala-vertical_brighter
+save images/koala-brighter_vertical_alpha.jpg koala-vertical_brighter
+
+#load greyscale in one format, and do a vertical flip and save in another
+load images/sample_image_png.png koala
+greyscale value-component koala koala-greyscale
+save images/koala-test-grey.png koala-greyscale
+load images/koala-test-grey.png koala
+vertical-flip koala koala-vertical
+save images/koala-vertical.ppm koala-vertical
+
+#load alpha greyscale in one format, and do a vertical flip and save in another
+load images/sample_image_alpha_greyscale.png koala
+vertical-flip koala koala-vertical
+save images/koala-brighter_vertical_alpha_greyscale.ppm koala-vertical

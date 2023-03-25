@@ -25,8 +25,6 @@ load images/sample_image1_.jpg koala
 #give the koala a red tint
 rgb-split koala koala-red koala-green koala-blue
 
-save images/koala-red.jpg koala-red
-
 #brighten just the red image
 brighten 50 koala-red koala-red
 
@@ -35,7 +33,6 @@ rgb-combine koala-red-tint koala-red koala-green koala-blue
 save images/koala-red-tint.jpg koala-red-tint
 
 #adding the new operations
-
 #blur
 filter-blur koala koala-blur
 
@@ -56,3 +53,9 @@ save images/koala-sharpen.jpg koala-sharpen
 save images/koala-trans-greyscale.jpg koala-trans-greyscale
 save images/koala-sepia.jpg koala-sepia
 save images/koala-dither.jpg koala-dither
+
+#load greyscale and do a vertical flip and save
+load images/koala-gs.jpg koala-greyscale_loaded
+vertical-flip koala-greyscale_loaded koala-greyscale_loaded_vertical
+save images/koala-greyscale_loaded_vertical.jpg koala-greyscale_loaded_vertical
+
