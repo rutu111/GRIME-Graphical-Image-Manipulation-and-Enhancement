@@ -264,17 +264,22 @@ public class ImageController {
       }
       break;
       case "dither": {
-        if (commands.length != 3) {
+        if (commands.length != 4) {
           throw new IllegalArgumentException("Invalid command format.");
         }
-        String imageName = commands[1];
-        String updatedImageName = commands[2];
-        model.dither(imageName,
-            updatedImageName);
-        this.out.append(
-            "Image has been colour transformed with luma '" + imageName + "' stored as '"
-                + updatedImageName + "'" +
-                "\n");
+        String component = commands[1];
+        String imageName = commands[2];
+        String updatedImageName = commands[3];
+        String[] componentParts = component.split("-");
+        if (componentParts[0].equals("red") || componentParts[0].equals("green")
+            || componentParts[0].equals("blue")) {
+          model.dither(imageName,
+              updatedImageName, ComponentRGB.valueOf(componentParts[0]));
+          this.out.append(
+              "Image has been dithered '" + imageName + "' stored as '"
+                  + updatedImageName + "'" +
+                  "\n");
+        }
       }
       break;
       case "save":
