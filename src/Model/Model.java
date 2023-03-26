@@ -1,6 +1,8 @@
 package Model;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 /**
@@ -184,6 +186,11 @@ public class Model implements Operations {
     TypeOfImage image = imageHashMap.get(imageName);
     imageHashMap.put(newImageName, image.dither(channel));
 
+  }
+  
+  public Collection<String> getKeys() {
+    return imageHashMap.keySet();
+  
   }
 
 }

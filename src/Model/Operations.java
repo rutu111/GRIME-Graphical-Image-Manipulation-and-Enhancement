@@ -1,5 +1,6 @@
 package Model;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 
@@ -124,4 +125,6 @@ public interface Operations {
 
   void dither(String imageName, String newImageName, ComponentRGB channel)
       throws NoSuchFieldException, IllegalAccessException;
+
+  Collection<String> getKeys();
 }

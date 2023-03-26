@@ -35,7 +35,6 @@ brighten 50 koala-red koala-red
 rgb-combine koala-red-tint koala-red koala-green koala-blue
 save images/koala-red-tint.jpg koala-red-tint
 
-#adding the new operations
 
 #adding the new operations
 #blur
@@ -61,8 +60,7 @@ save images/koala-dither.jpg koala-dither
 
 #load greyscale and do a vertical flip and save
 load images/koala-gs.jpg koala-greyscale_loaded
-#vertical-flip koala-greyscale_loaded koala-greyscale_loaded_vertical
-brighten 100 koala-greyscale_loaded koala-greyscale_loaded_vertical
+vertical-flip koala-greyscale_loaded koala-greyscale_loaded_vertical
 save images/koala-greyscale_loaded_vertical.jpg koala-greyscale_loaded_vertical
 
 

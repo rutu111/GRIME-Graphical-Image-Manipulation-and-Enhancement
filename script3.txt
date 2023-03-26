@@ -19,6 +19,9 @@ save images/koala-brighter.bmp koala-brighter
 #save koala-greyscale
 save images/koala-gs.bmp koala-greyscale
 
+#save the flip
+save images/koala-vertical-horizontal.bmp koala-vertical-horizontal
+
 #overwrite koala with another file
 load images/sample_image_bmp_.bmp koala
 
