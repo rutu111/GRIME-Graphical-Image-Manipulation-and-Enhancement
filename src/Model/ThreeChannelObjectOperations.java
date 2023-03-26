@@ -263,21 +263,16 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
     double[][] errors = new double[this.width][this.height];
     Field field = RGBIntegerObject.class.getDeclaredField(channel.toString());
     TypeofImageObject[][] newPixels = getMatrix(this.width, this.height);
-    for (int r = 0; r < this.getHeight(); r++) {
-      for (int c = 0; c < this.getWidth(); c++) {
+    for (int c = 0; c < this.getWidth(); c++) {
+      for (int r = 0; r < this.getHeight(); r++) {
         TypeofImageObject oldPixel = this.getPixels()[c][r];
         Integer oldColor = (Integer) field.get(oldPixel);
         int newColor = (oldColor > 127) ? 255 : 0;
-        int altColor = (oldColor > 127) ? 0 : 255;
-        if (Math.abs(oldColor - newColor) > Math.abs(oldColor - altColor)) {
-          newColor = altColor;
-        }
-
         newPixels[c][r] = getObject(newColor,newColor,newColor, oldPixel.hasAlpha());
         int error = oldColor - newColor;
         if (c < this.width - 1) {
           // Add to pixel on the right
-          errors[c + 1][r] += (7.0 / 16.0) * error;
+          errors[c+1][r] += (7.0 / 16.0) * error;
         }
         if (r < this.height - 1 && c > 0) {
           // Add to pixel on the next-row-left
@@ -286,7 +281,7 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
         }
         if (r < this.height - 1) {
           // Add to pixel below in next row
-          errors[c][r + 1] += (5.0 / 16.0) * error;
+          errors[c][r+1] += (5.0 / 16.0) * error;
         }
         if (r < this.height - 1 && c < this.width - 1) {
           // Add to pixel on the next-row-right
@@ -295,8 +290,8 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
       }
     }
     // propagate error to neighboring pixels
-    for (int r = 0; r < this.height; r++) {
-      for (int c = 0; c < this.width; c++) {
+    for (int c = 0; c < this.width; c++) {
+      for (int r = 0; r < this.height; r++) {
         TypeofImageObject newPixel = newPixels[c][r];
         int channelRGB = (Integer) field.get(newPixel);
 

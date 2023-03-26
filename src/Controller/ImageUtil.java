@@ -242,9 +242,13 @@ public class ImageUtil {
     int width = ImageOutput.getWidth();
     int height = ImageOutput.getHeight();
 
+    BufferedImage image;
+
+    int number_of_pixels = width*height;
+    int counter = 0;
 
     if (ImageOutput.getPixels()[0][0].hasAlpha() != null) {
-      BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+      image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
       for (int y = 0; y < ImageOutput.getHeight(); y++) {
         for (int x = 0; x < ImageOutput.getWidth(); x++) {
           TypeofImageObject pixel = ImageOutput.getPixels()[x][y];
@@ -252,26 +256,50 @@ public class ImageUtil {
           int red = pixel.getChanne11();
           int green = pixel.getChanne12();
           int blue = pixel.getChanne13();
+          if (red == blue & green == red & blue == green) {
+            counter+=1;
+          }
           int argb = (alpha << 24) | (red << 16) | (green << 8) | blue;
           image.setRGB(x, y, argb);
         }
       }
-    }
-    BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-    for (int y = 0; y < ImageOutput.getHeight(); y++) {
-      for (int x = 0; x < ImageOutput.getWidth(); x++) {
-        TypeofImageObject pixel = ImageOutput.getPixels()[x][y];
-        int red = pixel.getChanne11();
-        int green = pixel.getChanne12();
-        int blue = pixel.getChanne13();
-        int rgb = (red << 16) | (green << 8) | blue;
-        image.setRGB(x, y, rgb);
+    } else {
+      image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+      for (int y = 0; y < ImageOutput.getHeight(); y++) {
+        for (int x = 0; x < ImageOutput.getWidth(); x++) {
+          TypeofImageObject pixel = ImageOutput.getPixels()[x][y];
+          int red = pixel.getChanne11();
+          int green = pixel.getChanne12();
+          int blue = pixel.getChanne13();
+          int rgb = (red << 16) | (green << 8) | blue;
+          if (red == blue & green == red & blue == green) {
+            counter += 1;
+          }
+          image.setRGB(x, y, rgb);
+        }
       }
     }
 
-    File output = new File(filePath);
-    String fileType = filePath.split("\\.")[1];
-    ImageIO.write(image, fileType, output);
+    BufferedImage image_grey = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
+    if (counter == number_of_pixels) {
+      for (int y = 0; y < ImageOutput.getHeight(); y++) {
+        for (int x = 0; x < ImageOutput.getWidth(); x++) {
+          TypeofImageObject pixel = ImageOutput.getPixels()[x][y];
+          int grey = pixel.getChanne11();
+          image_grey.setRGB(x, y, grey << 16 | grey << 8 | grey);
+        }
+      }
+    }
+
+    if (counter == number_of_pixels) {
+      File output = new File(filePath);
+      String fileType = filePath.split("\\.")[1];
+      ImageIO.write(image_grey, fileType, output);
+    } else {
+      File output = new File(filePath);
+      String fileType = filePath.split("\\.")[1];
+      ImageIO.write(image, fileType, output);
+    }
   }
 
 
