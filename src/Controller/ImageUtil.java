@@ -244,7 +244,6 @@ public class ImageUtil {
 
     int width = ImageOutput.getWidth();
     int height = ImageOutput.getHeight();
-
     BufferedImage image;
 
     if (ImageOutput.getPixels()[0][0].hasAlpha() != null) {
@@ -252,13 +251,15 @@ public class ImageUtil {
       for (int y = 0; y < ImageOutput.getHeight(); y++) {
         for (int x = 0; x < ImageOutput.getWidth(); x++) {
           TypeofImageObject pixel = ImageOutput.getPixels()[x][y];
-          int alpha = 255; // set alpha to 255 (fully opaque)
-          int red = pixel.getChanne11();
-          int green = pixel.getChanne12();
-          int blue = pixel.getChanne13();
+          if (pixel != null) {
+            int alpha = 255; // set alpha to 255 (fully opaque)
+            int red = pixel.getChanne11();
+            int green = pixel.getChanne12();
+            int blue = pixel.getChanne13();
 
-          int argb = (alpha << 24) | (red << 16) | (green << 8) | blue;
-          image.setRGB(x, y, argb);
+            int argb = (alpha << 24) | (red << 16) | (green << 8) | blue;
+            image.setRGB(x, y, argb);
+          }
         }
       }
     } else {
@@ -266,12 +267,14 @@ public class ImageUtil {
       for (int y = 0; y < ImageOutput.getHeight(); y++) {
         for (int x = 0; x < ImageOutput.getWidth(); x++) {
           TypeofImageObject pixel = ImageOutput.getPixels()[x][y];
-          int red = pixel.getChanne11();
-          int green = pixel.getChanne12();
-          int blue = pixel.getChanne13();
-          int rgb = (red << 16) | (green << 8) | blue;
+          if(pixel!=null) {
+            int red = pixel.getChanne11();
+            int green = pixel.getChanne12();
+            int blue = pixel.getChanne13();
+            int rgb = (red << 16) | (green << 8) | blue;
 
-          image.setRGB(x, y, rgb);
+            image.setRGB(x, y, rgb);
+          }
         }
       }
     }
