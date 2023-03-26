@@ -28,17 +28,14 @@ import javax.imageio.ImageIO;
 
 
 /**
- * This class contains utility methods to read a PPM image
- * from file and simply print its contents.
+ * This class contains utility methods to read a PPM image from file and simply print its contents.
  * Feel free to change this method as required.
  */
 public class ImageUtil {
 
   /**
-   * Read an image file in the PPM format and print the colors.
-   * We return ModelRGB type for now,
-   * when the scope is expanded we can make the abstract class
-   * type to be returned.
+   * Read an image file in the PPM format and print the colors. We return ModelRGB type for now,
+   * when the scope is expanded we can make the abstract class type to be returned.
    *
    * @param filename the path of the file.
    */
@@ -108,8 +105,9 @@ public class ImageUtil {
 
   /**
    * This method creates a new PPM file on save.
-   * @param model model instance.
-   * @param filePath path to save the file.
+   *
+   * @param model     model instance.
+   * @param filePath  path to save the file.
    * @param imageName save of the image to save.
    * @throws FileNotFoundException if image object does not exist.
    */
@@ -142,7 +140,8 @@ public class ImageUtil {
     }
   }
 
-  public static void imageIORead(Operations model, String filename, String nameOfTheObject) throws IOException {
+  public static void imageIORead(Operations model, String filename, String nameOfTheObject)
+      throws IOException {
     BufferedImage image = null;
     File file = new File(filename);
 
@@ -188,7 +187,8 @@ public class ImageUtil {
             int red = (pixel >> 8) & 0xff;
             int green = (pixel >> 8) & 0xff;
             int blue = (pixel >> 8) & 0xff;
-            builderObject.addPixelAtPosition(x, y, new RGBIntegerAlphaObject(red, green, blue, alpha));
+            builderObject.addPixelAtPosition(x, y,
+                new RGBIntegerAlphaObject(red, green, blue, alpha));
 
           }
         }
@@ -200,11 +200,14 @@ public class ImageUtil {
             int red = (pixel >> 16) & 0xff;
             int green = (pixel >> 8) & 0xff;
             int blue = pixel & 0xff;
-            builderObject.addPixelAtPosition(x, y, new RGBIntegerAlphaObject(red, green, blue, alpha));
+            builderObject.addPixelAtPosition(x, y,
+                new RGBIntegerAlphaObject(red, green, blue, alpha));
 
           }
         }
       }
+      TypeOfImage imageType = builderObject.buildImage();
+      model.addImageToModel(imageType, nameOfTheObject);
       ;
     } else {
       RGBIntegerImageBuilder builderObject = new RGBIntegerImageBuilder(width, height);
@@ -244,9 +247,6 @@ public class ImageUtil {
 
     BufferedImage image;
 
-    int number_of_pixels = width*height;
-    int counter = 0;
-
     if (ImageOutput.getPixels()[0][0].hasAlpha() != null) {
       image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
       for (int y = 0; y < ImageOutput.getHeight(); y++) {
@@ -256,9 +256,7 @@ public class ImageUtil {
           int red = pixel.getChanne11();
           int green = pixel.getChanne12();
           int blue = pixel.getChanne13();
-          if (red == blue & green == red & blue == green) {
-            counter+=1;
-          }
+
           int argb = (alpha << 24) | (red << 16) | (green << 8) | blue;
           image.setRGB(x, y, argb);
         }
@@ -272,34 +270,16 @@ public class ImageUtil {
           int green = pixel.getChanne12();
           int blue = pixel.getChanne13();
           int rgb = (red << 16) | (green << 8) | blue;
-          if (red == blue & green == red & blue == green) {
-            counter += 1;
-          }
+
           image.setRGB(x, y, rgb);
         }
       }
     }
 
-    BufferedImage image_grey = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
-    if (counter == number_of_pixels) {
-      for (int y = 0; y < ImageOutput.getHeight(); y++) {
-        for (int x = 0; x < ImageOutput.getWidth(); x++) {
-          TypeofImageObject pixel = ImageOutput.getPixels()[x][y];
-          int grey = pixel.getChanne11();
-          image_grey.setRGB(x, y, grey << 16 | grey << 8 | grey);
-        }
-      }
-    }
+    File output = new File(filePath);
+    String fileType = filePath.split("\\.")[1];
+    ImageIO.write(image, fileType, output);
 
-    if (counter == number_of_pixels) {
-      File output = new File(filePath);
-      String fileType = filePath.split("\\.")[1];
-      ImageIO.write(image_grey, fileType, output);
-    } else {
-      File output = new File(filePath);
-      String fileType = filePath.split("\\.")[1];
-      ImageIO.write(image, fileType, output);
-    }
   }
 
 

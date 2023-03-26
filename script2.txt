@@ -2,7 +2,7 @@
 load images/sample_image_png.png koala
 
 #brighten koala by adding 10
-brighten 10 koala koala-brighter 
+brighten 100 koala koala-brighter
 
 #flip koala vertically
 vertical-flip koala koala-vertical
@@ -19,6 +19,9 @@ save images/koala-brighter.png koala-brighter
 #save koala-greyscale
 save images/koala-gs.png koala-greyscale
 
+#save the flip
+save images/koala-vertical-horizontal.png koala-vertical-horizontal
+
 #overwrite koala with another file
 load images/sample_image_png_.png koala
 
@@ -26,7 +29,7 @@ load images/sample_image_png_.png koala
 rgb-split koala koala-red koala-green koala-blue
 
 #brighten just the red image
-brighten 50 koala-red koala-red
+brighten 50 koala-green koala-green
 
 #combine them back, but by using the brightened red we get a red tint
 rgb-combine koala-red-tint koala-red koala-green koala-blue

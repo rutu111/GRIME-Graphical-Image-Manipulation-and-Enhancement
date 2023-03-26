@@ -97,6 +97,7 @@ public class ImageController {
     if (commands.length == 0 || commands[0].trim().isEmpty()) {
       this.out.append("Please enter appropriate command. \n");
     }
+    System.out.print(model.getKeys());
     switch (commands[0]) {
       case "load":
         try {
