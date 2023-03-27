@@ -75,8 +75,7 @@ public interface TypeOfImage {
    * @throws NoSuchFieldException   if enum not found.
    * @throws IllegalAccessException if illegal access.
    */
-  TypeOfImage visualizeValueIntensityLuma(MeasurementType measure)
-      throws NoSuchFieldException, IllegalAccessException;
+  TypeOfImage visualizeValueIntensityLuma(MeasurementType measure);
 
   /**
    * Method combines 3 greyscale images into an RGB image.

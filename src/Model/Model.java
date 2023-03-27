@@ -95,8 +95,7 @@ public class Model implements Operations {
 
   @Override
   public void visualizeValueIntensityLuma(String imageName, String newImageName,
-      MeasurementType measure)
-      throws NoSuchFieldException, IllegalAccessException {
+      MeasurementType measure) throws NoSuchElementException  {
     if (!imageHashMap.containsKey(imageName)) {
       throw new NoSuchElementException("Image: " + imageName + "does not exist.");
     }
@@ -147,16 +146,6 @@ public class Model implements Operations {
     imageHashMap.put(newImageName, image.colorTransformationSepia());
   }
 
-  @Override
-  public void colorTransformationLuma(String imageName, String newImageName)
-      throws NoSuchFieldException, IllegalAccessException {
-    if (!imageHashMap.containsKey(imageName)) {
-      throw new NoSuchElementException("Image: " + imageName + "does not exist.");
-    }
-    TypeOfImage image = imageHashMap.get(imageName);
-
-    imageHashMap.put(newImageName, image.visualizeValueIntensityLuma(MeasurementType.luma));
-  }
 
   @Override
   public void blur(String imageName, String newImageName)

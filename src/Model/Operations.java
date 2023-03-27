@@ -58,8 +58,7 @@ public interface Operations {
    * @throws IllegalAccessException for illegal acces.
    */
   void visualizeValueIntensityLuma(String imageName, String newImageName,
-      MeasurementType measure)
-      throws NoSuchFieldException, IllegalAccessException;
+      MeasurementType measure);
 
   /**
    * This methods splits RGB image into 3 greyscale images.
@@ -100,7 +99,7 @@ public interface Operations {
    * @throws IllegalAccessException for illegal acces.
    */
   void combineGreyScaleToRGB(String imageName1, String imageName2, String imageName3,
-      String newImageName) throws IllegalArgumentException, NoSuchElementException;
+      String newImageName);
 
   /**
    * This methods adds an image to the hashmap.
@@ -114,10 +113,6 @@ public interface Operations {
   boolean checkKeyInHashmap(String imageName);
 
   void colorTransformationSepia(String imageName, String newImageName);
-
-  void colorTransformationLuma(String imageName, String newImageName) throws NoSuchFieldException,
-      IllegalAccessException;
-
 
   void blur(String imageName, String newImageName);
 

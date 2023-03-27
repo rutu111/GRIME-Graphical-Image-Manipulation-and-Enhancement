@@ -2,7 +2,7 @@
 load images/koala.ppm koala
 
 #brighten koala by adding 10
-brighten 10 koala koala-brighter 
+brighten 10 koala koala-brighter
 
 #flip koala vertically
 vertical-flip koala koala-vertical

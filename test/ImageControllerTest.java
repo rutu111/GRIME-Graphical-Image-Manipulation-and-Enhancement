@@ -64,7 +64,7 @@ public class ImageControllerTest {
 
     @Override
     public void visualizeValueIntensityLuma(String imageName, String newImageName,
-        MeasurementType measure) throws NoSuchFieldException, IllegalAccessException {
+        MeasurementType measure){
       log.append(
           "Received inputs for visualizeValueIntensityLuma: " + imageName + " " + newImageName + " "
               + measure + "\n");
@@ -117,11 +117,7 @@ public class ImageControllerTest {
 
     }
 
-    @Override
-    public void colorTransformationLuma(String imageName, String newImageName)
-        throws NoSuchFieldException, IllegalAccessException {
 
-    }
 
     @Override
     public void blur(String imageName, String newImageName) {

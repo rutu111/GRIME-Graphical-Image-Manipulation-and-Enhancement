@@ -98,8 +98,7 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
   protected abstract Field getField(ComponentRGB channel) throws NoSuchFieldException;
 
   @Override
-  public TypeOfImage visualizeValueIntensityLuma(MeasurementType measure)
-      throws NoSuchFieldException, IllegalAccessException {
+  public TypeOfImage visualizeValueIntensityLuma(MeasurementType measure) {
     TypeofImageObject[][] new_image = getMatrix(this.width, this.height);
     for (int i = 0; i < this.getWidth(); i++) {
       for (int j = 0; j < this.getHeight(); j++) {
