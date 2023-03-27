@@ -263,7 +263,7 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
   public TypeOfImage dither(ComponentRGB channel) throws
       NoSuchFieldException, IllegalAccessException {
     double[][] errors = new double[this.width][this.height];
-    Field field = RGBIntegerObject.class.getDeclaredField(channel.toString());
+    Field field = getField(channel);
     TypeofImageObject[][] newPixels = getMatrix(this.width, this.height);
     for (int c = 0; c < this.getWidth(); c++) {
       for (int r = 0; r < this.getHeight(); r++) {

@@ -72,3 +72,5 @@ save images/koala-red-tint_alpha.png koala-red-tint
 brighten 10 koala koala-brighter
 vertical-flip koala-brighter koala-vertical_brighter
 save images/koala-brighter_vertical_alpha.png koala-vertical_brighter
+dither red-component koala koala-dither
+save images/koala-dither_alpha.png koala-dither
