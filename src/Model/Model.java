@@ -76,7 +76,7 @@ public class Model implements Operations {
       throw new NoSuchElementException("Image: " + imageName + "does not exist.");
     }
     TypeOfImage image = imageHashMap.get(imageName);
-    if (image instanceof RGBIntegerImage) {
+    if (image instanceof RGBIntegerImage | image instanceof RGBIntegerAlphaImage ) {
       imageHashMap.put(newImageName, image.visIndividualComponent(channel));
     }
   }
