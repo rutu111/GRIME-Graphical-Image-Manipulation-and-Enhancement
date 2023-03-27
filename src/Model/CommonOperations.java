@@ -60,8 +60,7 @@ public abstract class CommonOperations implements TypeOfImage {
       throws NoSuchFieldException, IllegalAccessException;
 
   @Override
-  public abstract TypeOfImage visualizeValueIntensityLuma(MeasurementType measure)
-      throws NoSuchFieldException, IllegalAccessException;
+  public abstract TypeOfImage visualizeValueIntensityLuma(MeasurementType measure);
 
   /**
    * Abstract method creates an object of the class that extends this class.

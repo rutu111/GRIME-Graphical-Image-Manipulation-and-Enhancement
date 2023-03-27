@@ -1,5 +1,16 @@
 package Controller;
 
+import Controller.Commands.Blur;
+import Controller.Commands.Brighten;
+import Controller.Commands.Combine;
+import Controller.Commands.Dither;
+import Controller.Commands.HorizontalFlip;
+import Controller.Commands.RGBSplit;
+import Controller.Commands.Sepia;
+import Controller.Commands.Sharpen;
+import Controller.Commands.ValueIntensityLuma;
+import Controller.Commands.VerticalFlip;
+import Controller.Commands.VisulizeComponent;
 import Model.ComponentRGB;
 import Model.MeasurementType;
 import Model.Operations;
@@ -87,7 +98,7 @@ public class ImageController {
       view.printError("Please enter appropriate command. \n");
       return;
     }
-    //System.out.print(model.getKeys());
+    CommandDesignOperations cmd = null;
     switch (commands[0]) {
       case "load":
         try {
@@ -115,7 +126,7 @@ public class ImageController {
         double increment = Integer.parseInt(commands[1]);
         String imageName = commands[2];
         String updatedImageName = commands[3];
-        model.brighten(imageName, updatedImageName, increment);
+        cmd = new Brighten(imageName, updatedImageName, increment);
         view.printOutput(
             "Image brightened '" + imageName + "' stored as '" + updatedImageName + "'" + "\n");
       }
@@ -126,7 +137,7 @@ public class ImageController {
         }
         String imageName = commands[1];
         String updatedImageName = commands[2];
-        model.verticalFlip(imageName, updatedImageName);
+        cmd = new VerticalFlip(imageName, updatedImageName);
         view.printOutput(
             "Image vertically flipped '" + imageName + "' stored as '" + updatedImageName + "'" + "\n");
       }
@@ -137,8 +148,7 @@ public class ImageController {
         }
         String imageName = commands[1];
         String updatedImageName = commands[2];
-        model.horizontalFlip(imageName,
-            updatedImageName);
+        cmd = new HorizontalFlip(imageName, updatedImageName);
         view.printOutput(
             "Image horizontally flipped '" + imageName + "' stored as '" + updatedImageName + "'" +
                 "\n");
@@ -155,19 +165,15 @@ public class ImageController {
           String[] componentParts = component.split("-");
           if (componentParts[0].equals("red") || componentParts[0].equals("green")
               || componentParts[0].equals("blue")) {
-            model.visIndividualComponent(imageName, updatedImageName,
-                ComponentRGB.valueOf(componentParts[0]));
+            cmd = new VisulizeComponent(imageName, updatedImageName, ComponentRGB.valueOf(componentParts[0]));
           } else {
-            model.visualizeValueIntensityLuma(imageName, updatedImageName,
-                MeasurementType.valueOf(componentParts[0]));
+            cmd = new ValueIntensityLuma(imageName, updatedImageName, MeasurementType.valueOf(componentParts[0]));
           }
           view.printOutput(
               "Image '" + imageName + "' stored as greyscale '" + updatedImageName + "'" + "\n");
 
         } catch (IllegalArgumentException e) {
           view.printError("Error: " + e.getMessage() + "\n");
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-          throw new RuntimeException(e);
         }
         break;
       case "rgb-split":
@@ -179,7 +185,7 @@ public class ImageController {
           String updatedimageName1 = commands[2];
           String updatedimageName2 = commands[3];
           String updatedimageName3 = commands[4];
-          model.splitInto3Images(imageName, updatedimageName1, updatedimageName2,
+          cmd = new RGBSplit(imageName, updatedimageName1, updatedimageName2,
               updatedimageName3);
           view.printOutput(
               "Image '" + imageName + "' has been split into greyscale images: '"
@@ -187,8 +193,6 @@ public class ImageController {
                   "'" + "\n");
         } catch (IllegalArgumentException e) {
           view.printError("Error: " + e.getMessage() + "\n");
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-          throw new RuntimeException(e);
         }
         break;
       case "rgb-combine":
@@ -199,7 +203,7 @@ public class ImageController {
         String imageName1 = commands[2];
         String imageName2 = commands[3];
         String imageName3 = commands[4];
-        model.combineGreyScaleToRGB(imageName1, imageName2, imageName3, updatedimageName);
+        cmd = new Combine(imageName1, imageName2, imageName3, updatedimageName);
         view.printOutput(
             "Image '" + updatedimageName + " was created by combining greyscale images: '"
                 + imageName1 + " '" + imageName2 + "' and '" + imageName3 + "'" + "\n");
@@ -210,7 +214,7 @@ public class ImageController {
         }
         String imageName = commands[1];
         String updatedImageName = commands[2];
-        model.blur(imageName,
+        cmd = new Blur(imageName,
             updatedImageName);
         view.printOutput(
             "Image blurred '" + imageName + "' stored as '" + updatedImageName + "'" +
@@ -223,7 +227,7 @@ public class ImageController {
         }
         String imageName = commands[1];
         String updatedImageName = commands[2];
-        model.sharpen(imageName,
+        cmd = new Sharpen(imageName,
             updatedImageName);
         view.printOutput(
             "Image sharpened '" + imageName + "' stored as '" + updatedImageName + "'" +
@@ -236,8 +240,8 @@ public class ImageController {
         }
         String imageName = commands[1];
         String updatedImageName = commands[2];
-        model.colorTransformationLuma(imageName,
-            updatedImageName);
+        cmd = new ValueIntensityLuma(imageName, updatedImageName, MeasurementType.luma);
+
         view.printOutput(
             "Image has been colour transformed with luma '" + imageName + "' stored as '"
                 + updatedImageName + "'" +
@@ -250,7 +254,7 @@ public class ImageController {
         }
         String imageName = commands[1];
         String updatedImageName = commands[2];
-        model.colorTransformationSepia(imageName,
+        cmd = new Sepia(imageName,
             updatedImageName);
         view.printOutput(
             "Image has been provided with sepia tone '" + imageName + "' stored as '"
@@ -268,7 +272,7 @@ public class ImageController {
         String[] componentParts = component.split("-");
         if (componentParts[0].equals("red") || componentParts[0].equals("green")
             || componentParts[0].equals("blue")) {
-          model.dither(imageName,
+          cmd = new Dither(imageName,
               updatedImageName, ComponentRGB.valueOf(componentParts[0]));
           view.printOutput(
               "Image has been dithered '" + imageName + "' stored as '"
@@ -300,6 +304,14 @@ public class ImageController {
         //throws exception when the command is invalid
         throw new IllegalArgumentException("Invalid command: " + commands[0] + "\n");
 
+    }
+    if (cmd != null) {
+      try {
+        cmd.go(this.model); //execute the command
+        cmd = null;
+      } catch (NoSuchFieldException | IllegalAccessException e) {
+      throw new RuntimeException(e);
+    }
     }
   }
 
