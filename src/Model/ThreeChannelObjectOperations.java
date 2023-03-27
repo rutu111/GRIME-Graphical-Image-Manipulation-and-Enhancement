@@ -278,7 +278,6 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
         if (r < this.height - 1 && c > 0) {
           // Add to pixel on the next-row-left
           errors[c - 1][r + 1] += (3.0 / 16.0) * error;
-
         }
         if (r < this.height - 1) {
           // Add to pixel below in next row

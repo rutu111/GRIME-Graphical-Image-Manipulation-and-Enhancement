@@ -20,7 +20,7 @@ save images/koala-brighter.png koala-brighter
 save images/koala-gs.png koala-greyscale
 
 #save the flip
-#save images/koala-vertical-horizontal.png koala-vertical-horizontal
+save images/koala-vertical-horizontal.png koala-vertical-horizontal
 
 #overwrite koala with another file
 load images/sample_image_png_.png koala
@@ -65,11 +65,10 @@ save images/koala-greyscale_loaded_vertical.png koala-greyscale_loaded_vertical
 
 #with alpha channel
 load images/sample_image_alpha.png koala
-rgb-split koala koala-redA koala-greenA koala-blueA
-brighten 50 koala-redA koala-redA
-rgb-combine koala-red-tintA koala-redA koala-greenA koala-blueA
-save images/koala-red-tint_alpha.png koala-red-tintA
-
-#vertical-flip koala-brighter koala-vertical_brighter
-#save images/koala-brighter_vertical_alpha.png koala-vertical_brighter
-
+rgb-split koala koala-red koala-green koala-blue
+brighten 50 koala-red koala-red
+rgb-combine koala-red-tint koala-red koala-green koala-blue
+save images/koala-red-tint_alpha.png koala-red-tint
+brighten 10 koala koala-brighter
+vertical-flip koala-brighter koala-vertical_brighter
+save images/koala-brighter_vertical_alpha.png koala-vertical_brighter

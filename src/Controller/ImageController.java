@@ -302,7 +302,7 @@ public class ImageController {
         break;
       default:
         //throws exception when the command is invalid
-        throw new IllegalArgumentException("Invalid command: " + commands[0] + "\n");
+        throw new IllegalArgumentException("Invalid command: " + commands[0]);
 
     }
     if (cmd != null) {
