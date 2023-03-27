@@ -1,6 +1,7 @@
 import static org.junit.Assert.assertEquals;
 
 import Controller.ImageController;
+import View.View;
 import Model.ComponentRGB;
 import Model.MeasurementType;
 import Model.Operations;
@@ -155,7 +156,8 @@ public class ImageControllerTest {
     Reader in = new StringReader("load koala.ppm koala\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
-    ImageController imageController = new ImageController(mockModel, in, out);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
     imageController.run();
     String expectedOutput =
         "Received inputs for createBuilderThreeChannel:" + imageName + "\n";
@@ -175,7 +177,8 @@ public class ImageControllerTest {
     Reader in = new StringReader("load koala.jpg koala\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
-    ImageController imageController = new ImageController(mockModel, in, out);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
     imageController.run();
     String expectedOutput = "Error: Invalid file format: jpg\n"
                             + "Exit the program \n";
@@ -195,7 +198,8 @@ public class ImageControllerTest {
     Reader in = new StringReader("load koala.ppm as koala\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
-    ImageController imageController = new ImageController(mockModel, in, out);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
     imageController.run();
     String expectedOutput = "Error: Invalid command format.\n"
                             +"Exit the program \n";
@@ -215,7 +219,8 @@ public class ImageControllerTest {
     Reader in = new StringReader("laodd koala.ppm koala\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
-    ImageController imageController = new ImageController(mockModel, in, out);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
     imageController.run();
     String expectedOutput = "Error: Invalid command: laodd\n"
         +"Exit the program \n";
@@ -235,7 +240,8 @@ public class ImageControllerTest {
     Reader in = new StringReader("load less0.ppm koala\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
-    ImageController imageController = new ImageController(mockModel, in, out);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
     imageController.run();
     String expectedOutput = "Error: RGB values can't be less negative!\n"
         +"Exit the program \n";
@@ -255,7 +261,8 @@ public class ImageControllerTest {
     Reader in = new StringReader("load greater255.ppm koala\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
-    ImageController imageController = new ImageController(mockModel, in, out);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
     imageController.run();
     String expectedOutput = "Error: RGB values can't be above 255!\n"
         +"Exit the program \n";
@@ -275,7 +282,8 @@ public class ImageControllerTest {
     Reader in = new StringReader("load invalidMaxval.ppm koala\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
-    ImageController imageController = new ImageController(mockModel, in, out);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
     imageController.run();
     String expectedOutput = "Error: Invalid maxValue: -255\n"
         +"Exit the program \n";
@@ -295,7 +303,8 @@ public class ImageControllerTest {
     Reader in = new StringReader("load koala.pmm koala\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
-    ImageController imageController = new ImageController(mockModel, in, out);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
     imageController.run();
     String expectedOutput = "Error: Invalid file format: pmm\n"
         +"Exit the program \n";
@@ -316,7 +325,8 @@ public class ImageControllerTest {
     Reader in = new StringReader("load empty.ppm koala\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
-    ImageController imageController = new ImageController(mockModel, in, out);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
     imageController.run();
     String expectedOutput = "Error: Invalid file: Cannot be empty\n"
         +"Exit the program \n";
@@ -335,7 +345,8 @@ public class ImageControllerTest {
     Reader in = new StringReader("load zeroDim.ppm koala\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
-    ImageController imageController = new ImageController(mockModel, in, out);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
     imageController.run();
     String expectedOutput = "Error: Width and Height cannot be zero or negative\n"
         +"Exit the program \n";
@@ -354,7 +365,8 @@ public class ImageControllerTest {
     Reader in = new StringReader("load lessPixels.ppm koala\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
-    ImageController imageController = new ImageController(mockModel, in, out);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
     imageController.run();
     String expectedOutput = "Error: null\n"
         +"Exit the program \n";
@@ -374,7 +386,8 @@ public class ImageControllerTest {
     Reader in = new StringReader("load koala.ppm      koala\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
-    ImageController imageController = new ImageController(mockModel, in, out);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
     imageController.run();
     String expectedOutput = "Error: Invalid command format.\n"
         +"Exit the program \n";
@@ -392,7 +405,8 @@ public class ImageControllerTest {
     Reader in = new StringReader(" \nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
-    ImageController imageController = new ImageController(mockModel, in, out);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
     imageController.run();
     String expectedOutput = "Please enter appropriate command. \n"
         +"Error: Invalid command: \n"
@@ -412,7 +426,8 @@ public class ImageControllerTest {
     Reader in = new StringReader("load noDim.ppm koala\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
-    ImageController imageController = new ImageController(mockModel, in, out);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
     imageController.run();
     String expectedOutput = "Error: String index out of range: 0\n"
         +"Exit the program \n";
@@ -431,7 +446,8 @@ public class ImageControllerTest {
     Reader in = new StringReader("vertical-flip koala koala-vertical\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
-    ImageController imageController = new ImageController(mockModel, in, out);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
     imageController.run();
     String expectedOutput =
         "Received inputs for verticalFlip: " + imageName + " " + newImageName + "\n";
@@ -450,7 +466,8 @@ public class ImageControllerTest {
     Reader in = new StringReader("vertical-flip koala as koala-vertical\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
-    ImageController imageController = new ImageController(mockModel, in, out);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
     imageController.run();
     String expectedOutput = "Error: Invalid command format.\n"
         +"Exit the program \n";
@@ -469,7 +486,8 @@ public class ImageControllerTest {
     Reader in = new StringReader("horizontal-flip koala koala-horizontal\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
-    ImageController imageController = new ImageController(mockModel, in, out);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
     imageController.run();
     String expectedOutput =
         "Received inputs for horizontalFlip: " + imageName + " " + newImageName + "\n";
@@ -489,7 +507,8 @@ public class ImageControllerTest {
     Reader in = new StringReader("horizontal-flip koala as koala-horizontal\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
-    ImageController imageController = new ImageController(mockModel, in, out);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
     imageController.run();
     String expectedOutput = "Error: Invalid command format.\n"
         +"Exit the program \n";
@@ -509,7 +528,8 @@ public class ImageControllerTest {
     Reader in = new StringReader("brighten 10 koala koala-brighten\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
-    ImageController imageController = new ImageController(mockModel, in, out);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
     imageController.run();
     String expectedOutput =
         "Received inputs for brighten: " + imageName + " " + newImageName + " " + increment + "\n";
@@ -530,7 +550,8 @@ public class ImageControllerTest {
     Reader in = new StringReader("brighten 10 koala as koala-brighten\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
-    ImageController imageController = new ImageController(mockModel, in, out);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
     imageController.run();
     String expectedOutput = "Error: Invalid command format.\n"
         +"Exit the program \n";
@@ -552,7 +573,8 @@ public class ImageControllerTest {
     Reader in = new StringReader("greyscale value-component koala koala-greyscale-value\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
-    ImageController imageController = new ImageController(mockModel, in, out);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
     imageController.run();
     String expectedOutput =
         "Received inputs for visualizeValueIntensityLuma: " + imageName + " " + newImageName + " "
@@ -576,7 +598,8 @@ public class ImageControllerTest {
         + "exit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
-    ImageController imageController = new ImageController(mockModel, in, out);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
     imageController.run();
     String expectedOutput = "Error: Invalid command format.\n"
         +"Exit the program \n";
@@ -598,7 +621,8 @@ public class ImageControllerTest {
     Reader in = new StringReader("greyscale luma-component koala koala-greyscale-luma\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
-    ImageController imageController = new ImageController(mockModel, in, out);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
     imageController.run();
     String expectedOutput =
         "Received inputs for visualizeValueIntensityLuma: " + imageName + " " + newImageName + " "
@@ -622,7 +646,8 @@ public class ImageControllerTest {
         "greyscale intensity-component koala koala-greyscale-intensity\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
-    ImageController imageController = new ImageController(mockModel, in, out);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
     imageController.run();
     String expectedOutput =
         "Received inputs for visualizeValueIntensityLuma: " + imageName + " " + newImageName + " "
@@ -645,7 +670,8 @@ public class ImageControllerTest {
     Reader in = new StringReader("greyscale red-component koala koala-greyscale-red\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
-    ImageController imageController = new ImageController(mockModel, in, out);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
     imageController.run();
     String expectedOutput =
         "Received inputs for visIndividualComponent: " + imageName + " " + newImageName + " "
@@ -668,7 +694,8 @@ public class ImageControllerTest {
     Reader in = new StringReader("greyscale green-component koala koala-greyscale-green\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
-    ImageController imageController = new ImageController(mockModel, in, out);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
     imageController.run();
     String expectedOutput =
         "Received inputs for visIndividualComponent: " + imageName + " " + newImageName + " "
@@ -691,7 +718,8 @@ public class ImageControllerTest {
     Reader in = new StringReader("greyscale blue-component koala koala-greyscale-blue\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
-    ImageController imageController = new ImageController(mockModel, in, out);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
     imageController.run();
     String expectedOutput =
         "Received inputs for visIndividualComponent: " + imageName + " " + newImageName + " "
@@ -718,7 +746,8 @@ public class ImageControllerTest {
         + "koala-greyscale-blue\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
-    ImageController imageController = new ImageController(mockModel, in, out);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
     imageController.run();
     String expectedOutput = "Received inputs for splitInto3Images: " + imageName + " "
             + newImageNameR + " "
@@ -746,7 +775,8 @@ public class ImageControllerTest {
         + "koala-greyscale-blue\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
-    ImageController imageController = new ImageController(mockModel, in, out);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
     imageController.run();
     String expectedOutput = "Received inputs for combineGreyScaleToRGB: "
         + newimageName +" " + imageNameR + " " + imageNameG + " " + imageNameB + "\n";
@@ -765,7 +795,8 @@ public class ImageControllerTest {
     Reader in = new StringReader("run script1.txt\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
-    ImageController imageController = new ImageController(mockModel, in, out);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
     imageController.run();
     String expectedOutput = "Loaded image 'koalanew' from 'images/koala.ppm'\n"
     +"Image brightened 'koalanew' stored as 'koalanew-brighter'\n"
@@ -787,7 +818,8 @@ public class ImageControllerTest {
     Reader in = new StringReader("run as script1.txt\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
-    ImageController imageController = new ImageController(mockModel, in, out);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
     imageController.run();
     String expectedOutput = "Error: Invalid command format.\n"
         +"Exit the program \n";
@@ -806,7 +838,8 @@ public class ImageControllerTest {
     Reader in = new StringReader("save koala1.ppm koala\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
-    ImageController imageController = new ImageController(mockModel, in, out);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
     imageController.run();
     String expectedOutput = "Image koala saved as file: koala1.ppm\n"
     +"Error: null\n"
@@ -827,7 +860,8 @@ public class ImageControllerTest {
     Reader in = new StringReader("save koala1.ppm as koala\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
-    ImageController imageController = new ImageController(mockModel, in, out);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
     imageController.run();
     String expectedOutput = "Error: Invalid command format.\n"
         +"Exit the program \n";
@@ -847,7 +881,8 @@ public class ImageControllerTest {
     Reader in = new StringReader("save allimages/koala1.ppm koala\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
-    ImageController imageController = new ImageController(mockModel, in, out);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
     imageController.run();
     String expectedOutput = "Image koala saved as file: allimages/koala1.ppm\n"
         +"File path does not exist.\n"
@@ -868,7 +903,8 @@ public class ImageControllerTest {
     Reader in = new StringReader("save images/koala1.jpg koala\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
-    ImageController imageController = new ImageController(mockModel, in, out);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
     imageController.run();
     String expectedOutput = "Image koala saved as file: images/koala1.jpg\n"
     +"Error: Invalid file format: jpg\n"
@@ -889,7 +925,8 @@ public class ImageControllerTest {
     Reader in = new StringReader("save image/rgbimage/new/koala.ppm koala1\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
-    ImageController imageController = new ImageController(mockModel, in, out);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
     imageController.run();
     String expectedOutput = "Image koala1 saved as file: image/rgbimage/new/koala.ppm\n"
     +"Error: null\n"
@@ -907,7 +944,8 @@ public class ImageControllerTest {
     Reader in = new StringReader("exit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
-    ImageController imageController = new ImageController(mockModel, in, out);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
     imageController.run();
     String expectedOutput = "Exit the program \n";
     assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
@@ -925,7 +963,8 @@ public class ImageControllerTest {
     Reader in = new StringReader("exit program\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
-    ImageController imageController = new ImageController(mockModel, in, out);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
     imageController.run();
     String expectedOutput = "Error: Invalid command format.\n"
         +"Exit the program \n";

@@ -3,10 +3,10 @@ package Controller;
 import Model.ComponentRGB;
 import Model.MeasurementType;
 import Model.Operations;
+import View.View;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Objects;
 import java.util.Scanner;
 
 /**
@@ -16,40 +16,27 @@ import java.util.Scanner;
 public class ImageController {
 
   final Readable in;
-  final Appendable out;
   private final Operations model;
+  private View view;
 
   /**
    * This constructor creates a controller object.
    *
    * @param model takes the model instance as input.
    * @param in    input stream.
-   * @param out   output stream.
    */
-  public ImageController(Operations model, Readable in, Appendable out) {
+  public ImageController(Operations model, Readable in, View view) {
     this.model = model;
     this.in = in;
-    this.out = out;
+    this.view = view;
+
   }
 
   /**
    * Run method should run the command based on user input.
    */
   public void run() throws IOException {
-    Objects.requireNonNull(model);
-    System.out.println("Welcome to image processing with PPM files! You can enter commands here. "
-        + "Type exit to exit the program anytime.\n");
-    System.out.println("You can use the following commands to perform the following operations:\n");
-    System.out.println("LOAD: load filepath imageName\n");
-    System.out.println("SAVE: save filepath imageName\n");
-    System.out.println("BRIGHTEN: brighten increment-value imageName newimageName\n");
-    System.out.println("HORIZONTAL-FLIP: horizontal-flip imageName newimageName\n");
-    System.out.println("VERTICAL-FLIP: vertical-flip imageName newimageName\n");
-    System.out.println("GREYSCALE component: greyscale component-type imageName newimageName\n");
-    System.out.println("RGB TO GREYSCALE: rgb-split imageName newimageNameR newimageNameG "
-        + "newimageNameB\n");
-    System.out.println("GREYSCALE TO RGB: rgb-combine newimageName imageNameR imageNameG imageNameB"
-        + "\n");
+    view.printWelcomeMessage();
     boolean go = true;
     Scanner scanner = new Scanner(this.in);
     while (go) {
@@ -66,19 +53,21 @@ public class ImageController {
             }
             String filename = commandParts[1];
             readScriptFile(filename);
-            this.out.append("Script file ran successfully \n");
+            view.printOutput("Script file ran successfully \n");
           } else if (commandParts[0].equals("exit")) {
             if (commandParts.length != 1) {
               throw new IllegalArgumentException("Invalid command format.");
             }
             go = false;
-            this.out.append("Exit the program \n");
+            view.printOutput("Exit the program \n");
           } else {
             commandExecution(commandParts);
           }
         }
+      } catch (IllegalArgumentException e) {
+        view.printError("Error: " + e.getMessage() + "\n");
       } catch (Exception e) {
-        this.out.append("Error: " + e + "\n");
+        view.printError("Error: " + e.getMessage() + "\n");
       }
     }
     scanner.close();
@@ -95,9 +84,10 @@ public class ImageController {
       throws IOException, NoSuchFieldException, IllegalAccessException {
     //to run even if the nextline is blank
     if (commands.length == 0 || commands[0].trim().isEmpty()) {
-      this.out.append("Please enter appropriate command. \n");
+      view.printError("Please enter appropriate command. \n");
+      return;
     }
-    System.out.print(model.getKeys());
+    //System.out.print(model.getKeys());
     switch (commands[0]) {
       case "load":
         try {
@@ -111,9 +101,11 @@ public class ImageController {
           } else {
             ImageUtil.imageIORead(this.model, imagePath, imageName);
           }
-          this.out.append("Loaded image '" + imageName + "' from '" + imagePath + "'" + "\n");
+          view.printOutput("Loaded image '" + imageName + "' from '" + imagePath + "'" + "\n");
+        } catch (IllegalArgumentException e) {
+          view.printError("Error: " + e.getMessage() + "\n");
         } catch (FileNotFoundException e) {
-          this.out.append("File not found: " + commands[1] + "\n");
+          view.printError("File not found: " + commands[1] + "\n");
         }
         break;
       case "brighten": {
@@ -124,7 +116,7 @@ public class ImageController {
         String imageName = commands[2];
         String updatedImageName = commands[3];
         model.brighten(imageName, updatedImageName, increment);
-        this.out.append(
+        view.printOutput(
             "Image brightened '" + imageName + "' stored as '" + updatedImageName + "'" + "\n");
       }
       break;
@@ -134,11 +126,9 @@ public class ImageController {
         }
         String imageName = commands[1];
         String updatedImageName = commands[2];
-        model.verticalFlip(imageName,
-            updatedImageName);
-        this.out.append(
-            "Image vertically flipped '" + imageName + "' stored as '" + updatedImageName + "'" +
-                "\n");
+        model.verticalFlip(imageName, updatedImageName);
+        view.printOutput(
+            "Image vertically flipped '" + imageName + "' stored as '" + updatedImageName + "'" + "\n");
       }
       break;
       case "horizontal-flip": {
@@ -149,7 +139,7 @@ public class ImageController {
         String updatedImageName = commands[2];
         model.horizontalFlip(imageName,
             updatedImageName);
-        this.out.append(
+        view.printOutput(
             "Image horizontally flipped '" + imageName + "' stored as '" + updatedImageName + "'" +
                 "\n");
       }
@@ -171,9 +161,11 @@ public class ImageController {
             model.visualizeValueIntensityLuma(imageName, updatedImageName,
                 MeasurementType.valueOf(componentParts[0]));
           }
-          this.out.append(
+          view.printOutput(
               "Image '" + imageName + "' stored as greyscale '" + updatedImageName + "'" + "\n");
 
+        } catch (IllegalArgumentException e) {
+          view.printError("Error: " + e.getMessage() + "\n");
         } catch (NoSuchFieldException | IllegalAccessException e) {
           throw new RuntimeException(e);
         }
@@ -189,10 +181,12 @@ public class ImageController {
           String updatedimageName3 = commands[4];
           model.splitInto3Images(imageName, updatedimageName1, updatedimageName2,
               updatedimageName3);
-          this.out.append(
+          view.printOutput(
               "Image '" + imageName + "' has been split into greyscale images: '"
                   + updatedimageName1 + "'" + updatedimageName2 + "' and " + updatedimageName3 +
                   "'" + "\n");
+        } catch (IllegalArgumentException e) {
+          view.printError("Error: " + e.getMessage() + "\n");
         } catch (NoSuchFieldException | IllegalAccessException e) {
           throw new RuntimeException(e);
         }
@@ -206,7 +200,7 @@ public class ImageController {
         String imageName2 = commands[3];
         String imageName3 = commands[4];
         model.combineGreyScaleToRGB(imageName1, imageName2, imageName3, updatedimageName);
-        this.out.append(
+        view.printOutput(
             "Image '" + updatedimageName + " was created by combining greyscale images: '"
                 + imageName1 + " '" + imageName2 + "' and '" + imageName3 + "'" + "\n");
         break;
@@ -218,7 +212,7 @@ public class ImageController {
         String updatedImageName = commands[2];
         model.blur(imageName,
             updatedImageName);
-        this.out.append(
+        view.printOutput(
             "Image blurred '" + imageName + "' stored as '" + updatedImageName + "'" +
                 "\n");
       }
@@ -231,7 +225,7 @@ public class ImageController {
         String updatedImageName = commands[2];
         model.sharpen(imageName,
             updatedImageName);
-        this.out.append(
+        view.printOutput(
             "Image sharpened '" + imageName + "' stored as '" + updatedImageName + "'" +
                 "\n");
       }
@@ -244,7 +238,7 @@ public class ImageController {
         String updatedImageName = commands[2];
         model.colorTransformationLuma(imageName,
             updatedImageName);
-        this.out.append(
+        view.printOutput(
             "Image has been colour transformed with luma '" + imageName + "' stored as '"
                 + updatedImageName + "'" +
                 "\n");
@@ -258,7 +252,7 @@ public class ImageController {
         String updatedImageName = commands[2];
         model.colorTransformationSepia(imageName,
             updatedImageName);
-        this.out.append(
+        view.printOutput(
             "Image has been provided with sepia tone '" + imageName + "' stored as '"
                 + updatedImageName + "'" +
                 "\n");
@@ -276,7 +270,7 @@ public class ImageController {
             || componentParts[0].equals("blue")) {
           model.dither(imageName,
               updatedImageName, ComponentRGB.valueOf(componentParts[0]));
-          this.out.append(
+          view.printOutput(
               "Image has been dithered '" + imageName + "' stored as '"
                   + updatedImageName + "'" +
                   "\n");
@@ -290,19 +284,22 @@ public class ImageController {
           }
           String imagePath = commands[1];
           String imageName = commands[2];
-          this.out.append("Image " + imageName + " saved as file: " + imagePath + "\n");
+          view.printOutput("Image " + imageName + " saved as file: " + imagePath + "\n");
           if (imagePath.split("\\.")[1].equals("ppm")) {
             ImageUtil.writePPM(this.model, imagePath, imageName);
           } else {
             ImageUtil.imgeIOWrite(this.model, imagePath, imageName);
           }
+        } catch (IllegalArgumentException e) {
+          view.printError("Error: " + e.getMessage() + "\n");
         } catch (FileNotFoundException e) {
-          this.out.append("File path does not exist.\n");
+          view.printError("File path does not exist.\n");
         }
         break;
       default:
         //throws exception when the command is invalid
-        throw new IllegalArgumentException("Invalid command: " + commands[0]);
+        throw new IllegalArgumentException("Invalid command: " + commands[0] + "\n");
+
     }
   }
 
@@ -328,7 +325,5 @@ public class ImageController {
     } catch (FileNotFoundException | NoSuchFieldException | IllegalAccessException e) {
       throw e;
     }
-
   }
-
 }

@@ -18,6 +18,11 @@ public class RGBIntegerAlphaImage extends ThreeChannelObjectOperations  {
   }
 
   @Override
+  protected Field getField(ComponentRGB channel) throws NoSuchFieldException {
+    return RGBIntegerAlphaObject.class.getDeclaredField(channel.toString());
+  }
+
+  @Override
   protected TypeofImageObject[][] getMatrix(int width, int height) {
     return new RGBIntegerAlphaObject[this.getWidth()][this.getHeight()];
   }

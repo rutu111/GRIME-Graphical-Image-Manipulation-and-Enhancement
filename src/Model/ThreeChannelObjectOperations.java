@@ -83,7 +83,7 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
   @Override
   public TypeOfImage visIndividualComponent(ComponentRGB channel)
       throws NoSuchFieldException, IllegalAccessException {
-    Field field = RGBIntegerObject.class.getDeclaredField(channel.toString());
+    Field field = getField(channel);
     TypeofImageObject[][] new_image = getMatrix(this.width, this.height);
     for (int i = 0; i < this.getWidth(); i++) {
       for (int j = 0; j < this.getHeight(); j++) {
@@ -94,6 +94,8 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
     }
     return getOImage(new_image, this.getWidth(), this.getHeight());
   }
+
+  protected abstract Field getField(ComponentRGB channel) throws NoSuchFieldException;
 
   @Override
   public TypeOfImage visualizeValueIntensityLuma(MeasurementType measure)

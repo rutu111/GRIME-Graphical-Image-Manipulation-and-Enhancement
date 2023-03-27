@@ -58,7 +58,10 @@ public class RGBIntegerImage extends ThreeChannelObjectOperations  {
     return new RGBIntegerImage(flippedImage, width, height);
   }
 
-
+  @Override
+  protected Field getField(ComponentRGB channel) throws NoSuchFieldException {
+    return RGBIntegerObject.class.getDeclaredField(channel.toString());
+  }
 
   /**
    * The following is a builder class that builds a RGBIntegerImage
