@@ -26,7 +26,7 @@ save images/koala-vertical-horizontal.jpg koala-vertical-horizontal
 load images/sample_image1_.jpg koala
 
 #give the koala a red tint
-rgb-split koala koala-red koala-green koala-blue
+#rgb-split koala koala-red koala-green koala-blue
 
 #brighten just the red image
 brighten 50 koala-red koala-red

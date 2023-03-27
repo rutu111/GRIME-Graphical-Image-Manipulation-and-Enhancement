@@ -1,74 +1,11 @@
-#load koala.ppm and call it 'koala'
-load images/sample_image_png.png koala
-
-#brighten koala by adding 10
-brighten 100 koala koala-brighter
-
-#flip koala vertically
-vertical-flip koala koala-vertical
-
-#flip the vertically flipped koala horizontally
-horizontal-flip koala-vertical koala-vertical-horizontal
-
-#create a greyscale using only the value component, as an image koala-greyscale
-greyscale value-component koala koala-greyscale
-
-#save koala-brighter
-save images/koala-brighter.png koala-brighter
-
-#save koala-greyscale
-save images/koala-gs.png koala-greyscale
-
-#save the flip
-save images/koala-vertical-horizontal.png koala-vertical-horizontal
-
-#overwrite koala with another file
-load images/sample_image_png_.png koala
-
-#give the koala a red tint
-rgb-split koala koala-red koala-green koala-blue
-
-#brighten just the red image
-brighten 50 koala-green koala-green
-
-#combine them back, but by using the brightened red we get a red tint
-rgb-combine koala-red-tint koala-red koala-green koala-blue
-save images/koala-red-tint.png koala-red-tint
-
-#adding the new operations
-
-#blur
-filter-blur koala koala-blur
-
-#sharpen
-filter-sharpen koala koala-sharpen
-
-#greyscale transformation
-transform-greyscale koala koala-trans-greyscale
-
-#sepia transformation
-transform-sepia koala koala-sepia
-
-#dither
-dither red-component koala koala-dither
-
-save images/koala-blur.png koala-blur
-save images/koala-sharpen.png koala-sharpen
-save images/koala-trans-greyscale.png koala-trans-greyscale
-save images/koala-sepia.png koala-sepia
-save images/koala-dither.png koala-dither
-
-#load greyscale and do a vertical flip and save
-load images/koala-gs.png koala-greyscale_loaded
-vertical-flip koala-greyscale_loaded koala-greyscale_loaded_vertical
-save images/koala-greyscale_loaded_vertical.png koala-greyscale_loaded_vertical
-
 #with alpha channel
 load images/sample_image_alpha.png koala
-rgb-split koala koala-red koala-green koala-blue
-brighten 50 koala-red koala-red
-rgb-combine koala-red-tint koala-red koala-green koala-blue
-save images/koala-red-tint_alpha.png koala-red-tint
+#rgb-split koala koala-red koala-green koala-blue
+#brighten 50 koala-red koala-red
+#rgb-combine koala-red-tint koala-red koala-green koala-blue
+#save images/koala-red-tint_alpha.png koala-red-tint
 brighten 10 koala koala-brighter
 vertical-flip koala-brighter koala-vertical_brighter
 save images/koala-brighter_vertical_alpha.png koala-vertical_brighter
+dither red-component koala koala-dither
+save images/koala-dither.png koala-dither

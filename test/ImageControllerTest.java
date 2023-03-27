@@ -7,6 +7,7 @@ import Model.Operations;
 import Model.TypeOfImage;
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 import org.junit.Test;
@@ -134,6 +135,11 @@ public class ImageControllerTest {
     @Override
     public void dither(String imageName, String newImageName, ComponentRGB channel) {
 
+    }
+
+    @Override
+    public Collection<String> getKeys() {
+      return null;
     }
   }
 
