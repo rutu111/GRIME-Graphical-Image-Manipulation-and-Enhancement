@@ -16,9 +16,6 @@ greyscale value-component koala koala-greyscale
 #save koala-brighter
 save images/koala-brighter.ppm koala-brighter
 
-#save the flip
-save images/koala-vertical-horizontal.ppm koala-vertical-horizontal
-
 #save koala-greyscale
 save images/koala-gs.ppm koala-greyscale
 

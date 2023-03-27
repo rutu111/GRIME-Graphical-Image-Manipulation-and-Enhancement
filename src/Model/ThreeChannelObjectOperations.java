@@ -301,7 +301,6 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
         channelRGB += errors[c][r];
         // truncate pixel color values to [0, 255]
         channelRGB = Math.min(Math.max(channelRGB, 0), 255);
-
         // update pixel color
         newPixels[c][r] = getObject(channelRGB, channelRGB, channelRGB, newPixel.hasAlpha());
       }

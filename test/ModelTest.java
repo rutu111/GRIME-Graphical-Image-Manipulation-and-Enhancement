@@ -11,7 +11,9 @@ import java.util.NoSuchElementException;
 import org.junit.Before;
 import org.junit.Test;
 import Model.RGBIntegerImage.RGBIntegerImageBuilder;
+import Model.RGBIntegerAlphaImage.RGBIntegerAlphaImageBuilder;
 import Model.RGBIntegerObject;
+import Model.RGBIntegerAlphaObject;
 import Model.TypeofImageObject;
 import Model.TypeOfImage;
 import Model.RGBIntegerImage;
@@ -1025,7 +1027,32 @@ public class ModelTest {
     model.addImageToModel(expectedImage.buildImage(), "default+image-test");
 
     assertTrue(model.getObject("default+image").equals(model.getObject("default+image-test")));
+  }
 
+  //alpha channel test
+  @Test
+  public void testAlphaImageBuild(){
+    RGBIntegerAlphaImageBuilder   testImage1;
+    RGBIntegerAlphaImageBuilder expectedImage2;
+    width = 5;
+    height = 5;
+
+    testImage1 = new RGBIntegerAlphaImageBuilder(width, height);
+    c = 0;
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        testImage1.addPixelAtPosition(j, i, new RGBIntegerAlphaObject(c, c, c, 255));
+        c += 1;
+      }
+    }
+    c = 0;
+    expectedImage = new RGBIntegerImageBuilder(width, height);
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        expectedImage.addPixelAtPosition(j, i, new RGBIntegerObject(c, c, c));
+      }
+    }
+    model.addImageToModel(expectedImage.buildImage(), "default+image-test");
   }
 
 
