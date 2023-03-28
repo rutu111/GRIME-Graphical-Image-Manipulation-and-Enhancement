@@ -91,7 +91,7 @@ public interface TypeOfImage {
   TypeOfImage blur();
   TypeOfImage sharpen();
 
-  TypeOfImage dither(ComponentRGB channel) throws NoSuchFieldException, IllegalAccessException;
+  TypeOfImage dither() throws NoSuchFieldException, IllegalAccessException;
 
   TypeOfImage colorTransformationSepia();
 

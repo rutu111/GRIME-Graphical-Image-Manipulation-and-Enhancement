@@ -118,7 +118,7 @@ public interface Operations {
 
   void sharpen(String imageName, String newImageName);
 
-  void dither(String imageName, String newImageName, ComponentRGB channel)
+  void dither(String imageName, String newImageName)
       throws NoSuchFieldException, IllegalAccessException;
 
   Collection<String> getKeys();

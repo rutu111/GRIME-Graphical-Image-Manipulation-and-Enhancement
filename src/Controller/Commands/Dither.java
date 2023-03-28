@@ -19,6 +19,6 @@ public class Dither implements CommandDesignOperations {
   }
   @Override
   public void go(Operations m) throws NoSuchFieldException, IllegalAccessException {
-    m.dither(imageName, updatedImageName, component);
+    m.dither(imageName, updatedImageName);
   }
 }
