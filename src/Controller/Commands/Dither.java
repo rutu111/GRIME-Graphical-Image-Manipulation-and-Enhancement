@@ -3,22 +3,32 @@ package Controller.Commands;
 import Controller.CommandDesignOperations;
 import Model.ComponentRGB;
 import Model.Operations;
+import View.ViewI;
+import java.io.IOException;
 
 public class Dither implements CommandDesignOperations {
-
-  private ComponentRGB component;
 
   private String imageName;
 
   private String updatedImageName;
 
-  public Dither(String imageName, String updatedImageName, ComponentRGB component) {
-    this.imageName =  imageName;
-    this.updatedImageName = updatedImageName;
-    this.component = component;
+  public Dither(String[] commands)  throws  IllegalArgumentException{
+    if (commands.length != 3) {
+      throw new IllegalArgumentException("Invalid command format.");
+    }
+    this.imageName =  commands[1];
+    this.updatedImageName = commands[2];
+
   }
   @Override
-  public void go(Operations m) throws NoSuchFieldException, IllegalAccessException {
+  public void go(Operations m, ViewI view)
+      throws IOException, NoSuchFieldException, IllegalAccessException {
     m.dither(imageName, updatedImageName);
+    view.printOutput(
+        "Image has been dithered '" + imageName + "' stored as '"
+            + updatedImageName + "'" +
+            "\n");
+
   }
+
 }

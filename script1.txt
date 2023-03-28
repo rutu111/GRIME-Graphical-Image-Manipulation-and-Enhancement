@@ -2,7 +2,7 @@
 load images_jpg/sample_image1.jpg koala
 
 #brighten koala by adding 10
-brighten 10 koala koala-brighter
+brighten 100 koala koala-brighter
 
 #flip koala vertically
 vertical-flip koala koala-vertical
@@ -26,7 +26,7 @@ save images_jpg/koala-vertical-horizontal.jpg koala-vertical-horizontal
 load images_jpg/sample_image1_.jpg koala
 
 #give the koala a red tint
-#rgb-split koala koala-red koala-green koala-blue
+rgb-split koala koala-red koala-green koala-blue
 
 #brighten just the red image
 brighten 50 koala-red koala-red
@@ -50,7 +50,7 @@ transform-greyscale koala koala-trans-greyscale
 transform-sepia koala koala-sepia
 
 #dither
-dither red-component koala koala-dither
+dither koala koala-dither
 
 save images_jpg/koala-blur.jpg koala-blur
 save images_jpg/koala-sharpen.jpg koala-sharpen

@@ -141,12 +141,17 @@ public class ImageUtil {
   }
 
   public static void imageIORead(Operations model, String filename, String nameOfTheObject)
-      throws IOException {
-    BufferedImage image = null;
-    File file = new File(filename);
+      throws IOException, FileNotFoundException {
 
-    //1. First check if the image needs to be converted to RGB
-    image = ImageIO.read(file);
+    BufferedImage image = null;
+
+    try {
+      File file = new File(filename);
+      //1. First check if the image needs to be converted to RGB
+      image = ImageIO.read(file);
+    } catch(FileNotFoundException e) {
+      throw new FileNotFoundException("File not found");
+    }
 
     int width = image.getWidth();
     int height = image.getHeight();
