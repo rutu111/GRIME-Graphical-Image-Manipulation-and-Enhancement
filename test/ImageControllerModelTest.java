@@ -474,4 +474,46 @@ public class ImageControllerModelTest {
     assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
   }
 
+  /**
+   * This method is used to check if the load function works as expected for jpg format,
+   * check if the controller prints the output after operations.
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testLoadForJPGWorks() throws IOException {
+    StringBuffer out = new StringBuffer();
+    Reader in = new StringReader("load sample_image1.jpg koala1\nexit");
+    String imageName = "koala1";
+    Operations model = new Model();
+    View view = new View(out);
+    ImageController imageController = new ImageController(model, in, view);
+    imageController.run();
+    assertEquals(model.checkKeyInHashmap(imageName),true);
+    assertTrue(model.numberOfImagesInModel() == 1);
+    String expectedOutput = "Loaded image 'koala1' from 'sample_image1.jpg'\n"
+        + "Exit the program \n";
+    assertEquals(expectedOutput, out.toString());//inputs reached the model correctly
+  }
+
+  /**
+   * This method is used to check if the load function works as expected for jpg format,
+   * check if the controller prints the output after operations.
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testLoadForPNGWorks() throws IOException {
+    StringBuffer out = new StringBuffer();
+    Reader in = new StringReader("load sample_image_png.png koala1\nexit");
+    String imageName = "koala1";
+    Operations model = new Model();
+    View view = new View(out);
+    ImageController imageController = new ImageController(model, in, view);
+    imageController.run();
+    assertEquals(model.checkKeyInHashmap(imageName),true);
+    assertTrue(model.numberOfImagesInModel() == 1);
+    String expectedOutput = "Loaded image 'koala1' from 'sample_image_png.png'\n"
+        + "Exit the program \n";
+    assertEquals(expectedOutput, out.toString());//inputs reached the model correctly
+  }
+
 }

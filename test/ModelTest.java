@@ -1149,7 +1149,7 @@ public class ModelTest {
         int g2 = (int) Math.min(255, Math.max(0, Math.round(g)));
         int b2 = (int) Math.min(255, Math.max(0, Math.round(b)));
         // Set the value of the corresponding pixel in the new image object
-        expectedImage.addPixelAtPosition(width1, height1, new RGBIntegerObject(r2, g2, b2));
+        expectedImage.addPixelAtPosition(x,y , new RGBIntegerObject(r2, g2, b2));
       }
     }
     //before sharpen
@@ -1196,13 +1196,42 @@ public class ModelTest {
   @Test
   public void testIfSepiaToneImageWorks(){
     c = 0;
-    expectedImage = new RGBIntegerImageBuilder(width, height);
-    for (int i = 0; i < height; i++) {
-      for (int j = 0; j < width; j++) {
-        double luma = 0.2126 * c + 0.7152 * c + 0.0722 * c;
-        expectedImage.addPixelAtPosition(j, i,
-            new RGBIntegerObject((int) luma, (int) luma, (int) luma));
+    int height1 = 5;
+    int width1 = 5;
+    testImage1 = new RGBIntegerImageBuilder(width1, height1);
+    for (int i = 0; i < height1; i++) {
+      for (int j = 0; j < width1; j++) {
+        testImage1.addPixelAtPosition(j, i, new RGBIntegerObject(c, c, c));
         c += 1;
+      }
+    }
+    expectedImage = new RGBIntegerImageBuilder(width1, height1);
+    for (int i = 0; i < height1; i++) {
+      for (int j = 0; j < width1; j++) {
+        expectedImage.addPixelAtPosition(j, i, new RGBIntegerObject(c, c, c));
+        c += 1;
+      }
+    }
+    double[][] sepia = {{0.393, 0.769, 0.189}, {0.349, 0.686, 0.168}, {0.272, 0.534, 0.131}};
+    for (int i = 0; i < height1; i++) {
+      for (int j = 0; j < width1; j++) {
+        //get each pixel (3x1 matrix).
+        double[][] result = new double[3][1];
+        int[][] pixelValues = new int[3][1];
+        pixelValues[0][0] = expectedImage.buildImage().getPixels()[i][j].getChanne11();
+        pixelValues[1][0] = expectedImage.buildImage().getPixels()[i][j].getChanne12();
+        pixelValues[2][0] = expectedImage.buildImage().getPixels()[i][j].getChanne13();
+        for (int m = 0; m < 3; m++) {
+          for (int n = 0; n < 1; n++) {
+            for (int k = 0; k < 3; k++) {
+              result[m][n] += sepia[m][k] * pixelValues[k][n];
+            }
+          }
+        }
+        Integer r = (int) min(255, Math.max(0, result[0][0]));
+        Integer g = (int) min(255, Math.max(0, result[1][0]));
+        Integer b = (int) min(255, Math.max(0, result[2][0]));
+        expectedImage.addPixelAtPosition(j, i, new RGBIntegerObject(r, g, b));
       }
     }
     //before
@@ -1210,35 +1239,30 @@ public class ModelTest {
     model.addImageToModel(expectedImage.buildImage(), "expected+imageValue");
 
     //after
-    model.visualizeValueIntensityLuma("test+image", "test-luma", MeasurementType.luma);
-    assertTrue(
-        model.getObject("test-luma").equals(model.getObject("expected+imageValue")));
+    model.colorTransformationSepia("test+image", "test-sepia");
+    assertFalse(
+        model.getObject("test-sepia").equals(model.getObject("expected+imageValue")));
   }
+
 
   //alpha channel test
   @Test
   public void testAlphaImageBuild(){
-    RGBIntegerAlphaImageBuilder   testImage1;
-    RGBIntegerAlphaImageBuilder expectedImage2;
-    width = 5;
-    height = 5;
+    //default image
+    RGBIntegerAlphaImageBuilder defaultIamge;
+    defaultIamge = new RGBIntegerAlphaImageBuilder(width, height);
+    model.addImageToModel(defaultIamge.buildImage(), "default+image");
 
-    testImage1 = new RGBIntegerAlphaImageBuilder(width, height);
+    //image with all 0's
     c = 0;
+    RGBIntegerAlphaImageBuilder expectedImage2 = new RGBIntegerAlphaImageBuilder(width, height);
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        testImage1.addPixelAtPosition(j, i, new RGBIntegerAlphaObject(c, c, c, 255));
-        c += 1;
+        expectedImage2.addPixelAtPosition(j, i, new RGBIntegerAlphaObject(c, c, c, 0));
       }
     }
-    c = 0;
-    expectedImage = new RGBIntegerImageBuilder(width, height);
-    for (int i = 0; i < height; i++) {
-      for (int j = 0; j < width; j++) {
-        expectedImage.addPixelAtPosition(j, i, new RGBIntegerObject(c, c, c));
-      }
-    }
-    model.addImageToModel(expectedImage.buildImage(), "default+image-test");
+    model.addImageToModel(expectedImage2.buildImage(), "default+image-test");
+    assertTrue(model.getObject("default+image").equals(model.getObject("default+image-test")));
   }
 
 

@@ -1,5 +1,5 @@
 #load koala.ppm and call it 'koala'
-load images/sample_image1.jpg koala
+load images_jpg/sample_image1.jpg koala
 
 #brighten koala by adding 10
 brighten 10 koala koala-brighter
@@ -14,16 +14,16 @@ horizontal-flip koala-vertical koala-vertical-horizontal
 greyscale value-component koala koala-greyscale
 
 #save koala-brighter
-save images/koala-brighter.jpg koala-brighter
+save images_jpg/koala-brighter.jpg koala-brighter
 
 #save koala-greyscale
-save images/koala-gs.jpg koala-greyscale
+save images_jpg/koala-gs.jpg koala-greyscale
 
 #save the flip
-save images/koala-vertical-horizontal.jpg koala-vertical-horizontal
+save images_jpg/koala-vertical-horizontal.jpg koala-vertical-horizontal
 
 #overwrite koala with another file
-load images/sample_image1_.jpg koala
+load images_jpg/sample_image1_.jpg koala
 
 #give the koala a red tint
 #rgb-split koala koala-red koala-green koala-blue
@@ -33,7 +33,7 @@ brighten 50 koala-red koala-red
 
 #combine them back, but by using the brightened red we get a red tint
 rgb-combine koala-red-tint koala-red koala-green koala-blue
-save images/koala-red-tint.jpg koala-red-tint
+save images_jpg/koala-red-tint.jpg koala-red-tint
 
 
 #adding the new operations
@@ -52,15 +52,15 @@ transform-sepia koala koala-sepia
 #dither
 dither red-component koala koala-dither
 
-save images/koala-blur.jpg koala-blur
-save images/koala-sharpen.jpg koala-sharpen
-save images/koala-trans-greyscale.jpg koala-trans-greyscale
-save images/koala-sepia.jpg koala-sepia
-save images/koala-dither.jpg koala-dither
+save images_jpg/koala-blur.jpg koala-blur
+save images_jpg/koala-sharpen.jpg koala-sharpen
+save images_jpg/koala-trans-greyscale.jpg koala-trans-greyscale
+save images_jpg/koala-sepia.jpg koala-sepia
+save images_jpg/koala-dither.jpg koala-dither
 
 #load greyscale and do a vertical flip and save
-load images/koala-gs.jpg koala-greyscale_loaded
+load images_jpg/koala-gs.jpg koala-greyscale_loaded
 vertical-flip koala-greyscale_loaded koala-greyscale_loaded_vertical
-save images/koala-greyscale_loaded_vertical.jpg koala-greyscale_loaded_vertical
+save images_jpg/koala-greyscale_loaded_vertical.jpg koala-greyscale_loaded_vertical
 
 

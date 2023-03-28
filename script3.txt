@@ -1,5 +1,5 @@
 #load koala.ppm and call it 'koala'
-load images/sample_image_bmp.bmp koala
+load images_bmp/sample_image_bmp.bmp koala
 
 #brighten koala by adding 10
 brighten 10 koala koala-brighter 
@@ -14,16 +14,16 @@ horizontal-flip koala-vertical koala-vertical-horizontal
 greyscale value-component koala koala-greyscale
 
 #save koala-brighter
-save images/koala-brighter.bmp koala-brighter
+save images_bmp/koala-brighter.bmp koala-brighter
 
 #save koala-greyscale
-save images/koala-gs.bmp koala-greyscale
+save images_bmp/koala-gs.bmp koala-greyscale
 
 #save the flip
-save images/koala-vertical-horizontal.bmp koala-vertical-horizontal
+save images_bmp/koala-vertical-horizontal.bmp koala-vertical-horizontal
 
 #overwrite koala with another file
-load images/sample_image_bmp_.bmp koala
+load images_bmp/sample_image_bmp_.bmp koala
 
 #give the koala a red tint
 rgb-split koala koala-red koala-green koala-blue
@@ -33,7 +33,7 @@ brighten 50 koala-red koala-red
 
 #combine them back, but by using the brightened red we get a red tint
 rgb-combine koala-red-tint koala-red koala-green koala-blue
-save images/koala-red-tint.bmp koala-red-tint
+save images_bmp/koala-red-tint.bmp koala-red-tint
 
 #adding the new operations
 
@@ -52,14 +52,14 @@ transform-sepia koala koala-sepia
 #dither
 dither red-component koala koala-dither
 
-save images/koala-blur.bmp koala-blur
-save images/koala-sharpen.bmp koala-sharpen
-save images/koala-trans-greyscale.bmp koala-trans-greyscale
-save images/koala-sepia.bmp koala-sepia
-save images/koala-dither.bmp koala-dither
+save images_bmp/koala-blur.bmp koala-blur
+save images_bmp/koala-sharpen.bmp koala-sharpen
+save images_bmp/koala-trans-greyscale.bmp koala-trans-greyscale
+save images_bmp/koala-sepia.bmp koala-sepia
+save images_bmp/koala-dither.bmp koala-dither
 
 #load greyscale and do a vertical flip and save
-load images/koala-gs.bmp koala-greyscale_loaded
+load images_bmp/koala-gs.bmp koala-greyscale_loaded
 vertical-flip koala-greyscale_loaded koala-greyscale_loaded_vertical
-save images/koala-greyscale_loaded_vertical.bmp koala-greyscale_loaded_vertical
+save images_bmp/koala-greyscale_loaded_vertical.bmp koala-greyscale_loaded_vertical
 
