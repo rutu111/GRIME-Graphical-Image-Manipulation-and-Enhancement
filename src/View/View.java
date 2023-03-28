@@ -2,7 +2,7 @@ package View;
 
 import java.io.IOException;
 
-public class View {
+public class View implements ViewI {
 
   final Appendable out;
 

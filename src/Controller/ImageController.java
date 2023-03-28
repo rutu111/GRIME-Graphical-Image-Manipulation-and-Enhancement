@@ -5,20 +5,24 @@ import Controller.Commands.Brighten;
 import Controller.Commands.Combine;
 import Controller.Commands.Dither;
 import Controller.Commands.HorizontalFlip;
+import Controller.Commands.Load;
 import Controller.Commands.RGBSplit;
 import Controller.Commands.Sepia;
 import Controller.Commands.Sharpen;
-import Controller.Commands.ValueIntensityLuma;
+import Controller.Commands.TransformGreyscale;
+import Controller.Commands.ValueIntensityLumaAndVisualizeComponent;
 import Controller.Commands.VerticalFlip;
-import Controller.Commands.VisulizeComponent;
 import Model.ComponentRGB;
 import Model.MeasurementType;
 import Model.Operations;
-import View.View;
+import View.ViewI;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.function.Function;
 
 /**
  * This is the controller class. It interacts with the view (command line), tells the model what to
@@ -28,7 +32,11 @@ public class ImageController {
 
   final Readable in;
   private final Operations model;
-  private View view;
+  private ViewI view;
+
+  private Map<String, Function<List, CommandDesignOperations>> commandMap
+
+
 
   /**
    * This constructor creates a controller object.
@@ -36,7 +44,7 @@ public class ImageController {
    * @param model takes the model instance as input.
    * @param in    input stream.
    */
-  public ImageController(Operations model, Readable in, View view) {
+  public ImageController(Operations model, Readable in, ViewI view) {
     this.model = model;
     this.in = in;
     this.view = view;
@@ -98,188 +106,67 @@ public class ImageController {
       view.printError("Please enter appropriate command. \n");
       return;
     }
+
+
+    /*
+    commandMap = new HashMap<>();
+    //commandMap.put("load", new LoadCommand());
+    commandMap.put("brighten", l -> new Brighten(commands));
+
+
+
+    commandMap.put("vertical-flip", new VerticalFlip());
+    commandMap.put("horizontal-flip", new HorizontalFlip());
+    commandMap.put("greyscale", new GreyscaleCommand());
+    commandMap.put("rgb-split", new RGBSplit());
+    commandMap.put("rgb-combine", new Combine());
+    commandMap.put("filter-blur", new Blur());
+    commandMap.put("filter-sharpen", new Sharpen();
+    commandMap.put("filter-sepia", new Sepia());
+    commandMap.put("transform-greyscale", new ValueIntensityLuma());
+    commandMap.put("dither", new Dither());
+
+     */
+
     CommandDesignOperations cmd = null;
     switch (commands[0]) {
       case "load":
-        try {
-          if (commands.length != 3) {
-            throw new IllegalArgumentException("Invalid command format.");
-          }
-          String imagePath = commands[1];
-          String imageName = commands[2];
-          if (imagePath.split("\\.")[1].equals("ppm")) {
-            ImageUtil.readPPM(this.model, imagePath, imageName);
-          } else {
-            ImageUtil.imageIORead(this.model, imagePath, imageName);
-          }
-          view.printOutput("Loaded image '" + imageName + "' from '" + imagePath + "'" + "\n");
-        } catch (IllegalArgumentException e) {
-          view.printError("Error: " + e.getMessage() + "\n");
-        } catch (FileNotFoundException e) {
-          view.printError("File not found: " + commands[1] + "\n");
-        }
+         cmd = new Load(commands);
         break;
-      case "brighten": {
-        if (commands.length != 4) {
-          throw new IllegalArgumentException("Invalid command format.");
-        }
-        double increment = Integer.parseInt(commands[1]);
-        String imageName = commands[2];
-        String updatedImageName = commands[3];
-        cmd = new Brighten(imageName, updatedImageName, increment);
-        view.printOutput(
-            "Image brightened '" + imageName + "' stored as '" + updatedImageName + "'" + "\n");
-      }
+      case "brighten":
+        cmd = new Brighten(commands);
       break;
-      case "vertical-flip": {
-        if (commands.length != 3) {
-          throw new IllegalArgumentException("Invalid command format.");
-        }
-        String imageName = commands[1];
-        String updatedImageName = commands[2];
-        cmd = new VerticalFlip(imageName, updatedImageName);
-        view.printOutput(
-            "Image vertically flipped '" + imageName + "' stored as '" + updatedImageName + "'" + "\n");
-      }
-      break;
-      case "horizontal-flip": {
-        if (commands.length != 3) {
-          throw new IllegalArgumentException("Invalid command format.");
-        }
-        String imageName = commands[1];
-        String updatedImageName = commands[2];
-        cmd = new HorizontalFlip(imageName, updatedImageName);
-        view.printOutput(
-            "Image horizontally flipped '" + imageName + "' stored as '" + updatedImageName + "'" +
-                "\n");
-      }
+      case "vertical-flip":
+        cmd = new VerticalFlip(commands);
+        break;
+      case "horizontal-flip":
+        cmd = new HorizontalFlip(commands);
       break;
       case "greyscale":
-        try {
-          if (commands.length != 4) {
-            throw new IllegalArgumentException("Invalid command format.");
-          }
-          String component = commands[1];
-          String imageName = commands[2];
-          String updatedImageName = commands[3];
-          String[] componentParts = component.split("-");
-          if (componentParts[0].equals("red") || componentParts[0].equals("green")
-              || componentParts[0].equals("blue")) {
-            cmd = new VisulizeComponent(imageName, updatedImageName, ComponentRGB.valueOf(componentParts[0]));
-          } else {
-            cmd = new ValueIntensityLuma(imageName, updatedImageName, MeasurementType.valueOf(componentParts[0]));
-          }
-          view.printOutput(
-              "Image '" + imageName + "' stored as greyscale '" + updatedImageName + "'" + "\n");
-
-        } catch (IllegalArgumentException e) {
-          view.printError("Error: " + e.getMessage() + "\n");
-        }
+        cmd = new ValueIntensityLumaAndVisualizeComponent(commands);
         break;
       case "rgb-split":
-        try {
-          if (commands.length != 5) {
-            throw new IllegalArgumentException("Invalid command format.");
-          }
-          String imageName = commands[1];
-          String updatedimageName1 = commands[2];
-          String updatedimageName2 = commands[3];
-          String updatedimageName3 = commands[4];
-          cmd = new RGBSplit(imageName, updatedimageName1, updatedimageName2,
-              updatedimageName3);
-          view.printOutput(
-              "Image '" + imageName + "' has been split into greyscale images: '"
-                  + updatedimageName1 + "'" + updatedimageName2 + "' and " + updatedimageName3 +
-                  "'" + "\n");
-        } catch (IllegalArgumentException e) {
-          view.printError("Error: " + e.getMessage() + "\n");
-        }
+        cmd = new RGBSplit(commands);
         break;
       case "rgb-combine":
-        if (commands.length != 5) {
-          throw new IllegalArgumentException("Invalid command format.");
-        }
-        String updatedimageName = commands[1];
-        String imageName1 = commands[2];
-        String imageName2 = commands[3];
-        String imageName3 = commands[4];
-        cmd = new Combine(imageName1, imageName2, imageName3, updatedimageName);
-        view.printOutput(
-            "Image '" + updatedimageName + " was created by combining greyscale images: '"
-                + imageName1 + " '" + imageName2 + "' and '" + imageName3 + "'" + "\n");
+        cmd = new Combine(commands);
         break;
-      case "filter-blur": {
-        if (commands.length != 3) {
-          throw new IllegalArgumentException("Invalid command format.");
-        }
-        String imageName = commands[1];
-        String updatedImageName = commands[2];
-        cmd = new Blur(imageName,
-            updatedImageName);
-        view.printOutput(
-            "Image blurred '" + imageName + "' stored as '" + updatedImageName + "'" +
-                "\n");
-      }
+      case "filter-blur":
+        cmd = new Blur(commands);
       break;
-      case "filter-sharpen": {
-        if (commands.length != 3) {
-          throw new IllegalArgumentException("Invalid command format.");
-        }
-        String imageName = commands[1];
-        String updatedImageName = commands[2];
-        cmd = new Sharpen(imageName,
-            updatedImageName);
-        view.printOutput(
-            "Image sharpened '" + imageName + "' stored as '" + updatedImageName + "'" +
-                "\n");
-      }
+      case "filter-sharpen":
+        cmd = new Sharpen(commands);
       break;
       case "transform-greyscale": {
-        if (commands.length != 3) {
-          throw new IllegalArgumentException("Invalid command format.");
-        }
-        String imageName = commands[1];
-        String updatedImageName = commands[2];
-        cmd = new ValueIntensityLuma(imageName, updatedImageName, MeasurementType.luma);
-
-        view.printOutput(
-            "Image has been colour transformed with luma '" + imageName + "' stored as '"
-                + updatedImageName + "'" +
-                "\n");
+        cmd = new TransformGreyscale(commands);
       }
       break;
       case "transform-sepia": {
-        if (commands.length != 3) {
-          throw new IllegalArgumentException("Invalid command format.");
-        }
-        String imageName = commands[1];
-        String updatedImageName = commands[2];
-        cmd = new Sepia(imageName,
-            updatedImageName);
-        view.printOutput(
-            "Image has been provided with sepia tone '" + imageName + "' stored as '"
-                + updatedImageName + "'" +
-                "\n");
+        cmd = new Sepia(commands);
       }
       break;
-      case "dither": {
-        if (commands.length != 4) {
-          throw new IllegalArgumentException("Invalid command format.");
-        }
-        String component = commands[1];
-        String imageName = commands[2];
-        String updatedImageName = commands[3];
-        String[] componentParts = component.split("-");
-        if (componentParts[0].equals("red") || componentParts[0].equals("green")
-            || componentParts[0].equals("blue")) {
-          cmd = new Dither(imageName,
-              updatedImageName, ComponentRGB.valueOf(componentParts[0]));
-          view.printOutput(
-              "Image has been dithered '" + imageName + "' stored as '"
-                  + updatedImageName + "'" +
-                  "\n");
-        }
-      }
+      case "dither":
+          cmd = new Dither(commands);
       break;
       case "save":
         try {
@@ -307,11 +194,11 @@ public class ImageController {
     }
     if (cmd != null) {
       try {
-        cmd.go(this.model); //execute the command
+        cmd.go(this.model, this.view); //execute the command
         cmd = null;
       } catch (NoSuchFieldException | IllegalAccessException e) {
-      throw new RuntimeException(e);
-    }
+        throw new RuntimeException(e);
+      }
     }
   }
 
@@ -338,4 +225,24 @@ public class ImageController {
       throw e;
     }
   }
+
+  public void commandExecutionNew(String[] commands)
+      throws IOException, NoSuchFieldException, IllegalAccessException {
+    //to run even if the nextline is blank
+    if (commands.length == 0 || commands[0].trim().isEmpty()) {
+      view.printError("Please enter appropriate command. \n");
+      return;
+    }
+    try {
+      if (commands.length != 5) {
+        throw new IllegalArgumentException("Invalid command format.");
+      }
+    } catch (IllegalArgumentException e) {
+      view.printError("Error: " + e.getMessage() + "\n");
+    }
+
+  }
 }
+
+
+
