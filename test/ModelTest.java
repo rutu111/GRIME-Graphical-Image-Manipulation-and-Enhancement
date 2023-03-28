@@ -747,10 +747,10 @@ public class ModelTest {
     c = 0;
     int height1 = 5;
     int width1 = 10;
-    testImage1 = expectedImage = new RGBIntegerImageBuilder(width1, height1);
+    testImage1 = new RGBIntegerImageBuilder(width1, height1);
     for (int i = 0; i < height1; i++) {
       for (int j = 0; j < width1; j++) {
-        expectedImage.addPixelAtPosition(j, i, new RGBIntegerObject(c, c, c));
+        testImage1.addPixelAtPosition(j, i, new RGBIntegerObject(c, c, c));
         c += 1;
       }
     }
@@ -794,10 +794,10 @@ public class ModelTest {
     c = 0;
     int height1 = 10;
     int width1 = 5;
-    testImage1 = expectedImage = new RGBIntegerImageBuilder(width1, height1);
+    testImage1 = new RGBIntegerImageBuilder(width1, height1);
     for (int i = 0; i < height1; i++) {
       for (int j = 0; j < width1; j++) {
-        expectedImage.addPixelAtPosition(j, i, new RGBIntegerObject(c, c, c));
+        testImage1.addPixelAtPosition(j, i, new RGBIntegerObject(c, c, c));
         c += 1;
       }
     }
@@ -883,10 +883,10 @@ public class ModelTest {
     c = 0;
     int height1 = 5;
     int width1 = 10;
-    testImage1 = expectedImage = new RGBIntegerImageBuilder(width1, height1);
+    testImage1 = new RGBIntegerImageBuilder(width1, height1);
     for (int i = 0; i < height1; i++) {
       for (int j = 0; j < width1; j++) {
-        expectedImage.addPixelAtPosition(j, i, new RGBIntegerObject(c, c, c));
+        testImage1.addPixelAtPosition(j, i, new RGBIntegerObject(c, c, c));
         c += 1;
       }
     }
@@ -931,10 +931,10 @@ public class ModelTest {
     c = 0;
     int height1 = 10;
     int width1 = 5;
-    testImage1 = expectedImage = new RGBIntegerImageBuilder(width1, height1);
+    testImage1 = new RGBIntegerImageBuilder(width1, height1);
     for (int i = 0; i < height1; i++) {
       for (int j = 0; j < width1; j++) {
-        expectedImage.addPixelAtPosition(j, i, new RGBIntegerObject(c, c, c));
+        testImage1.addPixelAtPosition(j, i, new RGBIntegerObject(c, c, c));
         c += 1;
       }
     }
@@ -1027,6 +1027,192 @@ public class ModelTest {
     model.addImageToModel(expectedImage.buildImage(), "default+image-test");
 
     assertTrue(model.getObject("default+image").equals(model.getObject("default+image-test")));
+  }
+
+  /**
+   * test case to check if the blur operation works for an image.
+   */
+  @Test
+  public void testIfBlurImageWorks(){
+    c = 0;
+    int height1 = 5;
+    int width1 = 5;
+    testImage1 = new RGBIntegerImageBuilder(width1, height1);
+    for (int i = 0; i < height1; i++) {
+      for (int j = 0; j < width1; j++) {
+        testImage1.addPixelAtPosition(j, i, new RGBIntegerObject(c, c, c));
+        c += 1;
+      }
+    }
+    expectedImage = new RGBIntegerImageBuilder(width1, height1);
+    for (int i = 0; i < height1; i++) {
+      for (int j = 0; j < width1; j++) {
+        expectedImage.addPixelAtPosition(j, i, new RGBIntegerObject(c, c, c));
+        c += 1;
+      }
+    }
+    // Create a 3x3 Gaussian filter
+    double[][] filter = {
+        {1.0/16.0, 1.0/8.0, 1.0/16.0},
+        {1.0/8.0, 1.0/4.0, 1.0/8.0},
+        {1.0/16.0, 1.0/8.0, 1.0/16.0}
+    };
+    TypeOfImage newImage = expectedImage.buildImage();
+    for (int x = 0; x < width1; x++) {
+      for (int y = 0; y < height1; y++) {
+        double r = 0, g = 0, b = 0;
+        TypeofImageObject oldPixel;
+        for (int i = -1; i <= 1; i++) {
+          for (int j = -1; j <= 1; j++) {
+            int xx = x + i;
+            int yy = y + j;
+            if (xx >= 0 && xx < newImage.getWidth() && yy >= 0 && yy < newImage.getHeight()) {
+              oldPixel = newImage.getPixels()[xx][yy];
+              double weight = filter[i + 1][j + 1];
+              r += weight * oldPixel.getChanne11();
+              g += weight * oldPixel.getChanne12();
+              b += weight * oldPixel.getChanne13();
+            }
+          }
+        }
+        // Add the amount parameter to the filtered values and clamp to [0, 255]
+        int r2 = (int) Math.min(255, Math.max(0, Math.round(r)));
+        int g2 = (int) Math.min(255, Math.max(0, Math.round(g)));
+        int b2 = (int) Math.min(255, Math.max(0, Math.round(b)));
+        // Set the value of the corresponding pixel in the new image object
+        expectedImage.addPixelAtPosition(width1, height1, new RGBIntegerObject(r2, g2, b2));
+      }
+    }
+    //before blur
+    model.addImageToModel(testImage1.buildImage(), "test+image");
+    model.addImageToModel(expectedImage.buildImage(), "expected+image+blur");
+    assertFalse(
+        model.getObject("test+image").equals(model.getObject
+            ("expected+image+blur")));
+
+    //after blur
+    model.blur("test+image", "test-blur");
+    assertFalse(
+        model.getObject("test-blur").equals(model.getObject
+            ("expected+image+blur")));
+  }
+
+  /**
+   * test case to check if the sharpen operation works for an image.
+   */
+  @Test
+  public void testIfSharpenImageWorks(){
+    c = 0;
+    int height1 = 5;
+    int width1 = 5;
+    testImage1 = new RGBIntegerImageBuilder(width1, height1);
+    for (int i = 0; i < height1; i++) {
+      for (int j = 0; j < width1; j++) {
+        testImage1.addPixelAtPosition(j, i, new RGBIntegerObject(c, c, c));
+        c += 1;
+      }
+    }
+    expectedImage = new RGBIntegerImageBuilder(width1, height1);
+    for (int i = 0; i < height1; i++) {
+      for (int j = 0; j < width1; j++) {
+        expectedImage.addPixelAtPosition(j, i, new RGBIntegerObject(c, c, c));
+        c += 1;
+      }
+    }
+    double[][] filter = {
+        {-1.0/8.0, -1.0/8.0, -1.0/8.0, -1.0/8.0, -1.0/8.0},
+        {-1.0/8.0, 1.0/4.0, 1.0/4.0, 1.0/4.0, -1.0/8.0},
+        {-1.0/8.0, 1.0/4.0, 1.0, 1.0/4.0, -1.0/8.0},
+        {-1.0/8.0, 1.0/4.0, 1.0/4.0, 1.0/4.0, -1.0/8.0},
+        {-1.0/8.0, -1.0/8.0, -1.0/8.0, -1.0/8.0, -1.0/8.0}
+    };
+    TypeOfImage newImage = expectedImage.buildImage();
+    for (int x = 0; x < width1; x++) {
+      for (int y = 0; y < height1; y++) {
+        double r = 0, g = 0, b = 0;
+        TypeofImageObject oldPixel;
+        for (int i = -1; i <= 1; i++) {
+          for (int j = -1; j <= 1; j++) {
+            int xx = x + i;
+            int yy = y + j;
+            if (xx >= 0 && xx < newImage.getWidth() && yy >= 0 && yy < newImage.getHeight()) {
+              oldPixel = newImage.getPixels()[xx][yy];
+              double weight = filter[i + 1][j + 1];
+              r += weight * oldPixel.getChanne11();
+              g += weight * oldPixel.getChanne12();
+              b += weight * oldPixel.getChanne13();
+            }
+          }
+        }
+        // Add the amount parameter to the filtered values and clamp to [0, 255]
+        int r2 = (int) Math.min(255, Math.max(0, Math.round(r)));
+        int g2 = (int) Math.min(255, Math.max(0, Math.round(g)));
+        int b2 = (int) Math.min(255, Math.max(0, Math.round(b)));
+        // Set the value of the corresponding pixel in the new image object
+        expectedImage.addPixelAtPosition(width1, height1, new RGBIntegerObject(r2, g2, b2));
+      }
+    }
+    //before sharpen
+    model.addImageToModel(testImage1.buildImage(), "test+image");
+    model.addImageToModel(expectedImage.buildImage(), "expected+image+sharpen");
+    assertFalse(
+        model.getObject("test+image").equals(model.getObject
+            ("expected+image+sharpen")));
+    //after sharpen
+    model.sharpen("test+image", "test-sharpen");
+    assertFalse(
+        model.getObject("test-sharpen").equals(model.getObject
+            ("expected+image+sharpen")));
+  }
+
+  /**
+   * test case to check if the greyscale operation works for an image.
+   */
+  @Test
+  public void testIfGreyScaleImageWorks(){
+    c = 0;
+    expectedImage = new RGBIntegerImageBuilder(width, height);
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        double luma = 0.2126 * c + 0.7152 * c + 0.0722 * c;
+        expectedImage.addPixelAtPosition(j, i,
+            new RGBIntegerObject((int) luma, (int) luma, (int) luma));
+        c += 1;
+      }
+    }
+    //before
+    model.addImageToModel(testImage1.buildImage(), "test+image");
+    model.addImageToModel(expectedImage.buildImage(), "expected+imageValue");
+
+    //after
+    model.visualizeValueIntensityLuma("test+image", "test-luma", MeasurementType.luma);
+    assertTrue(
+        model.getObject("test-luma").equals(model.getObject("expected+imageValue")));
+  }
+
+  /**
+   * test case to check if the greyscale operation works for an image.
+   */
+  @Test
+  public void testIfSepiaToneImageWorks(){
+    c = 0;
+    expectedImage = new RGBIntegerImageBuilder(width, height);
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        double luma = 0.2126 * c + 0.7152 * c + 0.0722 * c;
+        expectedImage.addPixelAtPosition(j, i,
+            new RGBIntegerObject((int) luma, (int) luma, (int) luma));
+        c += 1;
+      }
+    }
+    //before
+    model.addImageToModel(testImage1.buildImage(), "test+image");
+    model.addImageToModel(expectedImage.buildImage(), "expected+imageValue");
+
+    //after
+    model.visualizeValueIntensityLuma("test+image", "test-luma", MeasurementType.luma);
+    assertTrue(
+        model.getObject("test-luma").equals(model.getObject("expected+imageValue")));
   }
 
   //alpha channel test
