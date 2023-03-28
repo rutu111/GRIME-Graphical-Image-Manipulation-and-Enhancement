@@ -55,3 +55,20 @@ save images/koala-trans-greyscale.ppm koala-trans-greyscale
 save images/koala-sepia.ppm koala-sepia
 save images/koala-dither.ppm koala-dither
 
+#load as ppm and save as other formats
+load images/koala.ppm koala
+
+rgb-split koala koala-red koala-green koala-blue
+brighten 50 koala-red koala-red
+rgb-combine koala-red-tint koala-red koala-green koala-blue
+save images/koala-red-tint_jpg.jpg koala-red-tint
+
+rgb-split koala koala-red koala-green koala-blue
+brighten 50 koala-red koala-red
+rgb-combine koala-red-tint koala-red koala-green koala-blue
+save images/koala-red-tint_bmp.bmp koala-red-tint
+
+rgb-split koala koala-red koala-green koala-blue
+brighten 50 koala-red koala-red
+rgb-combine koala-red-tint koala-red koala-green koala-blue
+save images/koala-red-tint_png.png koala-red-tint

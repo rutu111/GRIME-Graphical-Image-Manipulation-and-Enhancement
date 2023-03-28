@@ -50,7 +50,7 @@ transform-greyscale koala koala-trans-greyscale
 transform-sepia koala koala-sepia
 
 #dither
-dither red-component koala koala-dither
+dither koala koala-dither
 
 save images_bmp/koala-blur.bmp koala-blur
 save images_bmp/koala-sharpen.bmp koala-sharpen
@@ -63,3 +63,25 @@ load images_bmp/koala-gs.bmp koala-greyscale_loaded
 vertical-flip koala-greyscale_loaded koala-greyscale_loaded_vertical
 save images_bmp/koala-greyscale_loaded_vertical.bmp koala-greyscale_loaded_vertical
 
+#load as bmp and save as other formats
+load images_bmp/sample_image_bmp.bmp koala
+
+rgb-split koala koala-red koala-green koala-blue
+brighten 50 koala-red koala-red
+rgb-combine koala-red-tint koala-red koala-green koala-blue
+save images_bmp/koala-red-tint_jpg.jpg koala-red-tint
+
+rgb-split koala koala-red koala-green koala-blue
+brighten 50 koala-red koala-red
+rgb-combine koala-red-tint koala-red koala-green koala-blue
+save images_bmp/koala-red-tint_png.png koala-red-tint
+
+rgb-split koala koala-red koala-green koala-blue
+brighten 50 koala-red koala-red
+rgb-combine koala-red-tint koala-red koala-green koala-blue
+save images_bmp/koala-red-tint_ppm.ppm koala-red-tint
+
+#load greyscale in one format, and do a vertical flip and save in another
+load images_bmp/koala-gs.bmp koala
+vertical-flip koala koala-vertical
+save images_bmp/koala-test-grey_png.png koala-vertical
