@@ -7,31 +7,31 @@ import View.ViewI;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-public class Load implements CommandDesignOperations {
+public class Save implements CommandDesignOperations {
 
   private String imagePath;
-  public String imageName;
 
-  public Load(String[] commands) throws IllegalArgumentException{
+  private String imageName;
+
+  public Save(String[] commands) {
     if (commands.length != 3) {
       throw new IllegalArgumentException("Invalid command format.");
     }
-    imagePath = commands[1];
-    imageName = commands[2];
+     imagePath = commands[1];
+     imageName = commands[2];
   }
-
   @Override
   public void go(Operations m, ViewI view)
-      throws IOException {
+      throws NoSuchFieldException, IllegalAccessException, IOException {
     try {
       if (imagePath.split("\\.")[1].equals("ppm")) {
-        ImageUtil.readPPM(m, imagePath, imageName);
-      } else {
-        ImageUtil.imageIORead(m, imagePath, imageName);
+        ImageUtil.writePPM(m, imagePath, imageName);
+      }else {
+        ImageUtil.imgeIOWrite(m, imagePath, imageName);
       }
-      view.printOutput("Loaded image '" + imageName + "' from '" + imagePath + "'" + "\n");
+      view.printOutput("Image " + imageName + " saved as file: " + imagePath + "\n");
     } catch (FileNotFoundException e) {
-      view.printError("File not found: " + imageName + "\n");
+      view.printError("File path does not exist.\n");
     }
   }
 }

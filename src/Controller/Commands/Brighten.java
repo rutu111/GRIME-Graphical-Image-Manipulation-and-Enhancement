@@ -18,9 +18,11 @@ public class Brighten implements CommandDesignOperations {
     if (commands.length != 4) {
       throw new IllegalArgumentException("Invalid command format.");
     }
-    this.imageName =  commands[1];
-    this.updatedImageName = commands[2];
-    this.increment = Integer.parseInt(commands[3]);;
+
+    this.imageName =  commands[2];
+    this.updatedImageName = commands[3];
+    this.increment = Integer.parseInt(commands[1]);
+
   }
 
   @Override

@@ -21,7 +21,8 @@ public class Dither implements CommandDesignOperations {
 
   }
   @Override
-  public void go(Operations m, ViewI view) throws IOException {
+  public void go(Operations m, ViewI view)
+      throws IOException, NoSuchFieldException, IllegalAccessException {
     m.dither(imageName, updatedImageName);
     view.printOutput(
         "Image has been dithered '" + imageName + "' stored as '"

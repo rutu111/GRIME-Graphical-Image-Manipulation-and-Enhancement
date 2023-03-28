@@ -7,6 +7,7 @@ import Controller.Commands.Dither;
 import Controller.Commands.HorizontalFlip;
 import Controller.Commands.Load;
 import Controller.Commands.RGBSplit;
+import Controller.Commands.Save;
 import Controller.Commands.Sepia;
 import Controller.Commands.Sharpen;
 import Controller.Commands.TransformGreyscale;
@@ -19,6 +20,7 @@ import View.ViewI;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -33,8 +35,10 @@ public class ImageController {
   final Readable in;
   private final Operations model;
   private ViewI view;
+  boolean go_script = true;
 
-  private Map<String, Function<List, CommandDesignOperations>> commandMap
+
+  private Map<String, Function<String[], CommandDesignOperations>> commandMap;
 
 
 
@@ -51,6 +55,8 @@ public class ImageController {
 
   }
 
+
+
   /**
    * Run method should run the command based on user input.
    */
@@ -58,6 +64,22 @@ public class ImageController {
     view.printWelcomeMessage();
     boolean go = true;
     Scanner scanner = new Scanner(this.in);
+
+    //String[] commands = new String[0];
+    commandMap = new HashMap<>();
+    commandMap.put("load",l ->  new Load(l));
+    commandMap.put("brighten", l -> new Brighten(l));
+    commandMap.put("vertical-flip", l -> new VerticalFlip(l));
+    commandMap.put("horizontal-flip", l -> new HorizontalFlip(l));
+    commandMap.put("greyscale", l -> new ValueIntensityLumaAndVisualizeComponent(l));
+    commandMap.put("rgb-split", l -> new RGBSplit(l));
+    commandMap.put("rgb-combine", l -> new Combine(l));
+    commandMap.put("filter-blur", l -> new Blur(l));
+    commandMap.put("filter-sharpen", l -> new Sharpen(l));
+    commandMap.put("transform-greyscale", l -> new TransformGreyscale(l));
+    commandMap.put("transform-sepia", l -> new Sepia(l));
+    commandMap.put("dither", l -> new Dither(l));
+    commandMap.put("save", l -> new Save(l));
     while (go) {
       try {
         String command;
@@ -71,8 +93,13 @@ public class ImageController {
               throw new IllegalArgumentException("Invalid command format.");
             }
             String filename = commandParts[1];
+            if (!filename.split("\\.")[1].equals("txt")) {
+              throw new IllegalArgumentException("Only txt files are accepted as script files!");
+            }
             readScriptFile(filename);
-            view.printOutput("Script file ran successfully \n");
+            if (go_script) {
+              view.printOutput("Script file ran successfully \n");
+            }
           } else if (commandParts[0].equals("exit")) {
             if (commandParts.length != 1) {
               throw new IllegalArgumentException("Invalid command format.");
@@ -80,7 +107,7 @@ public class ImageController {
             go = false;
             view.printOutput("Exit the program \n");
           } else {
-            commandExecution(commandParts);
+            commandExecutionNew(commandParts);
           }
         }
       } catch (IllegalArgumentException e) {
@@ -99,108 +126,7 @@ public class ImageController {
    * @param commands string array of commands.
    * @throws IOException thrown when there's error in input and output.
    */
-  public void commandExecution(String[] commands)
-      throws IOException, NoSuchFieldException, IllegalAccessException {
-    //to run even if the nextline is blank
-    if (commands.length == 0 || commands[0].trim().isEmpty()) {
-      view.printError("Please enter appropriate command. \n");
-      return;
-    }
 
-
-    /*
-    commandMap = new HashMap<>();
-    //commandMap.put("load", new LoadCommand());
-    commandMap.put("brighten", l -> new Brighten(commands));
-
-
-
-    commandMap.put("vertical-flip", new VerticalFlip());
-    commandMap.put("horizontal-flip", new HorizontalFlip());
-    commandMap.put("greyscale", new GreyscaleCommand());
-    commandMap.put("rgb-split", new RGBSplit());
-    commandMap.put("rgb-combine", new Combine());
-    commandMap.put("filter-blur", new Blur());
-    commandMap.put("filter-sharpen", new Sharpen();
-    commandMap.put("filter-sepia", new Sepia());
-    commandMap.put("transform-greyscale", new ValueIntensityLuma());
-    commandMap.put("dither", new Dither());
-
-     */
-
-    CommandDesignOperations cmd = null;
-    switch (commands[0]) {
-      case "load":
-         cmd = new Load(commands);
-        break;
-      case "brighten":
-        cmd = new Brighten(commands);
-      break;
-      case "vertical-flip":
-        cmd = new VerticalFlip(commands);
-        break;
-      case "horizontal-flip":
-        cmd = new HorizontalFlip(commands);
-      break;
-      case "greyscale":
-        cmd = new ValueIntensityLumaAndVisualizeComponent(commands);
-        break;
-      case "rgb-split":
-        cmd = new RGBSplit(commands);
-        break;
-      case "rgb-combine":
-        cmd = new Combine(commands);
-        break;
-      case "filter-blur":
-        cmd = new Blur(commands);
-      break;
-      case "filter-sharpen":
-        cmd = new Sharpen(commands);
-      break;
-      case "transform-greyscale": {
-        cmd = new TransformGreyscale(commands);
-      }
-      break;
-      case "transform-sepia": {
-        cmd = new Sepia(commands);
-      }
-      break;
-      case "dither":
-          cmd = new Dither(commands);
-      break;
-      case "save":
-        try {
-          if (commands.length != 3) {
-            throw new IllegalArgumentException("Invalid command format.");
-          }
-          String imagePath = commands[1];
-          String imageName = commands[2];
-          view.printOutput("Image " + imageName + " saved as file: " + imagePath + "\n");
-          if (imagePath.split("\\.")[1].equals("ppm")) {
-            ImageUtil.writePPM(this.model, imagePath, imageName);
-          } else {
-            ImageUtil.imgeIOWrite(this.model, imagePath, imageName);
-          }
-        } catch (IllegalArgumentException e) {
-          view.printError("Error: " + e.getMessage() + "\n");
-        } catch (FileNotFoundException e) {
-          view.printError("File path does not exist.\n");
-        }
-        break;
-      default:
-        //throws exception when the command is invalid
-        throw new IllegalArgumentException("Invalid command: " + commands[0]);
-
-    }
-    if (cmd != null) {
-      try {
-        cmd.go(this.model, this.view); //execute the command
-        cmd = null;
-      } catch (NoSuchFieldException | IllegalAccessException e) {
-        throw new RuntimeException(e);
-      }
-    }
-  }
 
   /**
    * This methods is used read the script.txt file.
@@ -213,32 +139,43 @@ public class ImageController {
     try {
       File file = new File(filename);
       Scanner scanner = new Scanner(file);
-
-      while (scanner.hasNextLine()) {
+      go_script = true;
+      while (scanner.hasNextLine() & go_script)  {
         String line = scanner.nextLine().trim();
         if (!line.isEmpty() && !line.startsWith("//") && !line.startsWith("#")) {
           String[] words = line.split("\\s+");
-          commandExecution(words);
+          commandExecutionNew(words);
         }
       }
-    } catch (FileNotFoundException | NoSuchFieldException | IllegalAccessException e) {
+    } catch (FileNotFoundException e) {
+      throw new FileNotFoundException("File not found");
+    }catch (NoSuchFieldException e) {
       throw e;
+    } catch (IllegalAccessException e) {
+      throw  e;
     }
   }
 
   public void commandExecutionNew(String[] commands)
       throws IOException, NoSuchFieldException, IllegalAccessException {
-    //to run even if the nextline is blank
     if (commands.length == 0 || commands[0].trim().isEmpty()) {
       view.printError("Please enter appropriate command. \n");
       return;
     }
     try {
-      if (commands.length != 5) {
-        throw new IllegalArgumentException("Invalid command format.");
-      }
-    } catch (IllegalArgumentException e) {
+      CommandDesignOperations c;
+      Function<String[], CommandDesignOperations> cmd = commandMap.getOrDefault(commands[0], null);
+        if (cmd == null) {
+          go_script = false;
+          throw new IllegalArgumentException("Invalid command: " + commands[0]);
+        } else {
+          c = cmd.apply(commands);
+          c.go(this.model, this.view); //execute the command
+        }
+      } catch (IllegalArgumentException e) {
       view.printError("Error: " + e.getMessage() + "\n");
+    } catch (NoSuchFieldException | IllegalAccessException e) {
+      throw new RuntimeException(e);
     }
 
   }
