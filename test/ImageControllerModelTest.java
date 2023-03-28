@@ -503,7 +503,7 @@ public class ImageControllerModelTest {
   @Test
   public void testLoadForPNGWorks() throws IOException {
     StringBuffer out = new StringBuffer();
-    Reader in = new StringReader("load sample_image_png.png koala1\nexit");
+    Reader in = new StringReader("load images_png/sample_image_png.png koala1\nexit");
     String imageName = "koala1";
     Operations model = new Model();
     View view = new View(out);
@@ -511,9 +511,186 @@ public class ImageControllerModelTest {
     imageController.run();
     assertEquals(model.checkKeyInHashmap(imageName),true);
     assertTrue(model.numberOfImagesInModel() == 1);
-    String expectedOutput = "Loaded image 'koala1' from 'sample_image_png.png'\n"
+    String expectedOutput = "Loaded image 'koala1' from 'images_png/sample_image_png.png'\n"
         + "Exit the program \n";
     assertEquals(expectedOutput, out.toString());//inputs reached the model correctly
+  }
+
+  /**
+   * This method is used to check if the load function works as expected for jpg format,
+   * check if the controller prints the output after operations.
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testLoadForBMPWorks() throws IOException {
+    StringBuffer out = new StringBuffer();
+    Reader in = new StringReader("load images_bmp/sample_image_bmp.bmp koala1\nexit");
+    String imageName = "koala1";
+    Operations model = new Model();
+    View view = new View(out);
+    ImageController imageController = new ImageController(model, in, view);
+    imageController.run();
+    assertEquals(model.checkKeyInHashmap(imageName),true);
+    assertTrue(model.numberOfImagesInModel() == 1);
+    String expectedOutput = "Loaded image 'koala1' from 'images_bmp/sample_image_bmp.bmp'\n"
+        + "Exit the program \n";
+    assertEquals(expectedOutput, out.toString());//inputs reached the model correctly
+  }
+
+  /**
+   * This method is used to check if the load function works as expected for jpg format,
+   * check if the controller prints the output after operations.
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testLoadForPNGAlphaWorks() throws IOException {
+    StringBuffer out = new StringBuffer();
+    Reader in = new StringReader("load images_png/sample_image_alpha.png koala1\nexit");
+    String imageName = "koala1";
+    Operations model = new Model();
+    View view = new View(out);
+    ImageController imageController = new ImageController(model, in, view);
+    imageController.run();
+    assertEquals(model.checkKeyInHashmap(imageName),true);
+    assertTrue(model.numberOfImagesInModel() == 1);
+    String expectedOutput = "Loaded image 'koala1' from 'images_png/sample_image_alpha.png'\n"
+        + "Exit the program \n";
+    assertEquals(expectedOutput, out.toString());//inputs reached the model correctly
+  }
+
+  /**
+   * This is a test for the ControllerModel for the brighten function.
+   * check if hashmap contains key and obj,
+   * check the size of the hashmap,
+   * check if the controller prints the output after operations.
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testBlur() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    String newImageName = "koala-blur";
+    Reader in = new StringReader("load koala.ppm koala\nblur koala koala-blur\nexit");
+    Operations model = new Model();
+    View view = new View(out);
+    ImageController imageController = new ImageController(model, in, view);
+    imageController.run();
+    assertEquals(model.checkKeyInHashmap(imageName),true);
+    assertEquals(model.checkKeyInHashmap(newImageName),true);
+    assertTrue(model.numberOfImagesInModel() == 2);
+    String expectedOutput = "Loaded image 'koala' from 'koala.ppm'\n"
+        +"Image blurred 'koala' stored as 'koala-blurred'\n"
+        +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This is a test for the ControllerModel for the brighten function.
+   * check if hashmap contains key and obj,
+   * check the size of the hashmap,
+   * check if the controller prints the output after operations.
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testBlurJPG() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    String newImageName = "koala-blur";
+    Reader in = new StringReader("load images_jpg/sample_image1.jpg koala\nfilter-blur koala koala-blur\nexit");
+    Operations model = new Model();
+    View view = new View(out);
+    ImageController imageController = new ImageController(model, in, view);
+    imageController.run();
+    assertEquals(model.checkKeyInHashmap(imageName),true);
+    assertEquals(model.checkKeyInHashmap(newImageName),true);
+    assertTrue(model.numberOfImagesInModel() == 2);
+    String expectedOutput = "Loaded image 'koala' from 'images_jpg/sample_image1.jpg'\n"
+    +"Image blurred 'koala' stored as 'koala-blur'\n"
+    +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This is a test for the ControllerModel for the blur function.
+   * check if hashmap contains key and obj,
+   * check the size of the hashmap,
+   * check if the controller prints the output after operations.
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testBlurPNG() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    String newImageName = "koala-blur";
+    Reader in = new StringReader("load images_png/sample_image_png.png koala\nfilter-blur koala koala-blur\nexit");
+    Operations model = new Model();
+    View view = new View(out);
+    ImageController imageController = new ImageController(model, in, view);
+    imageController.run();
+    assertEquals(model.checkKeyInHashmap(imageName),true);
+    assertEquals(model.checkKeyInHashmap(newImageName),true);
+    assertTrue(model.numberOfImagesInModel() == 2);
+    String expectedOutput = "Loaded image 'koala' from 'images_png/sample_image_png.png'\n"
+        +"Image blurred 'koala' stored as 'koala-blur'\n"
+        +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This is a test for the ControllerModel for the blur function.
+   * check if hashmap contains key and obj,
+   * check the size of the hashmap,
+   * check if the controller prints the output after operations.
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testBlurBMP() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    String newImageName = "koala-blur";
+    Reader in = new StringReader("load images_bmp/sample_image_bmp.bmp koala\nfilter-blur koala koala-blur\nexit");
+    Operations model = new Model();
+    View view = new View(out);
+    ImageController imageController = new ImageController(model, in, view);
+    imageController.run();
+    assertEquals(model.checkKeyInHashmap(imageName),true);
+    assertEquals(model.checkKeyInHashmap(newImageName),true);
+    assertTrue(model.numberOfImagesInModel() == 2);
+    String expectedOutput = "Loaded image 'koala' from 'images_bmp/sample_image_bmp.bmp'\n"
+        +"Image blurred 'koala' stored as 'koala-blur'\n"
+        +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This is a test for the ControllerModel for the blur function three times on Image.
+   * check if hashmap contains key and obj,
+   * check the size of the hashmap,
+   * check if the controller prints the output after operations.
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testBlur3BMP() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    String newImageName = "koala-blur3";
+    Reader in = new StringReader("load images_bmp/sample_image_bmp.bmp koala\nfilter-blur koala koala-blur"
+        + "\nfilter-blur koala-blur koala-blur2"
+        + "\nfilter-blur koala-blur2 koala-blur3"
+        + "\nexit");
+    Operations model = new Model();
+    View view = new View(out);
+    ImageController imageController = new ImageController(model, in, view);
+    imageController.run();
+    assertEquals(model.checkKeyInHashmap(imageName),true);
+    assertEquals(model.checkKeyInHashmap(newImageName),true);
+    assertTrue(model.numberOfImagesInModel() == 4);
+    String expectedOutput = "Loaded image 'koala' from 'images_bmp/sample_image_bmp.bmp'\n"
+    +"Image blurred 'koala' stored as 'koala-blur'\n"
+    +"Image blurred 'koala-blur' stored as 'koala-blur2'\n"
+    +"Image blurred 'koala-blur2' stored as 'koala-blur3'\n"
+        +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
   }
 
 }
