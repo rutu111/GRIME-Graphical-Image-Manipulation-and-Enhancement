@@ -141,7 +141,7 @@ public class ImageUtil {
   }
 
   public static void imageIORead(Operations model, String filename, String nameOfTheObject)
-      throws IOException, FileNotFoundException {
+      throws IOException {
 
     BufferedImage image = null;
 
@@ -213,7 +213,6 @@ public class ImageUtil {
       }
       TypeOfImage imageType = builderObject.buildImage();
       model.addImageToModel(imageType, nameOfTheObject);
-      ;
     } else {
       RGBIntegerImageBuilder builderObject = new RGBIntegerImageBuilder(width, height);
       if (image.getType() == BufferedImage.TYPE_BYTE_GRAY) {
@@ -286,7 +285,11 @@ public class ImageUtil {
 
     File output = new File(filePath);
     String fileType = filePath.split("\\.")[1];
-    ImageIO.write(image, fileType, output);
+    if (output.exists() && output.length() == 0) {
+      throw new IllegalArgumentException("Error: cannot save an empty file");
+    }else {
+      ImageIO.write(image, fileType, output);
+    }
 
   }
 
