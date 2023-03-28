@@ -173,11 +173,12 @@ public class ImageController {
           c.go(this.model, this.view); //execute the command
         }
       } catch (IllegalArgumentException e) {
+      go_script = false;
       view.printError("Error: " + e.getMessage() + "\n");
     } catch (NoSuchFieldException | IllegalAccessException e) {
+      go_script = false;
       throw new RuntimeException(e);
     }
-
   }
 }
 
