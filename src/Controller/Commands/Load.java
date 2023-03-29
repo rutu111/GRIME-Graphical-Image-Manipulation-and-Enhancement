@@ -32,6 +32,11 @@ public class Load implements CommandDesignOperations {
   public void go(Operations m, ViewI view)
       throws IOException {
     try {
+      String extension = imagePath.split("\\.")[1];
+      if(!extension.equals("ppm") & !extension.equals("png") & !extension.equals("jpg") & !extension.equals("jpeg") &
+          !extension.equals("bmp")){
+        throw new IllegalArgumentException("Invalid file extension! This program only accepts PPM, JPG, PNG and BMP.");
+      }
       if (imagePath.split("\\.")[1].equals("ppm")) {
         //if file is ppm, go to readPPM function.
         ImageUtil.readPPM(m, imagePath, imageName);

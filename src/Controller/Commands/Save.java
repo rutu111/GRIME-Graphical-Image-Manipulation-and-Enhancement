@@ -36,7 +36,7 @@ public class Save implements CommandDesignOperations {
       String extension = imagePath.split("\\.")[1];
       if(!extension.equals("ppm") & !extension.equals("png") & !extension.equals("jpg") & !extension.equals("jpeg") &
               !extension.equals("bmp")){
-        throw new IllegalArgumentException("Invalid file extension!");
+        throw new IllegalArgumentException("Invalid file extension! This program only accepts PPM, JPG, PNG and BMP.");
       }
       if (extension.equals("ppm")) {
         ImageUtil.writePPM(m, imagePath, imageName);

@@ -18,6 +18,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import javax.imageio.ImageIO;
 
@@ -108,10 +109,7 @@ public class ImageUtil {
    */
   public static void writePPM(Operations model, String filePath, String imageName)
       throws FileNotFoundException, IllegalArgumentException{
-    File file = new File(filePath);
-    if (file.exists() && file.length() == 0) {
-      throw new IllegalArgumentException("Error: Cannot save an empty file");
-    }
+
     try (PrintWriter writer = new PrintWriter(filePath)) {
 
       TypeOfImage Image = model.getObject(imageName);
@@ -158,7 +156,7 @@ public class ImageUtil {
     try {
       File file = new File(filename);
       if (file.exists() && file.length() == 0) {
-        throw new IllegalArgumentException("Error: Cannot save an empty file");
+        throw new IllegalArgumentException(" Cannot save an empty file");
       }
       //1. First check if the image needs to be converted to RGB
       image = ImageIO.read(file);
@@ -272,8 +270,16 @@ public class ImageUtil {
   public static void imgeIOWrite(Operations model, String filePath, String imageName)
       throws IOException {
 
+    TypeOfImage ImageOutput;
+
     try {
-      TypeOfImage ImageOutput = model.getObject(imageName);
+      ImageOutput = model.getObject(imageName);
+    } catch (NoSuchElementException e) {
+      throw e;
+    }
+
+
+    try {
       int width = ImageOutput.getWidth();
       int height = ImageOutput.getHeight();
       BufferedImage image;
