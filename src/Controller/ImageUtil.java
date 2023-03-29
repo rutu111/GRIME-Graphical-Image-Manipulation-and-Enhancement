@@ -108,14 +108,8 @@ public class ImageUtil {
    */
   public static void writePPM(Operations model, String filePath, String imageName)
       throws FileNotFoundException, IllegalArgumentException{
-    File file = new File(filePath);
-    if (file.exists() && file.length() == 0) {
-      throw new IllegalArgumentException("Cannot save an empty file");
-    }
     try (PrintWriter writer = new PrintWriter(filePath)) {
-
       TypeOfImage Image = model.getObject(imageName);
-
       // Write header
       writer.printf("P3" + System.lineSeparator());
       writer.printf(Image.getWidth() + " " + Image.getHeight() + System.lineSeparator());
