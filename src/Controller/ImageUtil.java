@@ -56,14 +56,14 @@ public class ImageUtil {
     //now set up the scanner to read from the string we just built
     sc = new Scanner(builder.toString());
     if (!sc.hasNextLine()) {
-      throw new IllegalStateException("Error: Invalid file: Cannot be empty");
+      throw new IllegalStateException("Invalid file: Cannot be empty");
     }
     String token;
 
     token = sc.next();
     if (!token.equals("P3") || token.isEmpty()) {
       throw new IllegalStateException(
-          "Error: Invalid PPM file: plain RAW file should begin with P3");
+          "Invalid PPM file: plain RAW file should begin with P3");
     }
     try {
       width = sc.nextInt();
@@ -71,11 +71,11 @@ public class ImageUtil {
       maxValue = sc.nextInt();
 
       if (width <= 0 | height <= 0) {
-        throw new IllegalStateException("Error: Width and Height cannot be zero or negative");
+        throw new IllegalStateException("Width and Height cannot be zero or negative");
       }
 
       if (maxValue != 255) {
-        throw new IllegalStateException("Error: Invalid maxValue: " + maxValue);
+        throw new IllegalStateException("Invalid maxValue: " + maxValue);
       }
 
       RGBIntegerImageBuilder builderObject = new RGBIntegerImageBuilder(width, height);
