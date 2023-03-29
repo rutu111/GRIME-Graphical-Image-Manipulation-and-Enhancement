@@ -1794,6 +1794,68 @@ public class ImageControllerTest {
     assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
   }
 
+  /**
+   * This method is used to check if the output throws an
+   * exception with appropriate message
+   * if the filename is incorrect.
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testInvalidJPGFileLoad() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    Reader in = new StringReader("load koalas1.jpg koala\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedOutput = "Error: Can't read input file!\n"
+            +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This method is used to check if the output throws an
+   * exception with appropriate message
+   * if the filename is incorrect.
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testInvalidBMPFileLoad() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    Reader in = new StringReader("load koalas1.bmp koala\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedOutput = "Error: Can't read input file!\n"
+            +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This method is used to check if the output throws an
+   * exception with appropriate message
+   * if the filename is incorrect.
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testInvalidPNGFileLoad() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    Reader in = new StringReader("load koalas1.png koala\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedOutput = "Error: Can't read input file!\n"
+            +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
 }
 
 

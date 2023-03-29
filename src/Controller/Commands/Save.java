@@ -34,7 +34,7 @@ public class Save implements CommandDesignOperations {
       throws NoSuchFieldException, IllegalAccessException, IOException {
     try {
       String extension = imagePath.split("\\.")[1];
-      if(!extension.equals("ppm") | !extension.equals("png") | !extension.equals("jpg") | !extension.equals("jpeg") |
+      if(!extension.equals("ppm") & !extension.equals("png") & !extension.equals("jpg") & !extension.equals("jpeg") &
               !extension.equals("bmp")){
         throw new IllegalArgumentException("Invalid file extension!");
       }
