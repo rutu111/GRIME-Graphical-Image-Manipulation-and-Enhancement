@@ -283,44 +283,6 @@ public class ImageUtil {
       int width = ImageOutput.getWidth();
       int height = ImageOutput.getHeight();
       BufferedImage image;
-
-
-    /*
-    if (ImageOutput.getPixels()[0][0].hasAlpha() != null) {
-      //below we create a buffer for image with an alpha channel.
-      image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-      for (int y = 0; y < ImageOutput.getHeight(); y++) {
-        for (int x = 0; x < ImageOutput.getWidth(); x++) {
-          TypeofImageObject pixel = ImageOutput.getPixels()[x][y];
-          if (pixel != null) {
-            int alpha = 255; // set alpha to 255 (fully opaque)
-            int red = pixel.getChanne11();
-            int green = pixel.getChanne12();
-            int blue = pixel.getChanne13();
-            int argb = (alpha << 24) | (red << 16) | (green << 8) | blue;
-            image.setRGB(x, y, argb);
-          }
-        }
-      }
-    } else {
-      image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-      //below we create a buffer for image without an alpha channel.
-      for (int y = 0; y < ImageOutput.getHeight(); y++) {
-        for (int x = 0; x < ImageOutput.getWidth(); x++) {
-          TypeofImageObject pixel = ImageOutput.getPixels()[x][y];
-          if (pixel != null) {
-            int red = pixel.getChanne11();
-            int green = pixel.getChanne12();
-            int blue = pixel.getChanne13();
-            int rgb = (red << 16) | (green << 8) | blue;
-
-            image.setRGB(x, y, rgb);
-          }
-        }
-      }
-    }
-     */
-
       String fileTypeStore = filePath.split("\\.")[1];
       if (ImageOutput.getPixels()[0][0].hasAlpha() != null & fileTypeStore.equals("ppm")
           | ImageOutput.getPixels()[0][0].hasAlpha() != null & fileTypeStore.equals("bmp")
