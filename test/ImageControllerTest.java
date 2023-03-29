@@ -1711,10 +1711,151 @@ public class ImageControllerTest {
     assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
   }
 
+  /**
+   * This method is used to check if the output throws exception
+   * with appropriate message if
+   * command is incorrect.
+   * @throws Exception handles exception
+   */
+  @Test
+  public void testRunInvalidScriptDocFile() throws Exception {
+    StringBuffer out = new StringBuffer();
+    Reader in = new StringReader("run script1.doc\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedOutput = "Error: Only txt files are accepted as script files!\n"
+            +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This method is used to check if the output throws exception
+   * with appropriate message if
+   * command is incorrect.
+   * @throws Exception handles exception
+   */
+  @Test
+  public void testRunInvalidScriptFile() throws Exception {
+    StringBuffer out = new StringBuffer();
+    Reader in = new StringReader("run invalidscript1.txt\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedOutput = "Error: Invalid command: hi\n"
+            +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This method is used to check if the output throws exception
+   * with appropriate message if
+   * command is incorrect.
+   * @throws Exception handles exception
+   */
+  @Test
+  public void testRunEmptyScriptFile() throws Exception {
+    StringBuffer out = new StringBuffer();
+    Reader in = new StringReader("run invalidscript2.txt\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedOutput = "Error: script file cannot be empty\n"
+            +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
   //tests for command line hashmap:
+  /**
+   * This is a test for the Controller for the brighten function
+   * when the fucntion is invalid.
+   * @throws Exception handling different type of exceptions
+   */
+  @Test
+  public void testCommandLineDesignPattern1() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    String newImageName = "koala-brighten";
+    double increment = 10;
+    Reader in = new StringReader("brightened 10 koala koala-brighten\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedOutput = "Error: Invalid command format.\n"
+            +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
 
+  /**
+   * This method is used to check if the output throws an
+   * exception with appropriate message
+   * if the filename is incorrect.
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testInvalidJPGFileLoad() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    Reader in = new StringReader("load koalas1.jpg koala\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedOutput = "Error: Can't read input file!\n"
+            +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
 
+  /**
+   * This method is used to check if the output throws an
+   * exception with appropriate message
+   * if the filename is incorrect.
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testInvalidBMPFileLoad() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    Reader in = new StringReader("load koalas1.bmp koala\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedOutput = "Error: Can't read input file!\n"
+            +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
 
+  /**
+   * This method is used to check if the output throws an
+   * exception with appropriate message
+   * if the filename is incorrect.
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testInvalidPNGFileLoad() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    Reader in = new StringReader("load koalas1.png koala\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedOutput = "Error: Can't read input file!\n"
+            +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
 }
 
 

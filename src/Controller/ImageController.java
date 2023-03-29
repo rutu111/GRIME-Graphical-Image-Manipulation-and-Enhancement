@@ -132,6 +132,9 @@ public class ImageController {
       throws IOException, NoSuchFieldException, IllegalAccessException {
     try {
       File file = new File(filename);
+      if(file.exists()&&file.length()==0){
+        throw new IllegalAccessException("script file cannot be empty");
+      }
       Scanner scanner = new Scanner(file);
       go_script = true;
       while (scanner.hasNextLine() & go_script)  {

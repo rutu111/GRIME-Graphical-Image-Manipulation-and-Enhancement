@@ -33,9 +33,14 @@ public class Save implements CommandDesignOperations {
   public void go(Operations m, ViewI view)
       throws NoSuchFieldException, IllegalAccessException, IOException {
     try {
-      if (imagePath.split("\\.")[1].equals("ppm")) {
+      String extension = imagePath.split("\\.")[1];
+      if(!extension.equals("ppm") & !extension.equals("png") & !extension.equals("jpg") & !extension.equals("jpeg") &
+              !extension.equals("bmp")){
+        throw new IllegalArgumentException("Invalid file extension!");
+      }
+      if (extension.equals("ppm")) {
         ImageUtil.writePPM(m, imagePath, imageName);
-      }else {
+      }else{
         ImageUtil.imgeIOWrite(m, imagePath, imageName);
       }
       view.printOutput("Image " + imageName + " saved as file: " + imagePath + "\n");
