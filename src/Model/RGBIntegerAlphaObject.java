@@ -2,6 +2,9 @@ package Model;
 
 import java.util.Objects;
 
+/**
+ * The following class represents an RGBIntegerAlphaObject.
+ */
 public class RGBIntegerAlphaObject implements TypeofImageObject {
 
   protected final Integer red;
@@ -11,10 +14,11 @@ public class RGBIntegerAlphaObject implements TypeofImageObject {
 
 
   /**
+   * This constructor creates a new RGNAlpha object.
    * @param red   the value of the red component.
    * @param green value of the green component.
    * @param blue  value of the blue component.
-   * @param alpha
+   * @param alpha value of the alpha channel.
    * @throws IllegalArgumentException throws if illegal values of RGB provided.
    */
   public RGBIntegerAlphaObject(Integer red, Integer green, Integer blue, Integer alpha)
@@ -48,12 +52,13 @@ public class RGBIntegerAlphaObject implements TypeofImageObject {
     return this.blue;
   }
 
+  @Override
   public Integer hasAlpha() {
     return this.alpha;
   }
 
   /**
-   * Equals method checks if two RGBIntegerObject integer
+   * Equals method checks if two RGBIntegerAlpha
    * objects are the same.
    *
    * @param o which is object we want to compare with.

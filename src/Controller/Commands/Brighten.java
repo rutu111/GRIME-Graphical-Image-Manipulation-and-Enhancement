@@ -5,6 +5,9 @@ import Model.Operations;
 import View.ViewI;
 import java.io.IOException;
 
+/**
+ * This class is for the command design pattern.
+ */
 public class Brighten implements CommandDesignOperations {
 
   private double increment;
@@ -14,6 +17,11 @@ public class Brighten implements CommandDesignOperations {
   private String updatedImageName;
 
 
+  /**
+   * This constructor takes in a list a commands.
+   * @param commands a list of commands, typed by the user.
+   * @throws IllegalArgumentException if number of arguments not as expected.
+   */
   public Brighten(String[] commands) throws IllegalArgumentException{
     if (commands.length != 4) {
       throw new IllegalArgumentException("Invalid command format.");

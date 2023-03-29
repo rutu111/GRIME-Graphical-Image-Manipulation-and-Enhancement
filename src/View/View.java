@@ -28,25 +28,17 @@ public class View implements ViewI {
         + "newimageNameB\n");
     System.out.println("GREYSCALE TO RGB: rgb-combine newimageName imageNameR imageNameG imageNameB"
         + "\n");
+    System.out.println("Blur: filter-blur imageName newimageName\n");
+    System.out.println("Dither: dither imageName newimageName\n");
+    System.out.println("Sharpen: filter-sharpen imageName newimageName\n");
+    System.out.println("Greyscale Transformation: transform-greyscale fimageName newimageName\n");
+    System.out.println("Sepia Transformation: transform-sepia fimageName newimageName\n");
+
   }
 
 
-
-  /**
-   * Prints the output of a command to the console.
-   *
-   * @param output the output of a command as a String.
-   */
+  @Override
   public void printOutput(String output) throws IOException {
     this.out.append(output);
-  }
-
-  /**
-   * Prints an error message to the console.
-   *
-   * @param message the error message as a String.
-   */
-  public void printError(String message) throws IOException {
-    this.out.append(message);
   }
 }

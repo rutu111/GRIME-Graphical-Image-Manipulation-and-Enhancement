@@ -48,6 +48,7 @@ public class RGBIntegerObject implements TypeofImageObject {
     return this.blue;
   }
 
+  @Override
   public Integer hasAlpha() {
     return null;
   }

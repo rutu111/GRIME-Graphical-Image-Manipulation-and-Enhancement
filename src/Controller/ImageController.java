@@ -24,7 +24,7 @@ import java.util.Scanner;
 import java.util.function.Function;
 
 /**
- * This is the controller class. It interacts with the view (command line), tells the model what to
+ * This is the controller class. It interacts with the view class (command line), tells the model what to
  * do and returns output to the user.
  */
 public class ImageController {
@@ -35,6 +35,8 @@ public class ImageController {
   boolean go_script = true;
 
 
+  //hashmap of image operations (key) and lambda operation (value)
+  //the lambda operation maps a list of strings to a CommandDesignOperations object.
   private Map<String, Function<String[], CommandDesignOperations>> commandMap;
 
 
@@ -43,25 +45,30 @@ public class ImageController {
    *
    * @param model takes the model instance as input.
    * @param in    input stream.
+   * @param view which is the view instance.
    */
   public ImageController(Operations model, Readable in, ViewI view) {
     this.model = model;
     this.in = in;
     this.view = view;
-
   }
+
 
 
   /**
    * Run method should run the command based on user input.
+   * 1. Runs: runs the script specified.
+   * 2. exit the program if exit pressed
+   * 3. otherwise, run script based on user typed input (not from script).
    */
   public void run() throws IOException {
     view.printWelcomeMessage();
     boolean go = true;
     Scanner scanner = new Scanner(this.in);
-    //String[] commands = new String[0];
+
+    //initiazing the hashmap for command design pattern.
     commandMap = new HashMap<>();
-    commandMap.put("load", l -> new Load(l));
+    commandMap.put("load",l ->  new Load(l));
     commandMap.put("brighten", l -> new Brighten(l));
     commandMap.put("vertical-flip", l -> new VerticalFlip(l));
     commandMap.put("horizontal-flip", l -> new HorizontalFlip(l));
@@ -74,6 +81,7 @@ public class ImageController {
     commandMap.put("transform-sepia", l -> new Sepia(l));
     commandMap.put("dither", l -> new Dither(l));
     commandMap.put("save", l -> new Save(l));
+
     while (go) {
       try {
         String command;
@@ -105,21 +113,13 @@ public class ImageController {
           }
         }
       } catch (IllegalArgumentException e) {
-        view.printError("Error: " + e.getMessage() + "\n");
+        view.printOutput("Error: " + e.getMessage() + "\n");
       } catch (Exception e) {
-        view.printError("Error: " + e.getMessage() + "\n");
+        view.printOutput("Error: " + e.getMessage() + "\n");
       }
     }
     scanner.close();
   }
-
-  /**
-   * This method has the list of commands that can be inputted by the user in command line or run
-   * through a script.
-   *
-   * @param commands string array of commands.
-   * @throws IOException thrown when there's error in input and output.
-   */
 
 
   /**
@@ -134,7 +134,7 @@ public class ImageController {
       File file = new File(filename);
       Scanner scanner = new Scanner(file);
       go_script = true;
-      while (scanner.hasNextLine() & go_script) {
+      while (scanner.hasNextLine() & go_script)  {
         String line = scanner.nextLine().trim();
         if (!line.isEmpty() && !line.startsWith("//") && !line.startsWith("#")) {
           String[] words = line.split("\\s+");
@@ -143,33 +143,45 @@ public class ImageController {
       }
     } catch (FileNotFoundException e) {
       throw new FileNotFoundException("File not found");
-    } catch (NoSuchFieldException e) {
+    }catch (NoSuchFieldException e) {
       throw e;
     } catch (IllegalAccessException e) {
-      throw e;
+      throw  e;
     }
   }
 
+  /**
+   * This method fetches the appropiate object from the hashamp.
+   * For example, if command is "brighten" then it would load
+   * the Brighten() object from the hashmap and pass the list of
+   * commands typed by the yser to it,
+   * The object would then do the neccessary computation and return an output
+   * to the user.
+   * @param commands list of commands provided by user
+   * @throws IOException if IOexception occurs.
+   * @throws NoSuchFieldException if field not found.
+   * @throws IllegalAccessException if illegal access.
+   */
   public void commandExecutionNew(String[] commands)
       throws IOException, NoSuchFieldException, IllegalAccessException {
     if (commands.length == 0 || commands[0].trim().isEmpty()) {
-      view.printError("Please enter appropriate command. \n");
+      view.printOutput("Please enter appropriate command. \n");
       return;
     }
     try {
       CommandDesignOperations c;
-      Function<String[], CommandDesignOperations> cmd = commandMap.getOrDefault(commands[0],
-          null);
-      if (cmd == null) {
-        go_script = false;
-        throw new IllegalArgumentException("Invalid command: " + commands[0]);
-      } else {
-        c = cmd.apply(commands);
-        c.go(this.model, this.view); //execute the command
-      }
-    } catch (IllegalArgumentException e) {
+      //line below returns the "value" based on the key (operation) passed.
+      Function<String[], CommandDesignOperations> cmd = commandMap.getOrDefault(commands[0], null);
+        if (cmd == null) {
+          go_script = false;
+          throw new IllegalArgumentException("Invalid command: " + commands[0]);
+        } else {
+          c = cmd.apply(commands); //pass list (commands) to the "value" (lambda functuon)'
+          c.go(this.model, this.view); //execute the command
+        }
+      } catch (IllegalArgumentException e) {
       go_script = false;
-      view.printError("Error: " + e.getMessage() + "\n");
+      view.printOutput("Error: " + e.getMessage() + "\n");
     } catch (NoSuchFieldException | IllegalAccessException e) {
       go_script = false;
       throw new RuntimeException(e);

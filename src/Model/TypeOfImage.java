@@ -88,11 +88,28 @@ public interface TypeOfImage {
   TypeOfImage combineGreyScaleToRGB(TypeOfImage imageName2, TypeOfImage imageName3)
       throws IllegalArgumentException;
 
+  /**
+   * Method to blur the image.
+   * @return none.
+   */
   TypeOfImage blur();
+
+  /**
+   * Method to sharpen the image.
+   * @return none.
+   */
   TypeOfImage sharpen();
 
+  /**
+   * Method to dither the image.
+   * @return none.
+   */
   TypeOfImage dither() throws NoSuchFieldException, IllegalAccessException;
 
+  /**
+   * Method to convert the image to sepia.
+   * @return none.
+   */
   TypeOfImage colorTransformationSepia();
 
 }

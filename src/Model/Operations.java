@@ -110,16 +110,43 @@ public interface Operations {
   void addImageToModel(TypeOfImage image,
       String nameOfObject);
 
+  /**
+   * Method checks if requested key is in the hashmap.
+   * If yes, then returns true. Else, returns false.
+   * @param imageName key to look for.
+   * @return boolean.
+   */
   boolean checkKeyInHashmap(String imageName);
 
+  /**
+   * Method concerts an image into sepia tone.
+   * @param imageName name of the image to convert.
+   * @param newImageName name of output image after conversion.
+   */
   void colorTransformationSepia(String imageName, String newImageName);
 
+  /**
+   * Method blurs the given image.
+   * @param imageName name of the image to convert.
+   * @param newImageName name of output image after conversion.
+   */
   void blur(String imageName, String newImageName);
 
+  /**
+   * Method sharpens the given image.
+   * @param imageName name of the image to convert.
+   * @param newImageName name of output image after conversion.
+   */
   void sharpen(String imageName, String newImageName);
 
+  /**
+   * Method dithers the given image.
+   * @param imageName name of the image to convert.
+   * @param newImageName name of output image after conversion.
+   * @throws NoSuchFieldException if file not found.
+   * @throws IllegalAccessException if illegal access.
+   */
   void dither(String imageName, String newImageName)
       throws NoSuchFieldException, IllegalAccessException;
 
-  Collection<String> getKeys();
 }

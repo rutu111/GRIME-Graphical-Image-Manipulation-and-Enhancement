@@ -29,5 +29,9 @@ public interface TypeofImageObject {
    */
   Integer getChanne13();
 
+  /**
+   * Method returns the alpha value if object has one.
+   * @return alpha value if exists. Otherwise, return null.
+   */
   Integer hasAlpha();
 }

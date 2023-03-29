@@ -7,6 +7,9 @@ import Model.Operations;
 import View.ViewI;
 import java.io.IOException;
 
+/**
+ * This class is for the command design pattern.
+ */
 public class ValueIntensityLumaAndVisualizeComponent implements CommandDesignOperations {
 
   private MeasurementType measure = null;
@@ -18,6 +21,11 @@ public class ValueIntensityLumaAndVisualizeComponent implements CommandDesignOpe
   private String updatedImageName;
 
 
+  /**
+   * This constructor takes in a list a commands.
+   * @param commands a list of commands, typed by the user.
+   * @throws IllegalArgumentException if number of arguments not as expected.
+   */
   public ValueIntensityLumaAndVisualizeComponent(String[] commands) throws IllegalArgumentException {
     if (commands.length != 4) {
       throw new IllegalArgumentException("Invalid command format.");
@@ -25,6 +33,7 @@ public class ValueIntensityLumaAndVisualizeComponent implements CommandDesignOpe
     this.imageName =  commands[2];
     this.updatedImageName = commands[3];
 
+    //go to appropiate class based on component requested.
     String component = commands[1];
     String[] componentParts = component.split("-");
     if (componentParts[0].equals("red") || componentParts[0].equals("green")
