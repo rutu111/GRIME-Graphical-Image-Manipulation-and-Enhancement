@@ -13,15 +13,12 @@ import Controller.Commands.Sharpen;
 import Controller.Commands.TransformGreyscale;
 import Controller.Commands.ValueIntensityLumaAndVisualizeComponent;
 import Controller.Commands.VerticalFlip;
-import Model.ComponentRGB;
-import Model.MeasurementType;
 import Model.Operations;
 import View.ViewI;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.function.Function;
@@ -41,7 +38,6 @@ public class ImageController {
   private Map<String, Function<String[], CommandDesignOperations>> commandMap;
 
 
-
   /**
    * This constructor creates a controller object.
    *
@@ -56,7 +52,6 @@ public class ImageController {
   }
 
 
-
   /**
    * Run method should run the command based on user input.
    */
@@ -64,10 +59,9 @@ public class ImageController {
     view.printWelcomeMessage();
     boolean go = true;
     Scanner scanner = new Scanner(this.in);
-
     //String[] commands = new String[0];
     commandMap = new HashMap<>();
-    commandMap.put("load",l ->  new Load(l));
+    commandMap.put("load", l -> new Load(l));
     commandMap.put("brighten", l -> new Brighten(l));
     commandMap.put("vertical-flip", l -> new VerticalFlip(l));
     commandMap.put("horizontal-flip", l -> new HorizontalFlip(l));
@@ -140,7 +134,7 @@ public class ImageController {
       File file = new File(filename);
       Scanner scanner = new Scanner(file);
       go_script = true;
-      while (scanner.hasNextLine() & go_script)  {
+      while (scanner.hasNextLine() & go_script) {
         String line = scanner.nextLine().trim();
         if (!line.isEmpty() && !line.startsWith("//") && !line.startsWith("#")) {
           String[] words = line.split("\\s+");
@@ -149,10 +143,10 @@ public class ImageController {
       }
     } catch (FileNotFoundException e) {
       throw new FileNotFoundException("File not found");
-    }catch (NoSuchFieldException e) {
+    } catch (NoSuchFieldException e) {
       throw e;
     } catch (IllegalAccessException e) {
-      throw  e;
+      throw e;
     }
   }
 
@@ -164,15 +158,16 @@ public class ImageController {
     }
     try {
       CommandDesignOperations c;
-      Function<String[], CommandDesignOperations> cmd = commandMap.getOrDefault(commands[0], null);
-        if (cmd == null) {
-          go_script = false;
-          throw new IllegalArgumentException("Invalid command: " + commands[0]);
-        } else {
-          c = cmd.apply(commands);
-          c.go(this.model, this.view); //execute the command
-        }
-      } catch (IllegalArgumentException e) {
+      Function<String[], CommandDesignOperations> cmd = commandMap.getOrDefault(commands[0],
+          null);
+      if (cmd == null) {
+        go_script = false;
+        throw new IllegalArgumentException("Invalid command: " + commands[0]);
+      } else {
+        c = cmd.apply(commands);
+        c.go(this.model, this.view); //execute the command
+      }
+    } catch (IllegalArgumentException e) {
       go_script = false;
       view.printError("Error: " + e.getMessage() + "\n");
     } catch (NoSuchFieldException | IllegalAccessException e) {

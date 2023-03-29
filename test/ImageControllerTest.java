@@ -1,11 +1,10 @@
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import Controller.ImageController;
+import Model.*;
 import View.View;
-import Model.ComponentRGB;
-import Model.MeasurementType;
-import Model.Operations;
-import Model.TypeOfImage;
+
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.Collection;
@@ -114,24 +113,23 @@ public class ImageControllerTest {
 
     @Override
     public void colorTransformationSepia(String imageName, String newImageName) {
+      log.append("Received inputs for colorTransformationSepia: " + imageName + " " + newImageName + "\n");
 
     }
 
-
-
     @Override
     public void blur(String imageName, String newImageName) {
-
+      log.append("Received inputs for blur: " + imageName + " " + newImageName + "\n");
     }
 
     @Override
     public void sharpen(String imageName, String newImageName) {
-
+      log.append("Received inputs for sharpen: " + imageName + " " + newImageName + "\n");
     }
 
     @Override
     public void dither(String imageName, String newImageName) {
-
+      log.append("Received inputs for dither: " + imageName + " " + newImageName + "\n");
     }
 
     @Override
@@ -308,6 +306,29 @@ public class ImageControllerTest {
         +"Exit the program \n";
     assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
   }
+
+  /**
+   * This method is used to check if the output throws an
+   * exception with appropriate message
+   * if an empty file is loaded.
+   *
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testPPMFormatFileLoad() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    Reader in = new StringReader("load empty.ppm koala\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedOutput = "Error: Invalid file: Cannot be empty\n"
+            +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
 
   /**
    * This method is used to check if the output throws an
@@ -767,18 +788,17 @@ public class ImageControllerTest {
   @Test
   public void testRunCommand() throws Exception {
     StringBuffer out = new StringBuffer();
-    Reader in = new StringReader("run script1.txt\nexit");
+    Reader in = new StringReader("run script.txt\nexit");
     StringBuilder log = new StringBuilder(); //log for mock model
     MockModel mockModel = new MockModel(log);
     View view = new View(out);
     ImageController imageController = new ImageController(mockModel, in, view);
     imageController.run();
-    String expectedOutput = "Loaded image 'koala' from 'images/sample_image1.jpg'\n"
+    String expectedOutput = "Loaded image 'koala' from 'images/koala.ppm'\n"
     +"Image brightened 'koala' stored as 'koala-brighter'\n"
     + "Image vertically flipped 'koala' stored as 'koala-vertical'\n"
     +"Image horizontally flipped 'koala-vertical' stored as 'koala-vertical-horizontal'\n"
     +"Image 'koala' stored as greyscale 'koala-greyscale'\n"
-    +"Image koala-brighter saved as file: images/koala-brighter.jpg\n"
     +"Error: null\n"
     +"Exit the program \n";
     assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
@@ -819,8 +839,7 @@ public class ImageControllerTest {
     View view = new View(out);
     ImageController imageController = new ImageController(mockModel, in, view);
     imageController.run();
-    String expectedOutput = "Image koala saved as file: koala1.ppm\n"
-    +"Error: null\n"
+    String expectedOutput = "Error: null\n"
     +"Exit the program \n";
     assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
   }
@@ -862,8 +881,7 @@ public class ImageControllerTest {
     View view = new View(out);
     ImageController imageController = new ImageController(mockModel, in, view);
     imageController.run();
-    String expectedOutput = "Image koala saved as file: allimages/koala1.ppm\n"
-        +"File path does not exist.\n"
+    String expectedOutput = "File path does not exist.\n"
         +"Exit the program \n";
     assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
   }
@@ -905,6 +923,802 @@ public class ImageControllerTest {
         +"Exit the program \n";
     assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
   }
+
+  /**
+   * This is a test for the ControllerModel for the blur function for ppm files.
+   *
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testBlur() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    String newImageName = "koala-blur";
+    Reader in = new StringReader("load koala.ppm koala\nfilter-blur koala koala-blur\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedlog = "Received inputs for createBuilderThreeChannel:"+imageName+"\n"+
+            "Received inputs for blur: " + imageName + " " + newImageName + "\n";
+    assertEquals(expectedlog, mockModel.log.toString()); //inputs reached the model correctly
+    String expectedOutput = "Loaded image 'koala' from 'koala.ppm'\n"
+            + "Image blurred 'koala' stored as 'koala-blur'\n"
+            + "Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This is a test for the ControllerModel for the blur function for JPG.
+   *
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testBlurJPG() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    String newImageName = "koala-blur";
+    Reader in = new StringReader(
+            "load images_jpg/sample_image1.jpg koala\nfilter-blur koala koala-blur\nexit");
+    StringBuilder log = new StringBuilder();
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedlog = "Received inputs for createBuilderThreeChannel:"+imageName+"\n"+
+            "Received inputs for blur: " + imageName + " " + newImageName + "\n";
+    assertEquals(expectedlog, mockModel.log.toString()); //inputs reached the model correctly
+    String expectedOutput = "Loaded image 'koala' from 'images_jpg/sample_image1.jpg'\n"
+            + "Image blurred 'koala' stored as 'koala-blur'\n"
+            + "Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This is a test for the ControllerModel for the blur function for PNG.
+   *
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testBlurPNG() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    String newImageName = "koala-blur";
+    Reader in = new StringReader(
+            "load images_png/sample_image_png.png koala\nfilter-blur koala koala-blur\nexit");
+    StringBuilder log = new StringBuilder();
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedlog = "Received inputs for createBuilderThreeChannel:"+imageName+"\n"+
+            "Received inputs for blur: " + imageName + " " + newImageName + "\n";
+    assertEquals(expectedlog, mockModel.log.toString()); //inputs reached the model correctly
+    String expectedOutput = "Loaded image 'koala' from 'images_png/sample_image_png.png'\n"
+            + "Image blurred 'koala' stored as 'koala-blur'\n"
+            + "Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This is a test for the ControllerModel for the blur function for BMP.
+   *
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testBlurBMP() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    String newImageName = "koala-blur";
+    Reader in = new StringReader(
+            "load images_bmp/sample_image_bmp.bmp koala\nfilter-blur koala koala-blur\nexit");
+    StringBuilder log = new StringBuilder();
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedlog = "Received inputs for createBuilderThreeChannel:"+imageName+"\n"+
+            "Received inputs for blur: " + imageName + " " + newImageName + "\n";
+    assertEquals(expectedlog, mockModel.log.toString()); //inputs reached the model correctly
+    String expectedOutput = "Loaded image 'koala' from 'images_bmp/sample_image_bmp.bmp'\n"
+            + "Image blurred 'koala' stored as 'koala-blur'\n"
+            + "Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This is a test for the ControllerModel for the blur function three times on Image. check if
+   * hashmap contains key and obj, check the size of the hashmap, check if the controller prints the
+   * output after operations.
+   *
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testBlur3BMP() throws Exception {
+    StringBuffer out = new StringBuffer();
+    Reader in = new StringReader(
+            "load images_bmp/sample_image_bmp.bmp koala\nfilter-blur koala koala-blur"
+                    + "\nfilter-blur koala-blur koala-blur2"
+                    + "\nfilter-blur koala-blur2 koala-blur3"
+                    + "\nexit");
+    StringBuilder log = new StringBuilder();
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedOutput = "Loaded image 'koala' from 'images_bmp/sample_image_bmp.bmp'\n"
+            + "Image blurred 'koala' stored as 'koala-blur'\n"
+            + "Image blurred 'koala-blur' stored as 'koala-blur2'\n"
+            + "Image blurred 'koala-blur2' stored as 'koala-blur3'\n"
+            + "Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This is a test for the ControllerModel for the sharpen function. check if hashmap contains key
+   * and obj, check the size of the hashmap, check if the controller prints the output after
+   * operations.
+   *
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testSharpen() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    String newImageName = "koala-sharpen";
+    Reader in = new StringReader("load koala.ppm koala\nfilter-sharpen koala koala-sharpen\nexit");
+    StringBuilder log = new StringBuilder();
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedOutput = "Loaded image 'koala' from 'koala.ppm'\n"
+            + "Image sharpened 'koala' stored as 'koala-sharpen'\n"
+            + "Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+    String expectedlog = "Received inputs for createBuilderThreeChannel:"+imageName+"\n"+
+            "Received inputs for sharpen: " + imageName + " " + newImageName + "\n";
+    assertEquals(expectedlog, mockModel.log.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This is a test for the ControllerModel for the sharpen function for JPG. check if hashmap contains
+   * key and obj, check the size of the hashmap, check if the controller prints the output after
+   * operations.
+   *
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testSharpenJPG() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    String newImageName = "koala-sharpen";
+    Reader in = new StringReader(
+            "load images_jpg/sample_image1.jpg koala\nfilter-sharpen koala koala-sharpen\nexit");
+    StringBuilder log = new StringBuilder();
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedlog = "Received inputs for createBuilderThreeChannel:"+imageName+"\n"+
+            "Received inputs for sharpen: " + imageName + " " + newImageName + "\n";
+    assertEquals(expectedlog, mockModel.log.toString()); //inputs reached the model correctly
+    String expectedOutput = "Loaded image 'koala' from 'images_jpg/sample_image1.jpg'\n"
+            + "Image sharpened 'koala' stored as 'koala-sharpen'\n"
+            + "Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This is a test for the ControllerModel for the sharpen function for PNG. check if hashmap contains
+   * key and obj, check the size of the hashmap, check if the controller prints the output after
+   * operations.
+   *
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testSharpenPNG() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    String newImageName = "koala-sharpen";
+    Reader in = new StringReader(
+            "load images_png/sample_image_png.png koala\nfilter-sharpen koala koala-sharpen\nexit");
+    StringBuilder log = new StringBuilder();
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedlog = "Received inputs for createBuilderThreeChannel:"+imageName+"\n"+
+            "Received inputs for sharpen: " + imageName + " " + newImageName + "\n";
+    assertEquals(expectedlog, mockModel.log.toString()); //inputs reached the model correctly
+    String expectedOutput = "Loaded image 'koala' from 'images_png/sample_image_png.png'\n"
+            + "Image sharpened 'koala' stored as 'koala-sharpen'\n"
+            + "Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This is a test for the ControllerModel for the sharpen function for BMP. check if hashmap contains
+   * key and obj, check the size of the hashmap, check if the controller prints the output after
+   * operations.
+   *
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testSharpenBMP() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    String newImageName = "koala-sharpen";
+    Reader in = new StringReader(
+            "load images_bmp/sample_image_bmp.bmp koala\nfilter-sharpen koala koala-sharpen\nexit");
+    StringBuilder log = new StringBuilder();
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedlog = "Received inputs for createBuilderThreeChannel:"+imageName+"\n"+
+            "Received inputs for sharpen: " + imageName + " " + newImageName + "\n";
+    assertEquals(expectedlog, mockModel.log.toString()); //inputs reached the model correctly
+    String expectedOutput = "Loaded image 'koala' from 'images_bmp/sample_image_bmp.bmp'\n"
+            + "Image sharpened 'koala' stored as 'koala-sharpen'\n"
+            + "Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This is a test for the ControllerModel for the sharpen function three times on Image. check if
+   * hashmap contains key and obj, check the size of the hashmap, check if the controller prints the
+   * output after operations.
+   *
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testSharpen3BMP() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    String newImageName = "koala-sharpen3";
+    Reader in = new StringReader(
+            "load images_bmp/sample_image_bmp.bmp koala\nfilter-sharpen koala koala-sharpen"
+                    + "\nfilter-sharpen koala-sharpen koala-sharpen2"
+                    + "\nfilter-sharpen koala-sharpen2 koala-sharpen3"
+                    + "\nexit");
+    StringBuilder log = new StringBuilder();
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedOutput = "Loaded image 'koala' from 'images_bmp/sample_image_bmp.bmp'\n"
+            + "Image sharpened 'koala' stored as 'koala-sharpen'\n"
+            + "Image sharpened 'koala-sharpen' stored as 'koala-sharpen2'\n"
+            + "Image sharpened 'koala-sharpen2' stored as 'koala-sharpen3'\n"
+            + "Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This is a test for the ControllerModel for the greyscale function. check if hashmap contains key
+   * and obj, check the size of the hashmap, check if the controller prints the output after
+   * operations.
+   *
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testGreyscale() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    String newImageName = "koala-greyscale";
+    Reader in = new StringReader("load koala.ppm koala\ntransform-greyscale koala koala-greyscale"
+            + "\nexit");
+    StringBuilder log = new StringBuilder();
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedOutput = "Loaded image 'koala' from 'koala.ppm'\n"
+            + "Image has been colour transformed with luma 'koala' stored as 'koala-greyscale'\n"
+            + "Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This is a test for the ControllerModel for the greyscale function for JPG. check if hashmap contains
+   * key and obj, check the size of the hashmap, check if the controller prints the output after
+   * operations.
+   *
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testGreyscaleJPG() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    String newImageName = "koala-greyscale";
+    Reader in = new StringReader(
+            "load images_jpg/sample_image1.jpg koala\ntransform-greyscale koala "
+                    + "koala-greyscale\nexit");
+    StringBuilder log = new StringBuilder();
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedOutput = "Loaded image 'koala' from 'images_jpg/sample_image1.jpg'\n"
+            + "Image has been colour transformed with luma 'koala' stored as 'koala-greyscale'\n"
+            + "Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This is a test for the ControllerModel for the greyscale function for PNG. check if hashmap contains
+   * key and obj, check the size of the hashmap, check if the controller prints the output after
+   * operations.
+   *
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testGreyScalePNG() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    String newImageName = "koala-greyscale";
+    Reader in = new StringReader(
+            "load images_png/sample_image_png.png koala\ntransform-greyscale koala koala-greyscale\nexit");
+    StringBuilder log = new StringBuilder();
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedOutput = "Loaded image 'koala' from 'images_png/sample_image_png.png'\n"
+            + "Image has been colour transformed with luma 'koala' stored as 'koala-greyscale'\n"
+            + "Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This is a test for the ControllerModel for the sepia function for BMP. check if hashmap contains
+   * key and obj, check the size of the hashmap, check if the controller prints the output after
+   * operations.
+   *
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testGreyScaleBMP() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    String newImageName = "koala-greyscale";
+    Reader in = new StringReader(
+            "load images_bmp/sample_image_bmp.bmp koala\ntransform-greyscale koala koala-greyscale\nexit");
+    StringBuilder log = new StringBuilder();
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedOutput = "Loaded image 'koala' from 'images_bmp/sample_image_bmp.bmp'\n"
+            + "Image has been colour transformed with luma 'koala' stored as 'koala-greyscale'\n"
+            + "Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+
+  /**
+   * This is a test for the ControllerModel for the sepia function for JPG. check if hashmap contains
+   * key and obj, check the size of the hashmap, check if the controller prints the output after
+   * operations.
+   *
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testSepiaJPG() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    String newImageName = "koala-sepia";
+    Reader in = new StringReader(
+            "load images_jpg/sample_image1.jpg koala\ntransform-sepia koala "
+                    + "koala-sepia\nexit");
+    StringBuilder log = new StringBuilder();
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedlog = "Received inputs for createBuilderThreeChannel:"+imageName+"\n"+
+            "Received inputs for colorTransformationSepia: " + imageName + " " + newImageName + "\n";
+    assertEquals(expectedlog, mockModel.log.toString()); //inputs reached the model correctly
+    String expectedOutput = "Loaded image 'koala' from 'images_jpg/sample_image1.jpg'\n"
+            + "Image has been provided with sepia tone 'koala' stored as 'koala-sepia'\n"
+            + "Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This is a test for the ControllerModel for the sepia function for PNG. check if hashmap contains
+   * key and obj, check the size of the hashmap, check if the controller prints the output after
+   * operations.
+   *
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testSepiaPNG() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    String newImageName = "koala-sepia";
+    Reader in = new StringReader(
+            "load images_png/sample_image_png.png koala\ntransform-sepia koala koala-sepia\nexit");
+    StringBuilder log = new StringBuilder();
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedlog = "Received inputs for createBuilderThreeChannel:"+imageName+"\n"+
+            "Received inputs for colorTransformationSepia: " + imageName + " " + newImageName + "\n";
+    assertEquals(expectedlog, mockModel.log.toString()); //inputs reached the model correctly
+    String expectedOutput = "Loaded image 'koala' from 'images_png/sample_image_png.png'\n"
+            + "Image has been provided with sepia tone 'koala' stored as 'koala-sepia'\n"
+            + "Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This is a test for the ControllerModel for the sepia function for BMP. check if hashmap contains
+   * key and obj, check the size of the hashmap, check if the controller prints the output after
+   * operations.
+   *
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testSepiaBMP() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    String newImageName = "koala-sepia";
+    Reader in = new StringReader(
+            "load images_bmp/sample_image_bmp.bmp koala\ntransform-sepia koala koala-sepia\nexit");
+    StringBuilder log = new StringBuilder();
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedlog = "Received inputs for createBuilderThreeChannel:"+imageName+"\n"+
+            "Received inputs for colorTransformationSepia: " + imageName + " " + newImageName + "\n";
+    assertEquals(expectedlog, mockModel.log.toString()); //inputs reached the model correctly
+    String expectedOutput = "Loaded image 'koala' from 'images_bmp/sample_image_bmp.bmp'\n"
+            + "Image has been provided with sepia tone 'koala' stored as 'koala-sepia'\n"
+            + "Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This is a test for the ControllerModel for the sepia function. check if hashmap contains key
+   * and obj, check the size of the hashmap, check if the controller prints the output after
+   * operations.
+   *
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testSepia() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    String newImageName = "koala-sepia";
+    Reader in = new StringReader("load koala.ppm koala\ntransform-sepia koala koala-sepia\nexit");
+    StringBuilder log = new StringBuilder();
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedlog = "Received inputs for createBuilderThreeChannel:"+imageName+"\n"+
+            "Received inputs for colorTransformationSepia: " + imageName + " " + newImageName + "\n";
+    assertEquals(expectedlog, mockModel.log.toString()); //inputs reached the model correctly
+    String expectedOutput = "Loaded image 'koala' from 'koala.ppm'\n"
+            + "Image has been provided with sepia tone 'koala' stored as 'koala-sepia'\n"
+            + "Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This is a test for the ControllerModel for the sepia function for JPG. check if hashmap contains
+   * key and obj, check the size of the hashmap, check if the controller prints the output after
+   * operations.
+   *
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testDitherJPG() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    String newImageName = "koala-dither";
+    Reader in = new StringReader(
+            "load images_jpg/sample_image1.jpg koala\ndither koala "
+                    + "koala-dither\nexit");
+    StringBuilder log = new StringBuilder();
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedlog = "Received inputs for createBuilderThreeChannel:"+imageName+"\n"+
+            "Received inputs for dither: " + imageName + " " + newImageName + "\n";
+    assertEquals(expectedlog, mockModel.log.toString()); //inputs reached the model correctly
+    String expectedOutput = "Loaded image 'koala' from 'images_jpg/sample_image1.jpg'\n"
+            + "Image has been dithered 'koala' stored as 'koala-dither'\n"
+            + "Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This is a test for the ControllerModel for the sepia function for PNG. check if hashmap contains
+   * key and obj, check the size of the hashmap, check if the controller prints the output after
+   * operations.
+   *
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testDitherPNG() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    String newImageName = "koala-dither";
+    Reader in = new StringReader(
+            "load images_png/sample_image_png.png koala\ndither koala koala-dither\nexit");
+    StringBuilder log = new StringBuilder();
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedlog = "Received inputs for createBuilderThreeChannel:"+imageName+"\n"+
+            "Received inputs for dither: " + imageName + " " + newImageName + "\n";
+    assertEquals(expectedlog, mockModel.log.toString()); //inputs reached the model correctly
+    String expectedOutput = "Loaded image 'koala' from 'images_png/sample_image_png.png'\n"
+            + "Image has been dithered 'koala' stored as 'koala-dither'\n"
+            + "Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This is a test for the ControllerModel for the sepia function for BMP. check if hashmap contains
+   * key and obj, check the size of the hashmap, check if the controller prints the output after
+   * operations.
+   *
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testDitherBMP() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    String newImageName = "koala-dither";
+    Reader in = new StringReader(
+            "load images_bmp/sample_image_bmp.bmp koala\ndither koala koala-dither\nexit");
+    StringBuilder log = new StringBuilder();
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedlog = "Received inputs for createBuilderThreeChannel:"+imageName+"\n"+
+            "Received inputs for dither: " + imageName + " " + newImageName + "\n";
+    assertEquals(expectedlog, mockModel.log.toString()); //inputs reached the model correctly
+    String expectedOutput = "Loaded image 'koala' from 'images_bmp/sample_image_bmp.bmp'\n"
+            + "Image has been dithered 'koala' stored as 'koala-dither'\n"
+            + "Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This is a test for the ControllerModel for the dither function. check if hashmap contains key
+   * and obj, check the size of the hashmap, check if the controller prints the output after
+   * operations.
+   *
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testDither() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    String newImageName = "koala-dither";
+    Reader in = new StringReader("load koala.ppm koala\ndither koala koala-dither\nexit");
+    StringBuilder log = new StringBuilder();
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedlog = "Received inputs for createBuilderThreeChannel:"+imageName+"\n"+
+            "Received inputs for dither: " + imageName + " " + newImageName + "\n";
+    assertEquals(expectedlog, mockModel.log.toString()); //inputs reached the model correctly
+    String expectedOutput = "Loaded image 'koala' from 'koala.ppm'\n"
+            + "Image has been dithered 'koala' stored as 'koala-dither'\n"
+            + "Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This is a test for the ControllerModel for all the previous functions: brighten,
+   * horizontalFlip, verticalFlip, visualize-componenent: red, green
+   * check if hashmap contains key
+   * and obj, check the size of the hashmap, check if the controller prints the output after
+   * operations.
+   *
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testAllPrevOperationsJPG() throws Exception {
+    StringBuffer out = new StringBuffer();
+    Reader in = new StringReader("load sample_image1.jpg koala\n"
+            + "brighten 10 koala koala-brighten\n"
+            + "horizontal-flip koala koala-horizontal\n"
+            + "vertical-flip koala koala-vertical\n"
+            + "greyscale red-component koala koala-red\n"
+            + "greyscale green-component koala koala-green\n"
+            + "greyscale blue-component koala koala-blue\n"
+            + "greyscale value-component koala koala-value\n"
+            + "greyscale luma-component koala koala-luma\n"
+            + "greyscale intensity-component koala koala-intensity\n"
+            +"exit");
+    StringBuilder log = new StringBuilder();
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedOutput = "Loaded image 'koala' from 'sample_image1.jpg'\n"
+            + "Image brightened 'koala' stored as 'koala-brighten'\n"
+            +"Image horizontally flipped 'koala' stored as 'koala-horizontal'\n"
+            +"Image vertically flipped 'koala' stored as 'koala-vertical'\n"
+            +"Image 'koala' stored as greyscale 'koala-red'\n"
+            +"Image 'koala' stored as greyscale 'koala-green'\n"
+            +"Image 'koala' stored as greyscale 'koala-blue'\n"
+            +"Image 'koala' stored as greyscale 'koala-value'\n"
+            +"Image 'koala' stored as greyscale 'koala-luma'\n"
+            +"Image 'koala' stored as greyscale 'koala-intensity'\n"
+            + "Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This is a test for the ControllerModel for all the previous functions: brighten,
+   * horizontalFlip, verticalFlip, visualize-componenent: red, green
+   * check if hashmap contains key
+   * and obj, check the size of the hashmap, check if the controller prints the output after
+   * operations.
+   *
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testAllPrevOperationsPNG() throws Exception {
+    StringBuffer out = new StringBuffer();
+    Reader in = new StringReader("load images_png/sample_image_png.png koala\n"
+            + "brighten 10 koala koala-brighten\n"
+            + "horizontal-flip koala koala-horizontal\n"
+            + "vertical-flip koala koala-vertical\n"
+            + "greyscale red-component koala koala-red\n"
+            + "greyscale green-component koala koala-green\n"
+            + "greyscale blue-component koala koala-blue\n"
+            + "greyscale value-component koala koala-value\n"
+            + "greyscale luma-component koala koala-luma\n"
+            + "greyscale intensity-component koala koala-intensity\n"
+            +"exit");
+    StringBuilder log = new StringBuilder();
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedOutput = "Loaded image 'koala' from 'images_png/sample_image_png.png'\n"
+            + "Image brightened 'koala' stored as 'koala-brighten'\n"
+            +"Image horizontally flipped 'koala' stored as 'koala-horizontal'\n"
+            +"Image vertically flipped 'koala' stored as 'koala-vertical'\n"
+            +"Image 'koala' stored as greyscale 'koala-red'\n"
+            +"Image 'koala' stored as greyscale 'koala-green'\n"
+            +"Image 'koala' stored as greyscale 'koala-blue'\n"
+            +"Image 'koala' stored as greyscale 'koala-value'\n"
+            +"Image 'koala' stored as greyscale 'koala-luma'\n"
+            +"Image 'koala' stored as greyscale 'koala-intensity'\n"
+            + "Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This is a test for the ControllerModel for all the previous functions: brighten,
+   * horizontalFlip, verticalFlip, visualize-component: red, green, blue
+   * visualize-component: value, intensity, luma
+   * check if hashmap contains key
+   * and obj, check the size of the hashmap, check if the controller prints the output after
+   * operations.
+   *
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testAllPrevOperationsBMP() throws Exception {
+    StringBuffer out = new StringBuffer();
+    Reader in = new StringReader("load images_bmp/sample_image_bmp.bmp koala\n"
+            + "brighten 10 koala koala-brighten\n"
+            + "horizontal-flip koala koala-horizontal\n"
+            + "vertical-flip koala koala-vertical\n"
+            + "greyscale red-component koala koala-red\n"
+            + "greyscale green-component koala koala-green\n"
+            + "greyscale blue-component koala koala-blue\n"
+            + "greyscale value-component koala koala-value\n"
+            + "greyscale luma-component koala koala-luma\n"
+            + "greyscale intensity-component koala koala-intensity\n"
+            +"exit");
+    StringBuilder log = new StringBuilder();
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedOutput = "Loaded image 'koala' from 'images_bmp/sample_image_bmp.bmp'\n"
+            + "Image brightened 'koala' stored as 'koala-brighten'\n"
+            +"Image horizontally flipped 'koala' stored as 'koala-horizontal'\n"
+            +"Image vertically flipped 'koala' stored as 'koala-vertical'\n"
+            +"Image 'koala' stored as greyscale 'koala-red'\n"
+            +"Image 'koala' stored as greyscale 'koala-green'\n"
+            +"Image 'koala' stored as greyscale 'koala-blue'\n"
+            +"Image 'koala' stored as greyscale 'koala-value'\n"
+            +"Image 'koala' stored as greyscale 'koala-luma'\n"
+            +"Image 'koala' stored as greyscale 'koala-intensity'\n"
+            + "Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This method is used to check if the output throws an
+   * exception with appropriate message
+   * if an empty file is loaded.
+   *
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testEmptyFileLoadPNG() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    Reader in = new StringReader("load images_png/empty.png koala\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedOutput = "Error: Cannot open an empty file\n"
+            +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This method is used to check if the output throws an
+   * exception with appropriate message
+   * if an empty file is loaded.
+   *
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testEmptyFileLoadJPG() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    Reader in = new StringReader("load images_jpg/empty.jpg koala\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedOutput = "Error: Cannot open an empty file\n"
+            +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This method is used to check if the output throws an
+   * exception with appropriate message
+   * if an empty file is loaded.
+   *
+   * @throws Exception illegal argument exception
+   */
+  @Test
+  public void testEmptyFileLoadBMP() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    Reader in = new StringReader("load images_bmp/empty.bmp koala\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedOutput = "Error: Cannot open an empty file\n"
+            +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  //tests for command line hashmap:
+
+
+
 }
 
 
