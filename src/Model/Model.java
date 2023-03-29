@@ -137,7 +137,7 @@ public class Model implements Operations {
   }
 
   @Override
-  public void colorTransformationSepia(String imageName, String newImageName) {
+  public void colorTransformationSepia(String imageName, String newImageName) throws NoSuchElementException  {
     if (!imageHashMap.containsKey(imageName)) {
       throw new NoSuchElementException("Image: " + imageName + "does not exist.");
     }
@@ -168,7 +168,7 @@ public class Model implements Operations {
 
   @Override
   public void dither(String imageName, String newImageName)
-      throws NoSuchFieldException, IllegalAccessException {
+      throws NoSuchFieldException, IllegalAccessException, NoSuchElementException  {
     if (!imageHashMap.containsKey(imageName)) {
       throw new NoSuchElementException("Image: " + imageName + " does not exist.");
     }

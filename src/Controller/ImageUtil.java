@@ -18,6 +18,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import javax.imageio.ImageIO;
 
@@ -108,10 +109,7 @@ public class ImageUtil {
    */
   public static void writePPM(Operations model, String filePath, String imageName)
       throws FileNotFoundException, IllegalArgumentException{
-    File file = new File(filePath);
-    if (file.exists() && file.length() == 0) {
-      throw new IllegalArgumentException("Error: Cannot save an empty file");
-    }
+
     try (PrintWriter writer = new PrintWriter(filePath)) {
 
       TypeOfImage Image = model.getObject(imageName);
@@ -152,7 +150,7 @@ public class ImageUtil {
    * @throws IOException if IO exception occurs.
    */
   public static void imageIORead(Operations model, String filename, String nameOfTheObject)
-      throws IOException {
+      throws IOException, FileNotFoundException {
 
     BufferedImage image = null;
     try {
@@ -272,8 +270,14 @@ public class ImageUtil {
   public static void imgeIOWrite(Operations model, String filePath, String imageName)
       throws IOException {
 
+    TypeOfImage ImageOutput;
     try {
-      TypeOfImage ImageOutput = model.getObject(imageName);
+      ImageOutput = model.getObject(imageName);
+    } catch (NoSuchElementException e) {
+      throw e;
+    }
+
+    try {
       int width = ImageOutput.getWidth();
       int height = ImageOutput.getHeight();
       BufferedImage image;
