@@ -107,7 +107,7 @@ public class ImageUtil {
    * @throws FileNotFoundException if image object does not exist.
    */
   public static void writePPM(Operations model, String filePath, String imageName)
-      throws FileNotFoundException {
+      throws FileNotFoundException, IllegalArgumentException{
     File file = new File(filePath);
     if (file.exists() && file.length() == 0) {
       throw new IllegalArgumentException("Error: Cannot save an empty file");
@@ -126,15 +126,19 @@ public class ImageUtil {
       for (int y = 0; y < Image.getHeight(); y++) {
         for (int x = 0; x < Image.getWidth(); x++) {
           TypeofImageObject pixel = Image.getPixels()[x][y];
-          writer.printf("%d", pixel.getChanne11());
-          writer.println();
-          writer.printf("%d", pixel.getChanne12());
-          writer.println();
-          writer.printf("%d", pixel.getChanne13());
-          writer.println();
+          if (pixel != null) {
+            writer.printf("%d", pixel.getChanne11());
+            writer.println();
+            writer.printf("%d", pixel.getChanne12());
+            writer.println();
+            writer.printf("%d", pixel.getChanne13());
+            writer.println();
+          }
         }
       }
     } catch (FileNotFoundException e) {
+      throw e;
+    } catch (IllegalArgumentException e) {
       throw e;
     }
   }
@@ -273,6 +277,8 @@ public class ImageUtil {
     int height = ImageOutput.getHeight();
     BufferedImage image;
 
+
+    /*
     if (ImageOutput.getPixels()[0][0].hasAlpha() != null) {
       //below we create a buffer for image with an alpha channel.
       image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
@@ -306,16 +312,16 @@ public class ImageUtil {
         }
       }
     }
+     */
 
-    /*
     String fileTypeStore = filePath.split("\\.")[1];
-    System.out.print(fileTypeStore);
     if (ImageOutput.getPixels()[0][0].hasAlpha() != null & fileTypeStore.equals("ppm")
         | ImageOutput.getPixels()[0][0].hasAlpha() != null & fileTypeStore.equals("bmp")
         | ImageOutput.getPixels()[0][0].hasAlpha() != null & fileTypeStore.equals("jpg")
         | ImageOutput.getPixels()[0][0].hasAlpha() != null & fileTypeStore.equals("jpeg")
         | ImageOutput.getPixels()[0][0].hasAlpha() == null) {
       image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+      //saving for images with no alpha channel AND for images with alpha channel that are to be saved without alpha channels.
       for (int y = 0; y < ImageOutput.getHeight(); y++) {
         for (int x = 0; x < ImageOutput.getWidth(); x++) {
           TypeofImageObject pixel = ImageOutput.getPixels()[x][y];
@@ -331,6 +337,7 @@ public class ImageUtil {
       }
     } else {
       image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+      //saving for image with alpha channel
       for (int y = 0; y < ImageOutput.getHeight(); y++) {
         for (int x = 0; x < ImageOutput.getWidth(); x++) {
           TypeofImageObject pixel = ImageOutput.getPixels()[x][y];
@@ -346,7 +353,9 @@ public class ImageUtil {
       }
     }
 
-     */
+
+
+
     File output = new File(filePath);
     String fileType = filePath.split("\\.")[1];
     if (output.exists() && output.length() == 0) {

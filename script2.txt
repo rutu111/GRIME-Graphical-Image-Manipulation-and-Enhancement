@@ -94,18 +94,18 @@ rgb-combine koala-red-tint koala-red koala-green koala-blue
 save images_png/koala-red-tint_ppm.ppm koala-red-tint
 
 #from alpha channel to non-alpha channels
-#load images_png/sample_image_alpha.png koala
-#brighten 10 koala koala-brighter
-#vertical-flip koala-brighter koala-vertical_brighter
-#save images_png/koala-brighter_vertical_alpha_ppm.ppm koala-vertical_brighter
-#save images_png/koala-brighter_vertical_alpha_jpg.jpg koala-vertical_brighter
+load images_png/sample_image_alpha.png koala
+brighten 10 koala koala-brighter
+vertical-flip koala-brighter koala-vertical_brighter
+save images_png/koala-brighter_vertical_alpha_ppm.ppm koala-vertical_brighter
+save images_png/koala-brighter_vertical_alpha_jpg.jpg koala-vertical_brighter
 
 #load greyscale in one format, and do a vertical flip and save in another
-#load images_png/koala-gs.png koala
-#vertical-flip koala koala-vertical
-#save images_png/koala-vertical-grey_ppm.ppm koala-vertical
+load images_png/koala-gs.png koala
+vertical-flip koala koala-vertical
+save images_png/koala-vertical-grey_ppm.ppm koala-vertical
 
 #load alpha greyscale in one format, and do a vertical flip and save in another
-#load images_png/sample_image_alpha_greyscale.png koala
-#vertical-flip koala koala-vertical
-#save images_png/koala-brighter_vertical_alpha_greyscale_ppm.ppm koala-vertical
+load images_png/sample_image_alpha_greyscale.png koala
+vertical-flip koala koala-vertical
+save images_png/koala-brighter_vertical_alpha_greyscale_ppm.ppm koala-vertical
