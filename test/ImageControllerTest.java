@@ -1711,9 +1711,67 @@ public class ImageControllerTest {
     assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
   }
 
+  /**
+   * This method is used to check if the output throws exception
+   * with appropriate message if
+   * command is incorrect.
+   * @throws Exception handles exception
+   */
+  @Test
+  public void testRunInvalidScriptDocFile() throws Exception {
+    StringBuffer out = new StringBuffer();
+    Reader in = new StringReader("run script1.doc\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedOutput = "Error: Only txt files are accepted as script files!\n"
+            +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This method is used to check if the output throws exception
+   * with appropriate message if
+   * command is incorrect.
+   * @throws Exception handles exception
+   */
+  @Test
+  public void testRunInvalidScriptFile() throws Exception {
+    StringBuffer out = new StringBuffer();
+    Reader in = new StringReader("run invalidscript1.txt\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedOutput = "Error: Invalid command: hi\n"
+            +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
+  /**
+   * This method is used to check if the output throws exception
+   * with appropriate message if
+   * command is incorrect.
+   * @throws Exception handles exception
+   */
+  @Test
+  public void testRunEmptyScriptFile() throws Exception {
+    StringBuffer out = new StringBuffer();
+    Reader in = new StringReader("run invalidscript2.txt\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedOutput = "Error: script file cannot be empty\n"
+            +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
+
   //tests for command line hashmap:
-
-
 
 }
 
