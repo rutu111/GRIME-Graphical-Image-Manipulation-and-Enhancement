@@ -55,14 +55,14 @@ public class ImageUtil {
     //now set up the scanner to read from the string we just built
     sc = new Scanner(builder.toString());
     if (!sc.hasNextLine()) {
-      throw new IllegalStateException("Invalid file: Cannot be empty");
+      throw new IllegalStateException("Error: Invalid file: Cannot be empty");
     }
     String token;
 
     token = sc.next();
     if (!token.equals("P3") || token.isEmpty()) {
       throw new IllegalStateException(
-          "Invalid PPM file: plain RAW file should begin with P3");
+          "Error: Invalid PPM file: plain RAW file should begin with P3");
     }
     try {
       width = sc.nextInt();
@@ -70,11 +70,11 @@ public class ImageUtil {
       maxValue = sc.nextInt();
 
       if (width <= 0 | height <= 0) {
-        throw new IllegalStateException("Width and Height cannot be zero or negative");
+        throw new IllegalStateException("Error: Width and Height cannot be zero or negative");
       }
 
       if (maxValue != 255) {
-        throw new IllegalStateException("Invalid maxValue: " + maxValue);
+        throw new IllegalStateException("Error: Invalid maxValue: " + maxValue);
       }
 
       RGBIntegerImageBuilder builderObject = new RGBIntegerImageBuilder(width, height);
@@ -107,7 +107,11 @@ public class ImageUtil {
    * @throws FileNotFoundException if image object does not exist.
    */
   public static void writePPM(Operations model, String filePath, String imageName)
-      throws FileNotFoundException {
+      throws FileNotFoundException, IllegalArgumentException{
+    File file = new File(filePath);
+    if (file.exists() && file.length() == 0) {
+      throw new IllegalArgumentException("Error: Cannot save an empty file");
+    }
     try (PrintWriter writer = new PrintWriter(filePath)) {
 
       TypeOfImage Image = model.getObject(imageName);
@@ -122,147 +126,203 @@ public class ImageUtil {
       for (int y = 0; y < Image.getHeight(); y++) {
         for (int x = 0; x < Image.getWidth(); x++) {
           TypeofImageObject pixel = Image.getPixels()[x][y];
-          writer.printf("%d", pixel.getChanne11());
-          writer.println();
-          writer.printf("%d", pixel.getChanne12());
-          writer.println();
-          writer.printf("%d", pixel.getChanne13());
-          writer.println();
+          if (pixel != null) {
+            writer.printf("%d", pixel.getChanne11());
+            writer.println();
+            writer.printf("%d", pixel.getChanne12());
+            writer.println();
+            writer.printf("%d", pixel.getChanne13());
+            writer.println();
+          }
         }
       }
     } catch (FileNotFoundException e) {
       throw e;
-    }
-  }
-
-  public static void imageIORead(Operations model, String filename, String nameOfTheObject)
-      throws IOException {
-    BufferedImage image = null;
-    try {
-      File file = new File(filename);
-      if (file.exists() && file.length() == 0) {
-        throw new IllegalArgumentException("Cannot open an empty file");
-      }
-      //1. First check if the image needs to be converted to RGB
-      image = ImageIO.read(file);
-
-      int width = image.getWidth();
-      int height = image.getHeight();
-
-      ColorSpace colorSpace = image.getColorModel().getColorSpace();
-      if (colorSpace.getType() == ColorSpace.TYPE_CMYK) {
-        try {
-          // Get the ICC profile of the CMYK image
-          ICC_Profile cmykProfile = ICC_Profile.getInstance(String.valueOf(image));
-
-          // Create an ICC_ColorSpace object from the ICC profile
-          ICC_ColorSpace cmykColorSpace = new ICC_ColorSpace(cmykProfile);
-
-          // Create an RGB ColorSpace
-          ColorSpace rgbColorSpace = ColorSpace.getInstance(ColorSpace.CS_sRGB);
-
-          // Create a ColorConvertOp object for converting from CMYK to RGB
-          ColorConvertOp cmykToRgb = new ColorConvertOp(cmykColorSpace, rgbColorSpace, null);
-
-          // Convert the CMYK image to RGB
-          image = cmykToRgb.filter(image, null);
-
-        } catch (IOException e) {
-          System.out.println("Error converting image: " + e.getMessage());
-        }
-      }
-
-      ColorModel colorModel = image.getColorModel();
-      //alpha builder here
-      if (colorModel.hasAlpha()) {
-        RGBIntegerAlphaImageBuilder builderObject = new RGBIntegerAlphaImageBuilder(width, height);
-
-        if (image.getType() == BufferedImage.TYPE_BYTE_GRAY) {
-          for (int y = 0; y < image.getHeight(); y++) {
-            for (int x = 0; x < image.getWidth(); x++) {
-              int pixel = image.getRGB(x, y);
-              int alpha = (pixel >> 24) & 0xff; // extract alpha value
-              int red = (pixel >> 8) & 0xff;
-              int green = (pixel >> 8) & 0xff;
-              int blue = (pixel >> 8) & 0xff;
-              builderObject.addPixelAtPosition(x, y,
-                  new RGBIntegerAlphaObject(red, green, blue, alpha));
-
-            }
-          }
-        } else {
-          for (int y = 0; y < image.getHeight(); y++) {
-            for (int x = 0; x < image.getWidth(); x++) {
-              int pixel = image.getRGB(x, y);
-              int alpha = (pixel >> 24) & 0xff;
-              int red = (pixel >> 16) & 0xff;
-              int green = (pixel >> 8) & 0xff;
-              int blue = pixel & 0xff;
-              builderObject.addPixelAtPosition(x, y,
-                  new RGBIntegerAlphaObject(red, green, blue, alpha));
-
-            }
-          }
-        }
-        TypeOfImage imageType = builderObject.buildImage();
-        model.addImageToModel(imageType, nameOfTheObject);
-      } else {
-        RGBIntegerImageBuilder builderObject = new RGBIntegerImageBuilder(width, height);
-        if (image.getType() == BufferedImage.TYPE_BYTE_GRAY) {
-          for (int y = 0; y < image.getHeight(); y++) {
-            for (int x = 0; x < image.getWidth(); x++) {
-              int pixel = image.getRGB(x, y);
-              int red = (pixel & 0xff);
-              int green = (pixel & 0xff);
-              int blue = (pixel & 0xff);
-              builderObject.addPixelAtPosition(x, y, new RGBIntegerObject(red, green, blue));
-            }
-          }
-        } else {
-          for (int y = 0; y < image.getHeight(); y++) {
-            for (int x = 0; x < image.getWidth(); x++) {
-              int pixel = image.getRGB(x, y);
-              int red = (pixel >> 16) & 0xff;
-              int green = (pixel >> 8) & 0xff;
-              int blue = pixel & 0xff;
-              builderObject.addPixelAtPosition(x, y, new RGBIntegerObject(red, green, blue));
-            }
-          }
-        }
-        TypeOfImage imageType = builderObject.buildImage();
-        model.addImageToModel(imageType, nameOfTheObject);
-      }
-    }catch (Exception e){
+    } catch (IllegalArgumentException e) {
       throw e;
     }
   }
 
+  /**
+   * The following function is used to read an image for formats
+   * other than PPM. Example: png, jpg and bmp.
+   * @param model model instance.
+   * @param filename name of the file to read the image from.
+   * @param nameOfTheObject name to call the image read.
+   * @throws IOException if IO exception occurs.
+   */
+  public static void imageIORead(Operations model, String filename, String nameOfTheObject)
+      throws IOException {
+
+    BufferedImage image = null;
+    try {
+      File file = new File(filename);
+      if (file.exists() && file.length() == 0) {
+        throw new IllegalArgumentException("Error: Cannot save an empty file");
+      }
+      //1. First check if the image needs to be converted to RGB
+      image = ImageIO.read(file);
+    } catch (FileNotFoundException e) {
+      throw new FileNotFoundException("Error: File not found");
+    }
+
+    int width = image.getWidth();
+    int height = image.getHeight();
+
+    ColorSpace colorSpace = image.getColorModel().getColorSpace();
+    //if colour palette is CMYK then convert it to rgb
+    if (colorSpace.getType() == ColorSpace.TYPE_CMYK) {
+      try {
+        // Get the ICC profile of the CMYK image
+        ICC_Profile cmykProfile = ICC_Profile.getInstance(String.valueOf(image));
+
+        // Create an ICC_ColorSpace object from the ICC profile
+        ICC_ColorSpace cmykColorSpace = new ICC_ColorSpace(cmykProfile);
+
+        // Create an RGB ColorSpace
+        ColorSpace rgbColorSpace = ColorSpace.getInstance(ColorSpace.CS_sRGB);
+
+        // Create a ColorConvertOp object for converting from CMYK to RGB
+        ColorConvertOp cmykToRgb = new ColorConvertOp(cmykColorSpace, rgbColorSpace, null);
+
+        // Convert the CMYK image to RGB
+        image = cmykToRgb.filter(image, null);
+
+      } catch (IOException e) {
+        System.out.println("Error converting image: " + e.getMessage());
+      }
+    }
+
+    ColorModel colorModel = image.getColorModel();
+    //if image has alpha channel, then read it using the RGBIntegerAlphaImageBuilder.
+    if (colorModel.hasAlpha()) {
+      RGBIntegerAlphaImageBuilder builderObject = new RGBIntegerAlphaImageBuilder(width, height);
+
+      if (image.getType() == BufferedImage.TYPE_BYTE_GRAY) {
+        //if has alpha channel and is a greyscale image.
+        for (int y = 0; y < image.getHeight(); y++) {
+          for (int x = 0; x < image.getWidth(); x++) {
+            int pixel = image.getRGB(x, y);
+            int alpha = (pixel >> 24) & 0xff; // extract alpha value
+            int red = (pixel >> 8) & 0xff;
+            int green = (pixel >> 8) & 0xff;
+            int blue = (pixel >> 8) & 0xff;
+            builderObject.addPixelAtPosition(x, y,
+                new RGBIntegerAlphaObject(red, green, blue, alpha));
+
+          }
+        }
+      } else {
+        //if has alpha channel and is a not greyscale image.
+        for (int y = 0; y < image.getHeight(); y++) {
+          for (int x = 0; x < image.getWidth(); x++) {
+            int pixel = image.getRGB(x, y);
+            int alpha = (pixel >> 24) & 0xff;
+            int red = (pixel >> 16) & 0xff;
+            int green = (pixel >> 8) & 0xff;
+            int blue = pixel & 0xff;
+            builderObject.addPixelAtPosition(x, y,
+                new RGBIntegerAlphaObject(red, green, blue, alpha));
+
+          }
+        }
+      }
+      TypeOfImage imageType = builderObject.buildImage();
+      model.addImageToModel(imageType, nameOfTheObject);
+
+    } else {
+      // if image does not have an alpha channel, then read it using the RGBIntegerImageBuilder.
+      RGBIntegerImageBuilder builderObject = new RGBIntegerImageBuilder(width, height);
+      if (image.getType() == BufferedImage.TYPE_BYTE_GRAY) {
+        //if does not have alpha channel and is greyscale.
+        for (int y = 0; y < image.getHeight(); y++) {
+          for (int x = 0; x < image.getWidth(); x++) {
+            int pixel = image.getRGB(x, y);
+            int red = (pixel & 0xff);
+            int green = (pixel & 0xff);
+            int blue = (pixel & 0xff);
+            builderObject.addPixelAtPosition(x, y, new RGBIntegerObject(red, green, blue));
+          }
+        }
+      } else {
+        //if does not have alpha channel and is not greyscale.
+        for (int y = 0; y < image.getHeight(); y++) {
+          for (int x = 0; x < image.getWidth(); x++) {
+            int pixel = image.getRGB(x, y);
+            int red = (pixel >> 16) & 0xff;
+            int green = (pixel >> 8) & 0xff;
+            int blue = pixel & 0xff;
+            builderObject.addPixelAtPosition(x, y, new RGBIntegerObject(red, green, blue));
+          }
+        }
+      }
+      TypeOfImage imageType = builderObject.buildImage();
+      model.addImageToModel(imageType, nameOfTheObject);
+    }
+  }
+
+  /**
+   * The following code is used to write an image file for formats
+   * that are not PPM. Example: PNG, jpg and bmp.
+   * @param model model instance.
+   * @param filePath path where you want to save the image.
+   * @param imageName name of the image you want to write.
+   * @throws IOException if IOexception occurs..
+   */
   public static void imgeIOWrite(Operations model, String filePath, String imageName)
       throws IOException {
+
     try {
       TypeOfImage ImageOutput = model.getObject(imageName);
       int width = ImageOutput.getWidth();
       int height = ImageOutput.getHeight();
       BufferedImage image;
 
-      if (ImageOutput.getPixels()[0][0].hasAlpha() != null) {
-        image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        for (int y = 0; y < ImageOutput.getHeight(); y++) {
-          for (int x = 0; x < ImageOutput.getWidth(); x++) {
-            TypeofImageObject pixel = ImageOutput.getPixels()[x][y];
-            if (pixel != null) {
-              int alpha = 255; // set alpha to 255 (fully opaque)
-              int red = pixel.getChanne11();
-              int green = pixel.getChanne12();
-              int blue = pixel.getChanne13();
 
-              int argb = (alpha << 24) | (red << 16) | (green << 8) | blue;
-              image.setRGB(x, y, argb);
-            }
+    /*
+    if (ImageOutput.getPixels()[0][0].hasAlpha() != null) {
+      //below we create a buffer for image with an alpha channel.
+      image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+      for (int y = 0; y < ImageOutput.getHeight(); y++) {
+        for (int x = 0; x < ImageOutput.getWidth(); x++) {
+          TypeofImageObject pixel = ImageOutput.getPixels()[x][y];
+          if (pixel != null) {
+            int alpha = 255; // set alpha to 255 (fully opaque)
+            int red = pixel.getChanne11();
+            int green = pixel.getChanne12();
+            int blue = pixel.getChanne13();
+            int argb = (alpha << 24) | (red << 16) | (green << 8) | blue;
+            image.setRGB(x, y, argb);
           }
         }
-      } else {
+      }
+    } else {
+      image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+      //below we create a buffer for image without an alpha channel.
+      for (int y = 0; y < ImageOutput.getHeight(); y++) {
+        for (int x = 0; x < ImageOutput.getWidth(); x++) {
+          TypeofImageObject pixel = ImageOutput.getPixels()[x][y];
+          if (pixel != null) {
+            int red = pixel.getChanne11();
+            int green = pixel.getChanne12();
+            int blue = pixel.getChanne13();
+            int rgb = (red << 16) | (green << 8) | blue;
+
+            image.setRGB(x, y, rgb);
+          }
+        }
+      }
+    }
+     */
+
+      String fileTypeStore = filePath.split("\\.")[1];
+      if (ImageOutput.getPixels()[0][0].hasAlpha() != null & fileTypeStore.equals("ppm")
+          | ImageOutput.getPixels()[0][0].hasAlpha() != null & fileTypeStore.equals("bmp")
+          | ImageOutput.getPixels()[0][0].hasAlpha() != null & fileTypeStore.equals("jpg")
+          | ImageOutput.getPixels()[0][0].hasAlpha() != null & fileTypeStore.equals("jpeg")
+          | ImageOutput.getPixels()[0][0].hasAlpha() == null) {
         image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        //saving for images with no alpha channel AND for images with alpha channel that are to be saved without alpha channels.
         for (int y = 0; y < ImageOutput.getHeight(); y++) {
           for (int x = 0; x < ImageOutput.getWidth(); x++) {
             TypeofImageObject pixel = ImageOutput.getPixels()[x][y];
@@ -276,6 +336,22 @@ public class ImageUtil {
             }
           }
         }
+      } else {
+        image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        //saving for image with alpha channel
+        for (int y = 0; y < ImageOutput.getHeight(); y++) {
+          for (int x = 0; x < ImageOutput.getWidth(); x++) {
+            TypeofImageObject pixel = ImageOutput.getPixels()[x][y];
+            if (pixel != null) {
+              int alpha = 255; // set alpha to 255 (fully opaque)
+              int red = pixel.getChanne11();
+              int green = pixel.getChanne12();
+              int blue = pixel.getChanne13();
+              int argb = (alpha << 24) | (red << 16) | (green << 8) | blue;
+              image.setRGB(x, y, argb);
+            }
+          }
+        }
       }
 
       File output = new File(filePath);
@@ -285,7 +361,6 @@ public class ImageUtil {
     } catch (Exception e) {
       throw e;
     }
+
   }
-
-
 }
