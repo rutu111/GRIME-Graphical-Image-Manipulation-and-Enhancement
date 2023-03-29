@@ -5,6 +5,9 @@ import Model.Operations;
 import View.ViewI;
 import java.io.IOException;
 
+/**
+ * This class is for the command design pattern.
+ */
 public class Combine implements CommandDesignOperations {
 
   private String imageName1;
@@ -12,6 +15,11 @@ public class Combine implements CommandDesignOperations {
   private String imageName3;
   private String updatedimageName;
 
+  /**
+   * This constructor takes in a list a commands.
+   * @param commands a list of commands, typed by the user.
+   * @throws IllegalArgumentException if number of arguments not as expected.
+   */
   public Combine(String[] commands) throws IllegalArgumentException{
     if (commands.length != 5) {
       throw new IllegalArgumentException("Invalid command format.");

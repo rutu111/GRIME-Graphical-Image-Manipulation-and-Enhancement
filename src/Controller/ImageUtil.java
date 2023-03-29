@@ -140,6 +140,14 @@ public class ImageUtil {
     }
   }
 
+  /**
+   * The following function is used to read an image for formats
+   * other than PPM. Example: png, jpg and bmp.
+   * @param model model instance.
+   * @param filename name of the file to read the image from.
+   * @param nameOfTheObject name to call the image read.
+   * @throws IOException if IO exception occurs.
+   */
   public static void imageIORead(Operations model, String filename, String nameOfTheObject)
       throws IOException {
 
@@ -157,6 +165,7 @@ public class ImageUtil {
     int height = image.getHeight();
 
     ColorSpace colorSpace = image.getColorModel().getColorSpace();
+    //if colour palette is CMYK then convert it to rgb
     if (colorSpace.getType() == ColorSpace.TYPE_CMYK) {
       try {
         // Get the ICC profile of the CMYK image
@@ -180,11 +189,12 @@ public class ImageUtil {
     }
 
     ColorModel colorModel = image.getColorModel();
-    //alpha builder here
+    //if image has alpha channel, then read it using the RGBIntegerAlphaImageBuilder.
     if (colorModel.hasAlpha()) {
       RGBIntegerAlphaImageBuilder builderObject = new RGBIntegerAlphaImageBuilder(width, height);
 
       if (image.getType() == BufferedImage.TYPE_BYTE_GRAY) {
+        //if has alpha channel and is a greyscale image.
         for (int y = 0; y < image.getHeight(); y++) {
           for (int x = 0; x < image.getWidth(); x++) {
             int pixel = image.getRGB(x, y);
@@ -198,6 +208,7 @@ public class ImageUtil {
           }
         }
       } else {
+        //if has alpha channel and is a not greyscale image.
         for (int y = 0; y < image.getHeight(); y++) {
           for (int x = 0; x < image.getWidth(); x++) {
             int pixel = image.getRGB(x, y);
@@ -213,9 +224,12 @@ public class ImageUtil {
       }
       TypeOfImage imageType = builderObject.buildImage();
       model.addImageToModel(imageType, nameOfTheObject);
+
     } else {
+      // if image does not have an alpha channel, then read it using the RGBIntegerImageBuilder.
       RGBIntegerImageBuilder builderObject = new RGBIntegerImageBuilder(width, height);
       if (image.getType() == BufferedImage.TYPE_BYTE_GRAY) {
+        //if does not have alpha channel and is greyscale.
         for (int y = 0; y < image.getHeight(); y++) {
           for (int x = 0; x < image.getWidth(); x++) {
             int pixel = image.getRGB(x, y);
@@ -226,6 +240,7 @@ public class ImageUtil {
           }
         }
       } else {
+        //if does not have alpha channel and is not greyscale.
         for (int y = 0; y < image.getHeight(); y++) {
           for (int x = 0; x < image.getWidth(); x++) {
             int pixel = image.getRGB(x, y);
@@ -241,6 +256,14 @@ public class ImageUtil {
     }
   }
 
+  /**
+   * The following code is used to write an image file for formats
+   * that are not PPM. Example: PNG, jpg and bmp.
+   * @param model model instance.
+   * @param filePath path where you want to save the image.
+   * @param imageName name of the image you want to write.
+   * @throws IOException if IOexception occurs..
+   */
   public static void imgeIOWrite(Operations model, String filePath, String imageName)
       throws IOException {
 
@@ -251,6 +274,7 @@ public class ImageUtil {
     BufferedImage image;
 
     if (ImageOutput.getPixels()[0][0].hasAlpha() != null) {
+      //below we create a buffer for image with an alpha channel.
       image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
       for (int y = 0; y < ImageOutput.getHeight(); y++) {
         for (int x = 0; x < ImageOutput.getWidth(); x++) {
@@ -260,7 +284,6 @@ public class ImageUtil {
             int red = pixel.getChanne11();
             int green = pixel.getChanne12();
             int blue = pixel.getChanne13();
-
             int argb = (alpha << 24) | (red << 16) | (green << 8) | blue;
             image.setRGB(x, y, argb);
           }
@@ -268,6 +291,7 @@ public class ImageUtil {
       }
     } else {
       image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+      //below we create a buffer for image without an alpha channel.
       for (int y = 0; y < ImageOutput.getHeight(); y++) {
         for (int x = 0; x < ImageOutput.getWidth(); x++) {
           TypeofImageObject pixel = ImageOutput.getPixels()[x][y];
@@ -283,6 +307,46 @@ public class ImageUtil {
       }
     }
 
+    /*
+    String fileTypeStore = filePath.split("\\.")[1];
+    System.out.print(fileTypeStore);
+    if (ImageOutput.getPixels()[0][0].hasAlpha() != null & fileTypeStore.equals("ppm")
+        | ImageOutput.getPixels()[0][0].hasAlpha() != null & fileTypeStore.equals("bmp")
+        | ImageOutput.getPixels()[0][0].hasAlpha() != null & fileTypeStore.equals("jpg")
+        | ImageOutput.getPixels()[0][0].hasAlpha() != null & fileTypeStore.equals("jpeg")
+        | ImageOutput.getPixels()[0][0].hasAlpha() == null) {
+      image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+      for (int y = 0; y < ImageOutput.getHeight(); y++) {
+        for (int x = 0; x < ImageOutput.getWidth(); x++) {
+          TypeofImageObject pixel = ImageOutput.getPixels()[x][y];
+          if (pixel != null) {
+            int red = pixel.getChanne11();
+            int green = pixel.getChanne12();
+            int blue = pixel.getChanne13();
+            int rgb = (red << 16) | (green << 8) | blue;
+
+            image.setRGB(x, y, rgb);
+          }
+        }
+      }
+    } else {
+      image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+      for (int y = 0; y < ImageOutput.getHeight(); y++) {
+        for (int x = 0; x < ImageOutput.getWidth(); x++) {
+          TypeofImageObject pixel = ImageOutput.getPixels()[x][y];
+          if (pixel != null) {
+            int alpha = 255; // set alpha to 255 (fully opaque)
+            int red = pixel.getChanne11();
+            int green = pixel.getChanne12();
+            int blue = pixel.getChanne13();
+            int argb = (alpha << 24) | (red << 16) | (green << 8) | blue;
+            image.setRGB(x, y, argb);
+          }
+        }
+      }
+    }
+
+     */
     File output = new File(filePath);
     String fileType = filePath.split("\\.")[1];
     if (output.exists() && output.length() == 0) {

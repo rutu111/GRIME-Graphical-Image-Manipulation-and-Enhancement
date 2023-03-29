@@ -95,8 +95,6 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
     return getOImage(new_image, this.getWidth(), this.getHeight());
   }
 
-  protected abstract Field getField(ComponentRGB channel) throws NoSuchFieldException;
-
   @Override
   public TypeOfImage visualizeValueIntensityLuma(MeasurementType measure) {
     TypeofImageObject[][] new_image = getMatrix(this.width, this.height);
@@ -129,6 +127,7 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
     return getOImage(new_image, this.getWidth(), this.getHeight());
   }
 
+
   @Override
   public TypeOfImage colorTransformationSepia() {
     //sepia matrix
@@ -159,19 +158,7 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
     return getOImage(new_image, this.getWidth(), this.getHeight());
   }
 
-
-
-
-  /**
-   * Abstract method returns an object of the class extending it.
-   *
-   * @param value1 value of the first channel, of type T
-   * @param value2 value of the second channel, of type T
-   * @param value3 value of the third channel, of type T
-   * @return
-   */
-  protected abstract TypeofImageObject getObject(int value1, int value2, int value3, Integer value4);
-
+  @Override
   public TypeOfImage blur() {
     TypeofImageObject[][] newPixels = getMatrix(this.width, this.height);
 
@@ -214,6 +201,7 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
   }
 
 
+  @Override
   public TypeOfImage sharpen(){
     TypeofImageObject[][] newPixels = getMatrix(this.width, this.height);
 
@@ -258,7 +246,7 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
     return getOImage(newPixels, this.getWidth(), this.getHeight());
   }
 
-
+  @Override
   public TypeOfImage dither() throws NoSuchFieldException, IllegalAccessException {
     TypeOfImage greyScaleImage = visualizeValueIntensityLuma(MeasurementType.luma);
     TypeofImageObject[][] newPixels = getMatrix(this.width, this.height);
@@ -316,6 +304,26 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
     }
     return greyScaleImage;
   }
+
+  /**
+   * Abstract method returns an object of the class extending it.
+   *
+   * @param value1 value of the first channel.
+   * @param value2 value of the second channel.
+   * @param value3 value of the third channel.
+   * @param value4 value of the alpha channel, if one exists.
+   * @return TypeofImageObject of type extending this class.
+   */
+  protected abstract TypeofImageObject getObject(int value1, int value2, int value3, Integer value4);
+
+  /**
+   * This method returns all the fields of the object inside the matrix
+   * of the class extending this abstract class.
+   * @param channel one of the values of enum ComponentRGB.
+   * @return Field object
+   * @throws NoSuchFieldException if field does not exist.
+   */
+  protected abstract Field getField(ComponentRGB channel) throws NoSuchFieldException;
 
 }
 

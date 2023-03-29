@@ -1,15 +1,26 @@
 package Model;
 
-import static java.lang.Math.min;
 
 import java.lang.reflect.Field;
 
+/**
+ * The following class represents an RGBA image. This extends
+ * ThreeChannelObjectOperations because this is a 3 channel image
+ * (we do not any special operations on alpha).
+ * <p>
+ * The matrix represented in this class is of TypeofImageObject
+ * which contains object of type RGBIntegerAlphaObjects.
+ * This matrix can be created through the builder (inner class) or directly
+ * through the constructor (constructor is private so object
+ * can only be created from inside the
+ * class or through bulder).
+ */
 public class RGBIntegerAlphaImage extends ThreeChannelObjectOperations  {
 
   /**
-   * Creates a matrix containing RGBIntegerObjects.
+   * Creates a matrix containing RGBIntegerAlphaObjects.
    *
-   * @param pixels matrix of type RGBIntegerObjects
+   * @param pixels matrix of type RGBIntegerAlphaObjects
    * @param width  width of the image.
    * @param height height of the image.
    */
@@ -53,10 +64,9 @@ public class RGBIntegerAlphaImage extends ThreeChannelObjectOperations  {
   }
 
 
-
   /**
-   * The following is a builder class that builds a RGBIntegerImage
-   * containing objects of type RGBIntegerObject.
+   * The following is a builder class that builds a RGBIntegerAlphaImage
+   * containing objects of type RGBIntegerAlphaObjects.
    */
   public static class RGBIntegerAlphaImageBuilder extends ImageBuilder<RGBIntegerAlphaObject> {
 

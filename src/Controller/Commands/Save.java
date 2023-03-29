@@ -7,12 +7,20 @@ import View.ViewI;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+/**
+ * This class is for the command design pattern.
+ */
 public class Save implements CommandDesignOperations {
 
   private String imagePath;
 
   private String imageName;
 
+  /**
+   * This constructor takes in a list a commands.
+   * @param commands a list of commands, typed by the user.
+   * @throws IllegalArgumentException if number of arguments not as expected.
+   */
   public Save(String[] commands) {
     if (commands.length != 3) {
       throw new IllegalArgumentException("Invalid command format.");
@@ -20,6 +28,7 @@ public class Save implements CommandDesignOperations {
      imagePath = commands[1];
      imageName = commands[2];
   }
+
   @Override
   public void go(Operations m, ViewI view)
       throws NoSuchFieldException, IllegalAccessException, IOException {
@@ -31,7 +40,7 @@ public class Save implements CommandDesignOperations {
       }
       view.printOutput("Image " + imageName + " saved as file: " + imagePath + "\n");
     } catch (FileNotFoundException e) {
-      view.printError("File path does not exist.\n");
+      view.printOutput("File path does not exist.\n");
     }
   }
 }

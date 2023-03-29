@@ -7,11 +7,19 @@ import View.ViewI;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+/**
+ * This class is for the command design pattern.
+ */
 public class Load implements CommandDesignOperations {
 
   private String imagePath;
   public String imageName;
 
+  /**
+   * This constructor takes in a list a commands.
+   * @param commands a list of commands, typed by the user.
+   * @throws IllegalArgumentException if number of arguments not as expected.
+   */
   public Load(String[] commands) throws IllegalArgumentException{
     if (commands.length != 3) {
       throw new IllegalArgumentException("Invalid command format.");
@@ -25,13 +33,15 @@ public class Load implements CommandDesignOperations {
       throws IOException {
     try {
       if (imagePath.split("\\.")[1].equals("ppm")) {
+        //if file is ppm, go to readPPM function.
         ImageUtil.readPPM(m, imagePath, imageName);
       } else {
+        //else, go to imageIO function
         ImageUtil.imageIORead(m, imagePath, imageName);
       }
       view.printOutput("Loaded image '" + imageName + "' from '" + imagePath + "'" + "\n");
     } catch (FileNotFoundException e) {
-      view.printError("File not found: " + imageName + "\n");
+      view.printOutput("File not found: " + imageName + "\n");
     }
   }
 }

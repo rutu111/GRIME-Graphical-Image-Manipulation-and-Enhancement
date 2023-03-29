@@ -176,10 +176,5 @@ public class Model implements Operations {
     imageHashMap.put(newImageName, image.dither());
 
   }
-  
-  public Collection<String> getKeys() {
-    return imageHashMap.keySet();
-  
-  }
 
 }
