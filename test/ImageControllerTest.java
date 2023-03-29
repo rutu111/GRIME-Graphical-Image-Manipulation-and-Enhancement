@@ -132,10 +132,6 @@ public class ImageControllerTest {
       log.append("Received inputs for dither: " + imageName + " " + newImageName + "\n");
     }
 
-    @Override
-    public Collection<String> getKeys() {
-      return null;
-    }
   }
 
   /**

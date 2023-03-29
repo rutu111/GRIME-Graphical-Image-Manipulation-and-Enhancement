@@ -1402,7 +1402,6 @@ public class ImageControllerModelTest {
     imageController.run();
     assertEquals(model.checkKeyInHashmap(imageNameR), true);
     assertEquals(model.checkKeyInHashmap(imageNameG), true);
-    System.out.println(model.getKeys());
     assertEquals(model.checkKeyInHashmap(imageNameB), true);
     //assertEquals(model.checkKeyInHashmap(newimageName),true);
     assertFalse(model.numberOfImagesInModel() == 4);
@@ -1474,7 +1473,6 @@ public class ImageControllerModelTest {
     imageController.run();
     assertEquals(model.checkKeyInHashmap(imageNameR), true);
     assertEquals(model.checkKeyInHashmap(imageNameG), true);
-    System.out.println(model.getKeys());
     assertEquals(model.checkKeyInHashmap(imageNameB), true);
     //assertEquals(model.checkKeyInHashmap(newimageName),true);
     assertFalse(model.numberOfImagesInModel() == 4);
@@ -1546,7 +1544,6 @@ public class ImageControllerModelTest {
     imageController.run();
     assertEquals(model.checkKeyInHashmap(imageNameR), true);
     assertEquals(model.checkKeyInHashmap(imageNameG), true);
-    System.out.println(model.getKeys());
     assertEquals(model.checkKeyInHashmap(imageNameB), true);
     //assertEquals(model.checkKeyInHashmap(newimageName),true);
     assertFalse(model.numberOfImagesInModel() == 4);
