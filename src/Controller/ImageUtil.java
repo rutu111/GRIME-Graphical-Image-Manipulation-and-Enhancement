@@ -55,14 +55,14 @@ public class ImageUtil {
     //now set up the scanner to read from the string we just built
     sc = new Scanner(builder.toString());
     if (!sc.hasNextLine()) {
-      throw new IllegalStateException("Error: Invalid file: Cannot be empty");
+      throw new IllegalStateException("Invalid file: Cannot be empty");
     }
     String token;
 
     token = sc.next();
     if (!token.equals("P3") || token.isEmpty()) {
       throw new IllegalStateException(
-          "Error: Invalid PPM file: plain RAW file should begin with P3");
+          "Invalid PPM file: plain RAW file should begin with P3");
     }
     try {
       width = sc.nextInt();
@@ -70,11 +70,11 @@ public class ImageUtil {
       maxValue = sc.nextInt();
 
       if (width <= 0 | height <= 0) {
-        throw new IllegalStateException("Error: Width and Height cannot be zero or negative");
+        throw new IllegalStateException("Width and Height cannot be zero or negative");
       }
 
       if (maxValue != 255) {
-        throw new IllegalStateException("Error: Invalid maxValue: " + maxValue);
+        throw new IllegalStateException("Invalid maxValue: " + maxValue);
       }
 
       RGBIntegerImageBuilder builderObject = new RGBIntegerImageBuilder(width, height);
@@ -110,7 +110,7 @@ public class ImageUtil {
       throws FileNotFoundException, IllegalArgumentException{
     File file = new File(filePath);
     if (file.exists() && file.length() == 0) {
-      throw new IllegalArgumentException("Error: Cannot save an empty file");
+      throw new IllegalArgumentException("Cannot save an empty file");
     }
     try (PrintWriter writer = new PrintWriter(filePath)) {
 
@@ -158,12 +158,12 @@ public class ImageUtil {
     try {
       File file = new File(filename);
       if (file.exists() && file.length() == 0) {
-        throw new IllegalArgumentException("Error: Cannot save an empty file");
+        throw new IllegalArgumentException("Cannot open an empty file");
       }
       //1. First check if the image needs to be converted to RGB
       image = ImageIO.read(file);
     } catch (FileNotFoundException e) {
-      throw new FileNotFoundException("Error: File not found");
+      throw new FileNotFoundException("File not found");
     }
 
     int width = image.getWidth();
