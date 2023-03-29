@@ -1,7 +1,12 @@
 package Controller;
 
+import Model.Operations;
 import Model.RGBIntegerAlphaImage.RGBIntegerAlphaImageBuilder;
 import Model.RGBIntegerAlphaObject;
+import Model.RGBIntegerImage.RGBIntegerImageBuilder;
+import Model.RGBIntegerObject;
+import Model.TypeOfImage;
+import Model.TypeofImageObject;
 import java.awt.color.ColorSpace;
 import java.awt.color.ICC_ColorSpace;
 import java.awt.color.ICC_Profile;
@@ -12,18 +17,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Scanner;
-import Model.RGBIntegerImage.RGBIntegerImageBuilder;
-import Model.RGBIntegerObject;
-import Model.TypeOfImage;
-import Model.TypeofImageObject;
-import Model.Operations;
-/**
- * This class contains utility methods to read a PPM image
- * from file and simply print its contents. Feel free to change this method
- *  as required.
- */
 import java.io.PrintWriter;
+import java.util.Scanner;
 import javax.imageio.ImageIO;
 
 
@@ -60,13 +55,14 @@ public class ImageUtil {
     //now set up the scanner to read from the string we just built
     sc = new Scanner(builder.toString());
     if (!sc.hasNextLine()) {
-      throw new IllegalStateException("Invalid file: Cannot be empty");
+      throw new IllegalStateException("Error: Invalid file: Cannot be empty");
     }
     String token;
 
     token = sc.next();
     if (!token.equals("P3") || token.isEmpty()) {
-      throw new IllegalStateException("Invalid PPM file: plain RAW file should begin with P3");
+      throw new IllegalStateException(
+          "Error: Invalid PPM file: plain RAW file should begin with P3");
     }
     try {
       width = sc.nextInt();
@@ -74,11 +70,11 @@ public class ImageUtil {
       maxValue = sc.nextInt();
 
       if (width <= 0 | height <= 0) {
-        throw new IllegalStateException("Width and Height cannot be zero or negative");
+        throw new IllegalStateException("Error: Width and Height cannot be zero or negative");
       }
 
       if (maxValue != 255) {
-        throw new IllegalStateException("Invalid maxValue: " + maxValue);
+        throw new IllegalStateException("Error: Invalid maxValue: " + maxValue);
       }
 
       RGBIntegerImageBuilder builderObject = new RGBIntegerImageBuilder(width, height);
@@ -88,7 +84,6 @@ public class ImageUtil {
           int r = sc.nextInt();
           int g = sc.nextInt();
           int b = sc.nextInt();
-          //System.out.println("Color of pixel ("+j+","+i+"): "+ r+","+g+","+b);
           builderObject.addPixelAtPosition(j, i, new RGBIntegerObject(r, g, b));
 
         }
@@ -113,6 +108,10 @@ public class ImageUtil {
    */
   public static void writePPM(Operations model, String filePath, String imageName)
       throws FileNotFoundException {
+    File file = new File(filePath);
+    if (file.exists() && file.length() == 0) {
+      throw new IllegalArgumentException("Error: Cannot save an empty file");
+    }
     try (PrintWriter writer = new PrintWriter(filePath)) {
 
       TypeOfImage Image = model.getObject(imageName);
@@ -152,13 +151,15 @@ public class ImageUtil {
       throws IOException {
 
     BufferedImage image = null;
-
     try {
       File file = new File(filename);
+      if (file.exists() && file.length() == 0) {
+        throw new IllegalArgumentException("Error: Cannot save an empty file");
+      }
       //1. First check if the image needs to be converted to RGB
       image = ImageIO.read(file);
-    } catch(FileNotFoundException e) {
-      throw new FileNotFoundException("File not found");
+    } catch (FileNotFoundException e) {
+      throw new FileNotFoundException("Error: File not found");
     }
 
     int width = image.getWidth();
@@ -268,7 +269,6 @@ public class ImageUtil {
       throws IOException {
 
     TypeOfImage ImageOutput = model.getObject(imageName);
-
     int width = ImageOutput.getWidth();
     int height = ImageOutput.getHeight();
     BufferedImage image;
@@ -295,7 +295,7 @@ public class ImageUtil {
       for (int y = 0; y < ImageOutput.getHeight(); y++) {
         for (int x = 0; x < ImageOutput.getWidth(); x++) {
           TypeofImageObject pixel = ImageOutput.getPixels()[x][y];
-          if(pixel!=null) {
+          if (pixel != null) {
             int red = pixel.getChanne11();
             int green = pixel.getChanne12();
             int blue = pixel.getChanne13();
@@ -350,11 +350,10 @@ public class ImageUtil {
     File output = new File(filePath);
     String fileType = filePath.split("\\.")[1];
     if (output.exists() && output.length() == 0) {
-      throw new IllegalArgumentException("Error: cannot save an empty file");
-    }else {
+      throw new IllegalArgumentException("Error: Cannot save an empty file");
+    } else {
       ImageIO.write(image, fileType, output);
     }
-
   }
 
 
