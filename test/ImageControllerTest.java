@@ -1772,6 +1772,27 @@ public class ImageControllerTest {
   }
 
   //tests for command line hashmap:
+  /**
+   * This is a test for the Controller for the brighten function
+   * when the fucntion is invalid.
+   * @throws Exception handling different type of exceptions
+   */
+  @Test
+  public void testCommandLineDesignPattern1() throws Exception {
+    StringBuffer out = new StringBuffer();
+    String imageName = "koala";
+    String newImageName = "koala-brighten";
+    double increment = 10;
+    Reader in = new StringReader("brightened 10 koala koala-brighten\nexit");
+    StringBuilder log = new StringBuilder(); //log for mock model
+    MockModel mockModel = new MockModel(log);
+    View view = new View(out);
+    ImageController imageController = new ImageController(mockModel, in, view);
+    imageController.run();
+    String expectedOutput = "Error: Invalid command format.\n"
+            +"Exit the program \n";
+    assertEquals(expectedOutput, out.toString()); //inputs reached the model correctly
+  }
 
 }
 
