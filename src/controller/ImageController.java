@@ -14,6 +14,7 @@ import controller.commands.TransformGreyscale;
 import controller.commands.ValueIntensityLumaAndVisualizeComponent;
 import controller.commands.VerticalFlip;
 import model.Operations;
+import view.ImageProcessorUI;
 import view.ViewI;
 
 import java.io.File;
@@ -108,7 +109,10 @@ public class ImageController {
                         }
                         go = false;
                         view.printOutput("Exit the program \n");
-                    } else {
+                    } else if (commandParts[0].equals("gui")) {
+                        GUIOperations();
+                    }
+                    else {
                         commandExecutionNew(commandParts);
                     }
                 }
@@ -190,6 +194,32 @@ public class ImageController {
             go_script = false;
             throw new RuntimeException(e);
         }
+    }
+
+    public void GUIOperations() {
+        //open up the window
+        ImageProcessorUI GUI = new ImageProcessorUI(this.model, this.view);
+
+
+
+        String imageName;
+        //find command in controller hashmap based on which button got clicked
+        //send in the expected format. We will need to provide strings
+        //print any error message
+        //update image
+        //histogram
+
+        imageName = loadImage();
+        saveImage(imageName);
+    }
+
+    public String loadImage() {
+        //do the load stuff
+        return "loadedImage"; //set or reset the image name.
+    }
+
+    public void saveImage(String imageName) {
+        // save to image with the image name provided
     }
 }
 

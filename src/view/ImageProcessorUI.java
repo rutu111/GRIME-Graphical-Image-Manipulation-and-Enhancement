@@ -4,7 +4,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+
+import controller.commands.Load;
+import controller.commands.TransformGreyscale;
+import model.Operations;
+import model.TypeOfImage;
+import model.TypeofImageObject;
 
 public class ImageProcessorUI extends JFrame {
 
@@ -13,8 +22,16 @@ public class ImageProcessorUI extends JFrame {
     private JLabel imageLabel;
     private JFileChooser fileChooser;
 
-    public ImageProcessorUI() {
+    //private Operations model;
+
+    //private ViewI view;
+
+
+    public ImageProcessorUI(Operations model, ViewI view) {
         super();
+        //this.model = model;
+        //this.view = view;
+
         this.setTitle("Image Processor");
         this.setSize(10000, 10000);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -72,17 +89,57 @@ public class ImageProcessorUI extends JFrame {
         add(buttonPanel2, BorderLayout.EAST);
 
 
-
         uploadButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 int result = fileChooser.showOpenDialog(ImageProcessorUI.this);
                 if (result == JFileChooser.APPROVE_OPTION) {
                     File selectedFile = fileChooser.getSelectedFile();
-                    ImageIcon imageIcon = new ImageIcon(selectedFile.getPath());
-                    imageLabel.setIcon(imageIcon);
+                    //ImageIcon imageIcon = new ImageIcon(selectedFile.getPath());
+                    //imageLabel.setIcon(imageIcon);
+                    String path = selectedFile.getPath();
+                    String[] commands = new String[3];
+                    commands[0] = "load";
+                    commands[1] = path;
+                    commands[2] = "test";
+                    //System.out.println(Arrays.toString(commands));
+                    Load loadOperation = new Load(commands);
+                    try {
+                        loadOperation.goCommand(model, view);
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    TypeOfImage test = model.getObject("test");
+                    loadImageOnscreen(test);
+
                 }
             }
         });
+
+        greyscaleButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String[] commands = new String[3];
+                commands[0] = "Luma";
+                commands[1] = "test";
+                commands[2] = "test-greyscale";
+                TransformGreyscale greyscale = new TransformGreyscale(commands);
+                try {
+                    greyscale.goCommand(model, view);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+                //getObject string should always be the current string.
+                TypeOfImage testgrey = model.getObject("test-greyscale");
+                loadImageOnscreen(testgrey);
+            }
+        });
+
+
+        BrightenButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
 
         saveButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -95,9 +152,36 @@ public class ImageProcessorUI extends JFrame {
         setVisible(true);
     }
 
-    public static void main(String[] args) {
-        new ImageProcessorUI();
-    }
+    //public static void main(String[] args) {
+    //new ImageProcessorUI();
+    //}
 
+    public void loadImageOnscreen(TypeOfImage image) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+        BufferedImage imageBuffer;
+        imageBuffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        for (int y = 0; y < image.getHeight(); y++) {
+            for (int x = 0; x < image.getWidth(); x++) {
+                TypeofImageObject pixel = image.getPixels()[x][y];
+                if (pixel != null) {
+                    int red = pixel.getChanne11();
+                    int green = pixel.getChanne12();
+                    int blue = pixel.getChanne13();
+                    int rgb = (red << 16) | (green << 8) | blue;
+
+                    imageBuffer.setRGB(x, y, rgb);
+                }
+            }
+        }
+        //JLabel label = new JLabel(new ImageIcon(imageBuffer));
+        //JFrame frame = new JFrame();
+        //frame.getContentPane().add(label);
+        //frame.pack();
+        //frame.setVisible(true);
+        ImageIcon icon = new ImageIcon(imageBuffer);
+        imageLabel.setIcon(icon);
+
+    }
 
 }
