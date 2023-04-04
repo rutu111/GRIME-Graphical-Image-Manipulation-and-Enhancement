@@ -1,0 +1,2 @@
+Assignment 5 USEME file
+1. The load command should always be typed
