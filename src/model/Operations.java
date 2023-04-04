@@ -1,153 +1,154 @@
 package model;
 
 /**
- * This is an interface for the Model. It contains signatures
- * for helper methods and a few other
+ * This is an interface for the Model. It contains signatures for
+ * helper methods and a few other
  * methods too.
  */
 public interface Operations {
 
-    /**
-     * This methods flips image horizontally.
-     *
-     * @param imageName    name of the object to perform the operation on.
-     * @param newImageName name of the object after operation is performed.
-     */
-    void horizontalFlip(String imageName, String newImageName);
+  /**
+   * This methods flips image horizontally.
+   *
+   * @param imageName    name of the object to perform the operation on.
+   * @param newImageName name of the object after operation is performed.
+   */
+  void horizontalFlip(String imageName, String newImageName);
 
-    /**
-     * This methods flips image vertically.
-     *
-     * @param imageName    name of the object to perform the operation on.
-     * @param newImageName name of the object after operation is performed.
-     */
-    void verticalFlip(String imageName, String newImageName);
+  /**
+   * This methods flips image vertically.
+   *
+   * @param imageName    name of the object to perform the operation on.
+   * @param newImageName name of the object after operation is performed.
+   */
+  void verticalFlip(String imageName, String newImageName);
 
-    /**
-     * This methods brightens/darkens the image.
-     *
-     * @param imageName    name of the object to perform the operation on.
-     * @param newImageName name of the object after operation is performed.
-     * @param increment    amount by which you want to brighten or darken.
-     */
-    void brighten(String imageName, String newImageName, double increment);
+  /**
+   * This methods brightens/darkens the image.
+   *
+   * @param imageName    name of the object to perform the operation on.
+   * @param newImageName name of the object after operation is performed.
+   * @param increment    amount by which you want to brighten or darken.
+   */
+  void brighten(String imageName, String newImageName, double increment);
 
-    /**
-     * This method visualizes individual RGB components.
-     *
-     * @param imageName    name of the object to perform the operation on.
-     * @param newImageName name of the object after operation is performed.
-     * @param channel      component naame
-     * @throws NoSuchFieldException   if field does nto exist.
-     * @throws IllegalAccessException for illegal acces.
-     */
-    void visIndividualComponent(String imageName, String newImageName, ComponentRGB channel)
-            throws NoSuchFieldException, IllegalAccessException;
+  /**
+   * This method visualizes individual RGB components.
+   *
+   * @param imageName    name of the object to perform the operation on.
+   * @param newImageName name of the object after operation is performed.
+   * @param channel      component naame
+   * @throws NoSuchFieldException   if field does nto exist.
+   * @throws IllegalAccessException for illegal acces.
+   */
+  void visIndividualComponent(String imageName, String newImageName, ComponentRGB channel)
+      throws NoSuchFieldException, IllegalAccessException;
 
-    /**
-     * This method visualizes values, intensite and luma.
-     *
-     * @param imageName    name of the object to perform the operation on.
-     * @param newImageName name of the object after operation is performed.
-     * @param measure      component naame
-     * @throws NoSuchFieldException   if field does nto exist.
-     * @throws IllegalAccessException for illegal acces.
-     */
-    void visualizeValueIntensityLuma(String imageName, String newImageName,
-                                     MeasurementType measure);
+  /**
+   * This method visualizes values, intensite and luma.
+   *
+   * @param imageName    name of the object to perform the operation on.
+   * @param newImageName name of the object after operation is performed.
+   * @param measure      component naame
+   * @throws NoSuchFieldException   if field does nto exist.
+   * @throws IllegalAccessException for illegal acces.
+   */
+  void visualizeValueIntensityLuma(String imageName, String newImageName,
+      MeasurementType measure);
 
-    /**
-     * This methods splits RGB image into 3 greyscale images.
-     *
-     * @param imageName     RGB image to split.
-     * @param newImageName1 greyscale image 1
-     * @param newImageName2 greyscale image 2
-     * @param newImageName3 greyscale image 3
-     * @throws NoSuchFieldException   if field does nto exist.
-     * @throws IllegalAccessException for illegal acces.
-     */
-    void splitInto3Images(String imageName, String newImageName1, String newImageName2,
-                          String newImageName3) throws NoSuchFieldException, IllegalAccessException;
+  /**
+   * This methods splits RGB image into 3 greyscale images.
+   *
+   * @param imageName     RGB image to split.
+   * @param newImageName1 greyscale image 1
+   * @param newImageName2 greyscale image 2
+   * @param newImageName3 greyscale image 3
+   * @throws NoSuchFieldException   if field does nto exist.
+   * @throws IllegalAccessException for illegal acces.
+   */
+  void splitInto3Images(String imageName, String newImageName1, String newImageName2,
+      String newImageName3) throws NoSuchFieldException, IllegalAccessException;
 
-    /**
-     * This methodw gets the object by keyname from the hashmap if one exists.
-     *
-     * @param imageName name of the image.
-     * @return TypeOfImage object.
-     */
-    TypeOfImage getObject(String imageName);
+  /**
+   * This methodw gets the object by keyname from the hashmap if one exists.
+   *
+   * @param imageName name of the image.
+   * @return TypeOfImage object.
+   */
+  TypeOfImage getObject(String imageName);
 
-    /**
-     * This methods outputs the number of images in the hashmap.
-     *
-     * @return number of images in hashmap.
-     */
-    int numberOfImagesInModel();
+  /**
+   * This methods outputs the number of images in the hashmap.
+   *
+   * @return number of images in hashmap.
+   */
+  int numberOfImagesInModel();
 
-    /**
-     * The following method combines 3 greyscale images into 1 RGB image.
-     *
-     * @param imageName1   greyscale image 1
-     * @param imageName2   greyscale image 1
-     * @param imageName3   greyscale image 1
-     * @param newImageName resultant RGB image.
-     * @throws NoSuchFieldException   if field does nto exist.
-     * @throws IllegalAccessException for illegal acces.
-     */
-    void combineGreyScaleToRGB(String imageName1, String imageName2, String imageName3,
-                               String newImageName);
+  /**
+   * The following method combines 3 greyscale images into 1 RGB image.
+   *
+   * @param imageName1   greyscale image 1
+   * @param imageName2   greyscale image 1
+   * @param imageName3   greyscale image 1
+   * @param newImageName resultant RGB image.
+   * @throws NoSuchFieldException   if field does nto exist.
+   * @throws IllegalAccessException for illegal acces.
+   */
+  void combineGreyScaleToRGB(String imageName1, String imageName2, String imageName3,
+      String newImageName);
 
-    /**
-     * This methods adds an image to the hashmap.
-     *
-     * @param image        to add.
-     * @param nameOfObject name of the image.
-     */
-    void addImageToModel(TypeOfImage image,
-                         String nameOfObject);
+  /**
+   * This methods adds an image to the hashmap.
+   *
+   * @param image        to add.
+   * @param nameOfObject name of the image.
+   */
+  void addImageToModel(TypeOfImage image,
+      String nameOfObject);
 
-    /**
-     * Method checks if requested key is in the hashmap.
-     * If yes, then returns true. Else, returns false.
-     *
-     * @param imageName key to look for.
-     * @return boolean.
-     */
-    boolean checkKeyInHashmap(String imageName);
+  /**
+   * Method checks if requested key is in the hashmap. If yes, then returns
+   * true. Else, returns
+   * false.
+   *
+   * @param imageName key to look for.
+   * @return boolean.
+   */
+  boolean checkKeyInHashmap(String imageName);
 
-    /**
-     * Method concerts an image into sepia tone.
-     *
-     * @param imageName    name of the image to convert.
-     * @param newImageName name of output image after conversion.
-     */
-    void colorTransformationSepia(String imageName, String newImageName);
+  /**
+   * Method concerts an image into sepia tone.
+   *
+   * @param imageName    name of the image to convert.
+   * @param newImageName name of output image after conversion.
+   */
+  void colorTransformationSepia(String imageName, String newImageName);
 
-    /**
-     * Method blurs the given image.
-     *
-     * @param imageName    name of the image to convert.
-     * @param newImageName name of output image after conversion.
-     */
-    void blur(String imageName, String newImageName);
+  /**
+   * Method blurs the given image.
+   *
+   * @param imageName    name of the image to convert.
+   * @param newImageName name of output image after conversion.
+   */
+  void blur(String imageName, String newImageName);
 
-    /**
-     * Method sharpens the given image.
-     *
-     * @param imageName    name of the image to convert.
-     * @param newImageName name of output image after conversion.
-     */
-    void sharpen(String imageName, String newImageName);
+  /**
+   * Method sharpens the given image.
+   *
+   * @param imageName    name of the image to convert.
+   * @param newImageName name of output image after conversion.
+   */
+  void sharpen(String imageName, String newImageName);
 
-    /**
-     * Method dithers the given image.
-     *
-     * @param imageName    name of the image to convert.
-     * @param newImageName name of output image after conversion.
-     * @throws NoSuchFieldException   if file not found.
-     * @throws IllegalAccessException if illegal access.
-     */
-    void dither(String imageName, String newImageName)
-            throws NoSuchFieldException, IllegalAccessException;
+  /**
+   * Method dithers the given image.
+   *
+   * @param imageName    name of the image to convert.
+   * @param newImageName name of output image after conversion.
+   * @throws NoSuchFieldException   if file not found.
+   * @throws IllegalAccessException if illegal access.
+   */
+  void dither(String imageName, String newImageName)
+      throws NoSuchFieldException, IllegalAccessException;
 
 }
