@@ -1,6 +1,6 @@
 A text README file explaining your design. Your README file should give the graders an overview of what the purposes are for every class, interface, etc. that you include in your submission, so that they can quickly get a high-level overview of your code. It does not replace the need for proper Javadoc!
 
-Model:
+model:
 Basic idea:
 To better understand the design, here we segregate 1.Images 2. Type of Object in the image
 Imagine an image to be a matrix containing objects of type T where T can be 1. Any chennel (3, 4, 5 etc). 2. Channels of any type (eg: int, double, float). The design tries to make the code exinsible by keeping in mind that images could have 1. Different number of channels 2. Each channel of different types (int, double etc).
@@ -20,14 +20,14 @@ Classes concerning objects inside an image:
 
 So, TypeOFImage contains TypeOfImageObject[][], width and height. 
 
-10. Model:The controller only interacts with this class. This class has helper methods for each operation. The model class maintains a hashmap which contains TypeOfImage objects and the names of those object (Strings). The idea is: controlled passes a key (name of object) to the Model. If image exists, then the requested operation is called on that image (dynamic dispatch) and then, the new image object is stored in the hashmap with the name provided by the user. If image not found in hashmap, an exception is thrown. 
-11. Operations interface: Contains signatures for the Model. Implemented by Model and MockModel (test). 
+10. model:The controller only interacts with this class. This class has helper methods for each operation. The model class maintains a hashmap which contains TypeOfImage objects and the names of those object (Strings). The idea is: controlled passes a key (name of object) to the model. If image exists, then the requested operation is called on that image (dynamic dispatch) and then, the new image object is stored in the hashmap with the name provided by the user. If image not found in hashmap, an exception is thrown.
+11. Operations interface: Contains signatures for the model. Implemented by model and MockModel (test).
 
 Other classes. 
 12. ComponentRGB: Enum for RGB componenets.
 13. MeasuremenType: Enum for value, intensite and luma. 
 
-Controller:
+controller:
 1. ImageController: Takes inputs from the view (command line), tells the model what to do and returns an output back to the view. 
 2. ImageUtils: Reads and Saves PPM files. Has direct access to the appropiate builder. 
 
