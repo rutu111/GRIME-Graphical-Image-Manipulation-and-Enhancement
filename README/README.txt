@@ -1,3 +1,47 @@
+Assingment 5
+A README file in the root submission folder (that contains src, test and res). The README file should document which parts of the program are complete, and design changes and justifications.
+
+Changes and justifications:
+Model:
+1. Since now we need to store images of various types, PNG images have alpha channels. So we added a new object class called RGBIntegerAlphaObject (implements TypeOfImageObject) that stores objects of 4 channels (RGBA). Next, we created a new image class called RGBIntegerAlphaImage (extends ThreeChannelOperations abstract class - reason it extends this class is because we still do operations on RGB, alpha remains as is) that has an inner builder class that creates an RGBIntegerAlphaImage containing RGBIntegerAlphaObjects. 
+2. We added new operations (dither, sepia etc) to the TypeOfimage interface. We have not used inheritance or composiiton for the following reasons:
+(a) Composition is typically used when you don't want to reuse all operations, but only some. In this case, an image should be able to perform all operations (old + new) so composiiton is not the best option. 
+(b) Dither is an image operation vs dither has an image operation. The former makes more sense, so composition might not be the best way forward given our design
+Okay, so then inheritance? No, because:
+(a) We are only adding new operations. We are not modifying existing operations. Client still has access to old operations and now, also has access to new operation. Doing this does not break/affect clients using code from assingment 4. 
+(b) using inheritance does not benefit us for incorporatig these new operations our design. Why create multiple new classes and make the design more complicated to understand when we can just add to the current interface and classes without breaking the existing code? Moreover, if inheritance made more sense from the "being able to revert back" stand-point then it still does not stand true because whether we use inheritance or add to exisitng classes, reverting back would require multiple changes. 
+So, since inheritance does not hold any added value for this very specific case, we decided to not go ahead with it. 
+So below are the additions made to incorporate new operations:
+3. Added new operations to the TypeOfImage interface
+4. Implemented them in the existing ThreeChannelObjectOperations abstract class. 
+5. Added new operations to Operations.java and model.java.
+That is it. 
+Other changes in Model:
+6. Added a hasAlpha9() method to TypeOfImageObject which returns the alpha channel if one exists and null otherwise. 
+7. Added/modified two abstract methods to ThreeChannelObjectoperations: (a) getField: this gets the fields of the respective classes (b) getObject: this was already existing but we added a 4th paramter to this which now gets the alpha channel too.  
+
+View:
+Created a view interface and class because the previous design did not have a view folder. 
+
+Controller:
+1. Now prints outputs through the view instead of doing it directly. 
+2. Command design pattern adapted. Now there are no switch cases. Each switch case is now coverted into its own class. These objects are stored in a hashmap - same methodology as taught in class. (new files: commands folder and CommandDesignOperations interface). Appropiate changes in the controller (such as removing switch statements and added a hashmap etc). 
+3. ImageUtils: Added ImageIORead and ImageIOWrite functions to read and write jpg, png and bmp formats. 
+Idea: Read buffer image -> store in our format (TypeOfImage) -> do operations -> convert back to buffer image -> save in requested format. 
+Read: Read image as a buffer image -> store in intermediate format (TypeOfImage). So we convert the buffered image into our format and do operations on it as done with ppm. 
+Write: fetch image from the model -> convert the buffer image -> save to file format requested. 
+Note: We build the loaded image based on its type (RGBintegerAlphaImage vs RGBintegerImage). For example, if we have a PNG image with an alpha channel, it will build a RGBintegerAlphaImage. If we have a Bmp image without alpha, it will build RGBintegerImage. 
+Everything done for PPM images in the previous assingment remains the same.  
+
+How to run new operations:
+Blur: filter-blur imageName newimageName
+Dither: dither imageName newimageName
+Sharpen: filter-sharpen imageName newimageName
+Greyscale Transformation: transform-greyscale imageName newimageName
+Sepia Transformation: transform-sepia fimageName newimageName
+
+============================================================
+Assignment 4
 A text README file explaining your design. Your README file should give the graders an overview of what the purposes are for every class, interface, etc. that you include in your submission, so that they can quickly get a high-level overview of your code. It does not replace the need for proper Javadoc!
 
 Model:

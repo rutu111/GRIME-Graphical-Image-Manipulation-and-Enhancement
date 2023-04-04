@@ -98,7 +98,6 @@ public class ImageUtil {
 
   }
 
-
   /**
    * This method creates a new PPM file on save.
    *
