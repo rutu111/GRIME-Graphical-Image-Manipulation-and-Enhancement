@@ -1,0 +1,2 @@
+hi pls load koala.ppm koala
+also brighten 10 koala koala-brighten
