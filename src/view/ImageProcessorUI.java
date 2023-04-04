@@ -14,30 +14,35 @@ public class ImageProcessorUI extends JFrame {
     private JFileChooser fileChooser;
 
     public ImageProcessorUI() {
+
         super();
         this.setTitle("Image Processor");
         this.setSize(10000, 10000);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        uploadButton = new JButton("Load");
+        uploadButton = new JButton("Upload");
         saveButton = new JButton("Save");
         imageLabel = new JLabel();
         fileChooser = new JFileChooser();
-
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(uploadButton);
         buttonPanel.add(saveButton);
 
-        // Create the button panel and add the buttons
-        JPanel buttonPanel2 = new JPanel(new GridLayout(16, 1, 10, 10));
-        buttonPanel2.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 50));
+        add(buttonPanel, BorderLayout.NORTH);
+        add(imageLabel, BorderLayout.CENTER);
 
-        //operations
-        JButton BrightenButton = new JButton("Brighten");
-        JButton ValueButton = new JButton("Value");
+        JPanel imagePanel = new JPanel(new BorderLayout());
+        imagePanel.add(imageLabel, BorderLayout.CENTER);
+
+        JPanel operationsPanel = new JPanel();
+        operationsPanel.setLayout(new GridLayout(18, 2, 20, 20)); // 5 rows, 3 columns, gap of 5 pixels
+        operationsPanel.setBorder(BorderFactory.createTitledBorder("OPERATIONS"));
+
+        JButton brightenButton = new JButton("Brighten");
+        JButton valueButton = new JButton("Value");
         JButton intensityButton = new JButton("Intensity");
-        JButton LumaButton = new JButton("Luma");
+        JButton lumaButton = new JButton("Luma");
         JButton horizontalFlipButton = new JButton("Horizontal Flip");
         JButton verticalFlipButton = new JButton("Vertical Flip");
         JButton redButton = new JButton("Red");
@@ -45,32 +50,50 @@ public class ImageProcessorUI extends JFrame {
         JButton greenButton = new JButton("Green");
         JButton splitButton = new JButton("Split");
         JButton combineButton = new JButton("Combine");
-        JButton SepiaButton = new JButton("Sepia");
-        JButton DitherButton = new JButton("Dither");
-        JButton SharpenButton = new JButton("Sharpen");
-        JButton BlurButton = new JButton("Blur");
+        JButton sepiaButton = new JButton("Sepia");
+        JButton ditherButton = new JButton("Dither");
+        JButton sharpenButton = new JButton("Sharpen");
+        JButton blurButton = new JButton("Blur");
         JButton greyscaleButton = new JButton("Greyscale");
-        buttonPanel2.add(BrightenButton);
-        buttonPanel2.add(ValueButton);
-        buttonPanel2.add(intensityButton);
-        buttonPanel2.add(LumaButton);
-        buttonPanel2.add(horizontalFlipButton);
-        buttonPanel2.add(verticalFlipButton);
-        buttonPanel2.add(redButton);
-        buttonPanel2.add(blueButton);
-        buttonPanel2.add(greenButton);
-        buttonPanel2.add(splitButton);
-        buttonPanel2.add(combineButton);
-        buttonPanel2.add(SepiaButton);
-        buttonPanel2.add(DitherButton);
-        buttonPanel2.add(SharpenButton);
-        buttonPanel2.add(BlurButton);
-        buttonPanel2.add(greyscaleButton);
 
-        add(buttonPanel, BorderLayout.NORTH);
-        add(imageLabel, BorderLayout.CENTER);
-        add(buttonPanel2, BorderLayout.EAST);
+        // Add the buttons to the operationsPanel
+        operationsPanel.add(brightenButton);
+        operationsPanel.add(valueButton);
+        operationsPanel.add(intensityButton);
+        operationsPanel.add(lumaButton);
+        operationsPanel.add(horizontalFlipButton);
+        operationsPanel.add(verticalFlipButton);
+        operationsPanel.add(redButton);
+        operationsPanel.add(blueButton);
+        operationsPanel.add(greenButton);
+        operationsPanel.add(splitButton);
+        operationsPanel.add(combineButton);
+        operationsPanel.add(sepiaButton);
+        operationsPanel.add(ditherButton);
+        operationsPanel.add(sharpenButton);
+        operationsPanel.add(blurButton);
+        operationsPanel.add(greyscaleButton);
 
+        JPanel rightPanel = new JPanel(new BorderLayout());
+        rightPanel.add(operationsPanel, BorderLayout.NORTH);
+        add(rightPanel, BorderLayout.EAST);
+
+        JPanel histogramPanel = new JPanel();
+        histogramPanel.setBorder(BorderFactory.createTitledBorder("HISTOGRAM"));
+        histogramPanel.setPreferredSize(new Dimension(0, 250));
+        imagePanel.add(histogramPanel, BorderLayout.SOUTH);
+        add(imagePanel, BorderLayout.CENTER);
+
+        JPanel errorPanel = new JPanel();
+        errorPanel.setBorder(BorderFactory.createTitledBorder("LOG"));
+        errorPanel.setPreferredSize(new Dimension(0, 250));
+        imagePanel.add(errorPanel, BorderLayout.SOUTH);
+        add(imagePanel, BorderLayout.CENTER);
+
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, histogramPanel, errorPanel);
+        splitPane.setResizeWeight(0.5); // adjust the divider position
+        splitPane.setDividerLocation(0.5);
+        imagePanel.add(splitPane, BorderLayout.SOUTH);
 
 
         uploadButton.addActionListener(new ActionListener() {
