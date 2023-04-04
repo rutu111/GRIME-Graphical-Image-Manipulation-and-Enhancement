@@ -19,10 +19,19 @@ public class ImageProcessorUI extends JFrame {
         this.setSize(10000, 10000);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        uploadButton = new JButton("Upload");
+        uploadButton = new JButton("Load");
         saveButton = new JButton("Save");
         imageLabel = new JLabel();
         fileChooser = new JFileChooser();
+
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(uploadButton);
+        buttonPanel.add(saveButton);
+
+        // Create the button panel and add the buttons
+        JPanel buttonPanel2 = new JPanel(new GridLayout(16, 1, 10, 10));
+        buttonPanel2.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 50));
 
         //operations
         JButton BrightenButton = new JButton("Brighten");
@@ -41,15 +50,28 @@ public class ImageProcessorUI extends JFrame {
         JButton SharpenButton = new JButton("Sharpen");
         JButton BlurButton = new JButton("Blur");
         JButton greyscaleButton = new JButton("Greyscale");
-
-
-
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.add(uploadButton);
-        buttonPanel.add(saveButton);
+        buttonPanel2.add(BrightenButton);
+        buttonPanel2.add(ValueButton);
+        buttonPanel2.add(intensityButton);
+        buttonPanel2.add(LumaButton);
+        buttonPanel2.add(horizontalFlipButton);
+        buttonPanel2.add(verticalFlipButton);
+        buttonPanel2.add(redButton);
+        buttonPanel2.add(blueButton);
+        buttonPanel2.add(greenButton);
+        buttonPanel2.add(splitButton);
+        buttonPanel2.add(combineButton);
+        buttonPanel2.add(SepiaButton);
+        buttonPanel2.add(DitherButton);
+        buttonPanel2.add(SharpenButton);
+        buttonPanel2.add(BlurButton);
+        buttonPanel2.add(greyscaleButton);
 
         add(buttonPanel, BorderLayout.NORTH);
         add(imageLabel, BorderLayout.CENTER);
+        add(buttonPanel2, BorderLayout.EAST);
+
+
 
         uploadButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

@@ -2,7 +2,7 @@ Assingment 5
 A README file in the root submission folder (that contains src, test and res). The README file should document which parts of the program are complete, and design changes and justifications.
 
 Changes and justifications:
-Model:
+model:
 1. Since now we need to store images of various types, PNG images have alpha channels. So we added a new object class called RGBIntegerAlphaObject (implements TypeOfImageObject) that stores objects of 4 channels (RGBA). Next, we created a new image class called RGBIntegerAlphaImage (extends ThreeChannelOperations abstract class - reason it extends this class is because we still do operations on RGB, alpha remains as is) that has an inner builder class that creates an RGBIntegerAlphaImage containing RGBIntegerAlphaObjects. 
 2. We added new operations (dither, sepia etc) to the TypeOfimage interface. We have not used inheritance or composiiton for the following reasons:
 (a) Composition is typically used when you don't want to reuse all operations, but only some. In this case, an image should be able to perform all operations (old + new) so composiiton is not the best option. 
@@ -16,7 +16,7 @@ So below are the additions made to incorporate new operations:
 4. Implemented them in the existing ThreeChannelObjectOperations abstract class. 
 5. Added new operations to Operations.java and model.java.
 That is it. 
-Other changes in Model:
+Other changes in model:
 6. Added a hasAlpha9() method to TypeOfImageObject which returns the alpha channel if one exists and null otherwise. 
 7. Added/modified two abstract methods to ThreeChannelObjectoperations: (a) getField: this gets the fields of the respective classes (b) getObject: this was already existing but we added a 4th paramter to this which now gets the alpha channel too.  
 
