@@ -1,0 +1,85 @@
+Run the main.java file. 
+
+Once the program is running, you can do 3 things with it:
+
+1. Run script.txt
+This runs script files
+Please make sure the path specified is correct. 
+
+2. You can run individual commands. Below are their signatures:
+LOAD: load filepath imageName
+SAVE: save filepath imageName
+BRIGHTEN: brighten increment imageName newimageName
+HORIZONTAL-FLIP: horizontal-flip imageName newimageName
+VERTICAL-FLIP: vertical-flip imageName newimageName
+GREYSCALE component: greyscale component-type imageName newimageName (type can be red, green, blue, value, intensity or luma).
+RGBSPLIT: rgb-split imageName newimageNameR newimageNameG newimageNameB
+COMBINE: rgb-combine newimageName imageNameR imageNameG imageNameB
+Blur: filter-blur imageName newimageName
+Dither: dither imageName newimageName
+Sharpen: filter-sharpen imageName newimageName
+Greyscale Transformation: transform-greyscale imageName newimageName
+Sepia Transformation: transform-sepia fimageName newimageName
+
+An example of how to run these commands:
+#load koala.ppm and call it 'koala'
+load images/koala.ppm koala
+
+#brighten koala by adding 10
+brighten 10 koala koala-brighter
+
+#flip koala vertically
+vertical-flip koala koala-vertical
+
+#flip the vertically flipped koala horizontally
+horizontal-flip koala-vertical koala-vertical-horizontal
+
+#create a greyscale using only the value component, as an image koala-greyscale
+greyscale value-component koala koala-greyscale
+
+#save koala-brighter
+save images/koala-brighter.ppm koala-brighter
+
+#save koala-greyscale
+save images/koala-gs.ppm koala-greyscale
+
+#overwrite koala with another file
+load images/upper.ppm koala
+
+#give the koala a red tint
+rgb-split koala koala-red koala-green koala-blue
+
+#brighten just the red image
+brighten 50 koala-red koala-red
+
+#combine them back, but by using the brightened red we get a red tint
+rgb-combine koala-red-tint koala-red koala-green koala-blue
+save images/koala-red-tint.ppm koala-red-tint
+
+#adding the new operations
+
+#blur
+filter-blur koala koala-blur
+
+#sharpen
+filter-sharpen koala koala-sharpen
+
+#greyscale transformation
+transform-greyscale koala koala-trans-greyscale
+
+#sepia transformation
+transform-sepia koala koala-sepia
+
+#dither
+dither koala koala-dither
+
+save images/koala-blur.ppm koala-blur
+save images/koala-sharpen.ppm koala-sharpen
+save images/koala-trans-greyscale.ppm koala-trans-greyscale
+save images/koala-sepia.ppm koala-sepia
+save images/koala-dither.ppm koala-dither
+
+Note: you can run the commands in any order provided that the imagename exists!Example: you can't brighten Koala till you have loaded Koala. You can't do "horizontal-flip koala-red koala" if koala-red does not exist etc .
+
+3. Exit
+Typing exit will terminate the program
