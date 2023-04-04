@@ -24,6 +24,26 @@ public class ImageProcessorUI extends JFrame {
         imageLabel = new JLabel();
         fileChooser = new JFileChooser();
 
+        //operations
+        JButton BrightenButton = new JButton("Brighten");
+        JButton ValueButton = new JButton("Value");
+        JButton intensityButton = new JButton("Intensity");
+        JButton LumaButton = new JButton("Luma");
+        JButton horizontalFlipButton = new JButton("Horizontal Flip");
+        JButton verticalFlipButton = new JButton("Vertical Flip");
+        JButton redButton = new JButton("Red");
+        JButton blueButton = new JButton("Blue");
+        JButton greenButton = new JButton("Green");
+        JButton splitButton = new JButton("Split");
+        JButton combineButton = new JButton("Combine");
+        JButton SepiaButton = new JButton("Sepia");
+        JButton DitherButton = new JButton("Dither");
+        JButton SharpenButton = new JButton("Sharpen");
+        JButton BlurButton = new JButton("Blur");
+        JButton greyscaleButton = new JButton("Greyscale");
+
+
+
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(uploadButton);
         buttonPanel.add(saveButton);
