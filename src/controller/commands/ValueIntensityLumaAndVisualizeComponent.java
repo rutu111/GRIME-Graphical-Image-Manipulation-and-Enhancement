@@ -1,4 +1,4 @@
-package controller.Commands;
+package controller.commands;
 
 import controller.CommandDesignOperations;
 import model.ComponentRGB;

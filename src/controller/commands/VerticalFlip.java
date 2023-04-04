@@ -1,4 +1,4 @@
-package controller.Commands;
+package controller.commands;
 
 import controller.CommandDesignOperations;
 import model.Operations;
@@ -9,7 +9,7 @@ import java.io.IOException;
 /**
  * This class is for the command design pattern.
  */
-public class Blur implements CommandDesignOperations {
+public class VerticalFlip implements CommandDesignOperations {
 
     private String imageName;
 
@@ -21,11 +21,10 @@ public class Blur implements CommandDesignOperations {
      * @param commands a list of commands, typed by the user.
      * @throws IllegalArgumentException if number of arguments not as expected.
      */
-    public Blur(String[] commands) throws IllegalArgumentException {
+    public VerticalFlip(String[] commands) throws IllegalArgumentException {
         if (commands.length != 3) {
             throw new IllegalArgumentException("Invalid command format.");
         }
-
         this.imageName = commands[1];
         this.updatedImageName = commands[2];
 
@@ -33,10 +32,9 @@ public class Blur implements CommandDesignOperations {
 
     @Override
     public void goCommand(Operations m, ViewI view) throws IOException {
-        m.blur(imageName,
-                updatedImageName);
+        m.verticalFlip(imageName, updatedImageName);
         view.printOutput(
-                "Image blurred '" + imageName + "' stored as '" + updatedImageName + "'" +
-                        "\n");
+                "Image vertically flipped '" + imageName + "' stored as '" + updatedImageName + "'" + "\n");
     }
+
 }

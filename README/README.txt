@@ -20,10 +20,10 @@ Other changes in Model:
 6. Added a hasAlpha9() method to TypeOfImageObject which returns the alpha channel if one exists and null otherwise. 
 7. Added/modified two abstract methods to ThreeChannelObjectoperations: (a) getField: this gets the fields of the respective classes (b) getObject: this was already existing but we added a 4th paramter to this which now gets the alpha channel too.  
 
-View:
+view:
 Created a view interface and class because the previous design did not have a view folder. 
 
-Controller:
+controller:
 1. Now prints outputs through the view instead of doing it directly. 
 2. Command design pattern adapted. Now there are no switch cases. Each switch case is now coverted into its own class. These objects are stored in a hashmap - same methodology as taught in class. (new files: commands folder and CommandDesignOperations interface). Appropiate changes in the controller (such as removing switch statements and added a hashmap etc). 
 3. ImageUtils: Added ImageIORead and ImageIOWrite functions to read and write jpg, png and bmp formats. 

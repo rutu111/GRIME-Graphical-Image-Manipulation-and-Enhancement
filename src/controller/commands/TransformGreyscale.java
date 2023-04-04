@@ -1,6 +1,7 @@
-package controller.Commands;
+package controller.commands;
 
 import controller.CommandDesignOperations;
+import model.MeasurementType;
 import model.Operations;
 import view.ViewI;
 
@@ -9,14 +10,11 @@ import java.io.IOException;
 /**
  * This class is for the command design pattern.
  */
-public class Brighten implements CommandDesignOperations {
-
-    private double increment;
+public class TransformGreyscale implements CommandDesignOperations {
 
     private String imageName;
 
     private String updatedImageName;
-
 
     /**
      * This constructor takes in a list a commands.
@@ -24,21 +22,21 @@ public class Brighten implements CommandDesignOperations {
      * @param commands a list of commands, typed by the user.
      * @throws IllegalArgumentException if number of arguments not as expected.
      */
-    public Brighten(String[] commands) throws IllegalArgumentException {
-        if (commands.length != 4) {
+    public TransformGreyscale(String[] commands) throws IllegalArgumentException {
+        if (commands.length != 3) {
             throw new IllegalArgumentException("Invalid command format.");
         }
-
-        this.imageName = commands[2];
-        this.updatedImageName = commands[3];
-        this.increment = Integer.parseInt(commands[1]);
+        this.imageName = commands[1];
+        this.updatedImageName = commands[2];
 
     }
 
     @Override
     public void goCommand(Operations m, ViewI view) throws IOException {
-        m.brighten(imageName, updatedImageName, increment);
-        view.printOutput("Image brightened '" + imageName + "' stored as '" +
-                updatedImageName + "'" + "\n");
+        m.visualizeValueIntensityLuma(imageName, updatedImageName, MeasurementType.luma);
+        view.printOutput(
+                "Image has been colour transformed with luma '" + imageName + "' stored as '"
+                        + updatedImageName + "'" +
+                        "\n");
     }
 }

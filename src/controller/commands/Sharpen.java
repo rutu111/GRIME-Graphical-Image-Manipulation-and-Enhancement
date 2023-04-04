@@ -1,7 +1,6 @@
-package controller.Commands;
+package controller.commands;
 
 import controller.CommandDesignOperations;
-import model.MeasurementType;
 import model.Operations;
 import view.ViewI;
 
@@ -10,7 +9,7 @@ import java.io.IOException;
 /**
  * This class is for the command design pattern.
  */
-public class TransformGreyscale implements CommandDesignOperations {
+public class Sharpen implements CommandDesignOperations {
 
     private String imageName;
 
@@ -22,7 +21,7 @@ public class TransformGreyscale implements CommandDesignOperations {
      * @param commands a list of commands, typed by the user.
      * @throws IllegalArgumentException if number of arguments not as expected.
      */
-    public TransformGreyscale(String[] commands) throws IllegalArgumentException {
+    public Sharpen(String[] commands) throws IllegalArgumentException {
         if (commands.length != 3) {
             throw new IllegalArgumentException("Invalid command format.");
         }
@@ -33,10 +32,10 @@ public class TransformGreyscale implements CommandDesignOperations {
 
     @Override
     public void goCommand(Operations m, ViewI view) throws IOException {
-        m.visualizeValueIntensityLuma(imageName, updatedImageName, MeasurementType.luma);
+        m.sharpen(imageName,
+                updatedImageName);
         view.printOutput(
-                "Image has been colour transformed with luma '" + imageName + "' stored as '"
-                        + updatedImageName + "'" +
+                "Image sharpened '" + imageName + "' stored as '" + updatedImageName + "'" +
                         "\n");
     }
 }

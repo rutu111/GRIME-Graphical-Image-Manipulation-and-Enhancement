@@ -1,4 +1,4 @@
-package controller.Commands;
+package controller.commands;
 
 import controller.CommandDesignOperations;
 import model.Operations;
@@ -9,7 +9,7 @@ import java.io.IOException;
 /**
  * This class is for the command design pattern.
  */
-public class Sepia implements CommandDesignOperations {
+public class HorizontalFlip implements CommandDesignOperations {
 
     private String imageName;
 
@@ -21,7 +21,7 @@ public class Sepia implements CommandDesignOperations {
      * @param commands a list of commands, typed by the user.
      * @throws IllegalArgumentException if number of arguments not as expected.
      */
-    public Sepia(String[] commands) {
+    public HorizontalFlip(String[] commands) throws IllegalArgumentException {
         if (commands.length != 3) {
             throw new IllegalArgumentException("Invalid command format.");
         }
@@ -31,11 +31,10 @@ public class Sepia implements CommandDesignOperations {
 
     @Override
     public void goCommand(Operations m, ViewI view) throws IOException {
-        m.colorTransformationSepia(imageName,
+        m.horizontalFlip(imageName,
                 updatedImageName);
         view.printOutput(
-                "Image has been provided with sepia tone '" + imageName + "' stored as '"
-                        + updatedImageName + "'" +
+                "Image horizontally flipped '" + imageName + "' stored as '" + updatedImageName + "'" +
                         "\n");
     }
 }

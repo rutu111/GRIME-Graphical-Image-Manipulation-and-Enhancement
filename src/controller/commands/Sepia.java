@@ -1,4 +1,4 @@
-package controller.Commands;
+package controller.commands;
 
 import controller.CommandDesignOperations;
 import model.Operations;
@@ -9,7 +9,7 @@ import java.io.IOException;
 /**
  * This class is for the command design pattern.
  */
-public class Dither implements CommandDesignOperations {
+public class Sepia implements CommandDesignOperations {
 
     private String imageName;
 
@@ -21,24 +21,21 @@ public class Dither implements CommandDesignOperations {
      * @param commands a list of commands, typed by the user.
      * @throws IllegalArgumentException if number of arguments not as expected.
      */
-    public Dither(String[] commands) throws IllegalArgumentException {
+    public Sepia(String[] commands) {
         if (commands.length != 3) {
             throw new IllegalArgumentException("Invalid command format.");
         }
         this.imageName = commands[1];
         this.updatedImageName = commands[2];
-
     }
 
     @Override
-    public void goCommand(Operations m, ViewI view)
-            throws IOException, NoSuchFieldException, IllegalAccessException {
-        m.dither(imageName, updatedImageName);
+    public void goCommand(Operations m, ViewI view) throws IOException {
+        m.colorTransformationSepia(imageName,
+                updatedImageName);
         view.printOutput(
-                "Image has been dithered '" + imageName + "' stored as '"
+                "Image has been provided with sepia tone '" + imageName + "' stored as '"
                         + updatedImageName + "'" +
                         "\n");
-
     }
-
 }

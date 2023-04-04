@@ -1,18 +1,18 @@
 package controller;
 
-import controller.Commands.Blur;
-import controller.Commands.Brighten;
-import controller.Commands.Combine;
-import controller.Commands.Dither;
-import controller.Commands.HorizontalFlip;
-import controller.Commands.Load;
-import controller.Commands.RGBSplit;
-import controller.Commands.Save;
-import controller.Commands.Sepia;
-import controller.Commands.Sharpen;
-import controller.Commands.TransformGreyscale;
-import controller.Commands.ValueIntensityLumaAndVisualizeComponent;
-import controller.Commands.VerticalFlip;
+import controller.commands.Blur;
+import controller.commands.Brighten;
+import controller.commands.Combine;
+import controller.commands.Dither;
+import controller.commands.HorizontalFlip;
+import controller.commands.Load;
+import controller.commands.RGBSplit;
+import controller.commands.Save;
+import controller.commands.Sepia;
+import controller.commands.Sharpen;
+import controller.commands.TransformGreyscale;
+import controller.commands.ValueIntensityLumaAndVisualizeComponent;
+import controller.commands.VerticalFlip;
 import model.Operations;
 import view.ViewI;
 

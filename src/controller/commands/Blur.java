@@ -1,4 +1,4 @@
-package controller.Commands;
+package controller.commands;
 
 import controller.CommandDesignOperations;
 import model.Operations;
@@ -9,7 +9,7 @@ import java.io.IOException;
 /**
  * This class is for the command design pattern.
  */
-public class Sharpen implements CommandDesignOperations {
+public class Blur implements CommandDesignOperations {
 
     private String imageName;
 
@@ -21,10 +21,11 @@ public class Sharpen implements CommandDesignOperations {
      * @param commands a list of commands, typed by the user.
      * @throws IllegalArgumentException if number of arguments not as expected.
      */
-    public Sharpen(String[] commands) throws IllegalArgumentException {
+    public Blur(String[] commands) throws IllegalArgumentException {
         if (commands.length != 3) {
             throw new IllegalArgumentException("Invalid command format.");
         }
+
         this.imageName = commands[1];
         this.updatedImageName = commands[2];
 
@@ -32,10 +33,10 @@ public class Sharpen implements CommandDesignOperations {
 
     @Override
     public void goCommand(Operations m, ViewI view) throws IOException {
-        m.sharpen(imageName,
+        m.blur(imageName,
                 updatedImageName);
         view.printOutput(
-                "Image sharpened '" + imageName + "' stored as '" + updatedImageName + "'" +
+                "Image blurred '" + imageName + "' stored as '" + updatedImageName + "'" +
                         "\n");
     }
 }

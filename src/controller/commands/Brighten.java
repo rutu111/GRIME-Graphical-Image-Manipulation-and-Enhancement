@@ -1,4 +1,4 @@
-package controller.Commands;
+package controller.commands;
 
 import controller.CommandDesignOperations;
 import model.Operations;
@@ -9,11 +9,14 @@ import java.io.IOException;
 /**
  * This class is for the command design pattern.
  */
-public class VerticalFlip implements CommandDesignOperations {
+public class Brighten implements CommandDesignOperations {
+
+    private double increment;
 
     private String imageName;
 
     private String updatedImageName;
+
 
     /**
      * This constructor takes in a list a commands.
@@ -21,20 +24,21 @@ public class VerticalFlip implements CommandDesignOperations {
      * @param commands a list of commands, typed by the user.
      * @throws IllegalArgumentException if number of arguments not as expected.
      */
-    public VerticalFlip(String[] commands) throws IllegalArgumentException {
-        if (commands.length != 3) {
+    public Brighten(String[] commands) throws IllegalArgumentException {
+        if (commands.length != 4) {
             throw new IllegalArgumentException("Invalid command format.");
         }
-        this.imageName = commands[1];
-        this.updatedImageName = commands[2];
+
+        this.imageName = commands[2];
+        this.updatedImageName = commands[3];
+        this.increment = Integer.parseInt(commands[1]);
 
     }
 
     @Override
     public void goCommand(Operations m, ViewI view) throws IOException {
-        m.verticalFlip(imageName, updatedImageName);
-        view.printOutput(
-                "Image vertically flipped '" + imageName + "' stored as '" + updatedImageName + "'" + "\n");
+        m.brighten(imageName, updatedImageName, increment);
+        view.printOutput("Image brightened '" + imageName + "' stored as '" +
+                updatedImageName + "'" + "\n");
     }
-
 }

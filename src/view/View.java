@@ -1,11 +1,10 @@
 package view;
-
 import java.io.IOException;
 
 /**
  * This is the view class where the output is shown from the command line interface.
  */
-public class View implements ViewI {
+public class View implements view.ViewI {
 
     final Appendable out;
 
