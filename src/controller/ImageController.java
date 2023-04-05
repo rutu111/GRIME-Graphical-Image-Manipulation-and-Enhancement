@@ -198,29 +198,18 @@ public class ImageController {
 
     public void GUIOperations() {
         //open up the window
-        ImageProcessorUI GUI = new ImageProcessorUI(this.model, this.view);
+        ImageProcessorUI GUI = new ImageProcessorUI(this.model);
 
 
-
-        String imageName;
         //find command in controller hashmap based on which button got clicked
         //send in the expected format. We will need to provide strings
         //print any error message
         //update image
         //histogram
 
-        imageName = loadImage();
-        saveImage(imageName);
     }
 
-    public String loadImage() {
-        //do the load stuff
-        return "loadedImage"; //set or reset the image name.
-    }
 
-    public void saveImage(String imageName) {
-        // save to image with the image name provided
-    }
 }
 
 

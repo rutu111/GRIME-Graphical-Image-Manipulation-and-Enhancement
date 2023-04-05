@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import controller.commands.Load;
+import controller.commands.Save;
 import controller.commands.TransformGreyscale;
 import model.Operations;
 import model.TypeOfImage;
@@ -17,20 +18,18 @@ import model.TypeofImageObject;
 
 public class ImageProcessorUI extends JFrame {
 
+    private static String imageName;
     private JButton uploadButton;
     private JButton saveButton;
     private JLabel imageLabel;
     private JFileChooser fileChooser;
 
-    //private Operations model;
 
-    //private ViewI view;
-
-
-    public ImageProcessorUI(Operations model, ViewI view) {
+    public ImageProcessorUI(Operations model) {
         super();
         //this.model = model;
         //this.view = view;
+
 
         this.setTitle("Image Processor");
         this.setSize(10000, 10000);
@@ -46,9 +45,17 @@ public class ImageProcessorUI extends JFrame {
         buttonPanel.add(uploadButton);
         buttonPanel.add(saveButton);
 
+        add(buttonPanel, BorderLayout.NORTH);
+        add(imageLabel, BorderLayout.CENTER);
+
+        JPanel imagePanel = new JPanel(new BorderLayout());
+        imagePanel.add(imageLabel, BorderLayout.CENTER);
+
+
         // Create the button panel and add the buttons
         JPanel buttonPanel2 = new JPanel(new GridLayout(16, 1, 10, 10));
         buttonPanel2.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 50));
+        buttonPanel2.setBorder(BorderFactory.createTitledBorder("OPERATIONS"));
 
         //operations
         JButton BrightenButton = new JButton("Brighten");
@@ -84,31 +91,49 @@ public class ImageProcessorUI extends JFrame {
         buttonPanel2.add(BlurButton);
         buttonPanel2.add(greyscaleButton);
 
-        add(buttonPanel, BorderLayout.NORTH);
-        add(imageLabel, BorderLayout.CENTER);
+        JPanel rightPanel = new JPanel(new BorderLayout());
+        rightPanel.add(buttonPanel2, BorderLayout.NORTH);
+        add(rightPanel, BorderLayout.EAST);
+
+        JPanel histogramPanel = new JPanel();
+        histogramPanel.setBorder(BorderFactory.createTitledBorder("HISTOGRAM"));
+        histogramPanel.setPreferredSize(new Dimension(0, 250));
+        imagePanel.add(histogramPanel, BorderLayout.SOUTH);
+        add(imagePanel, BorderLayout.CENTER);
+
+        JPanel errorPanel = new JPanel();
+        errorPanel.setBorder(BorderFactory.createTitledBorder("LOG"));
+        errorPanel.setPreferredSize(new Dimension(0, 250));
+        imagePanel.add(errorPanel, BorderLayout.SOUTH);
+        add(imagePanel, BorderLayout.CENTER);
+
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, histogramPanel, errorPanel);
+        splitPane.setResizeWeight(0.5); // adjust the divider position
+        splitPane.setDividerLocation(0.5);
+        imagePanel.add(splitPane, BorderLayout.SOUTH);
+
         add(buttonPanel2, BorderLayout.EAST);
 
+        ViewI view = new ViewGUI(errorPanel);
 
         uploadButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 int result = fileChooser.showOpenDialog(ImageProcessorUI.this);
                 if (result == JFileChooser.APPROVE_OPTION) {
+                    imageName = "loadedImage";
                     File selectedFile = fileChooser.getSelectedFile();
-                    //ImageIcon imageIcon = new ImageIcon(selectedFile.getPath());
-                    //imageLabel.setIcon(imageIcon);
                     String path = selectedFile.getPath();
                     String[] commands = new String[3];
                     commands[0] = "load";
                     commands[1] = path;
-                    commands[2] = "test";
-                    //System.out.println(Arrays.toString(commands));
+                    commands[2] = imageName;
                     Load loadOperation = new Load(commands);
                     try {
                         loadOperation.goCommand(model, view);
                     } catch (IOException ex) {
                         throw new RuntimeException(ex);
                     }
-                    TypeOfImage test = model.getObject("test");
+                    TypeOfImage test = model.getObject(imageName);
                     loadImageOnscreen(test);
 
                 }
@@ -119,20 +144,48 @@ public class ImageProcessorUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String[] commands = new String[3];
                 commands[0] = "Luma";
-                commands[1] = "test";
-                commands[2] = "test-greyscale";
+                commands[1] = imageName;
+                imageName = "loadedImage-greyscale";
+                commands[2] = imageName;
                 TransformGreyscale greyscale = new TransformGreyscale(commands);
                 try {
                     greyscale.goCommand(model, view);
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
-                //getObject string should always be the current string.
-                TypeOfImage testgrey = model.getObject("test-greyscale");
+                TypeOfImage testgrey = model.getObject(imageName);
                 loadImageOnscreen(testgrey);
             }
         });
 
+        saveButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setDialogTitle("Choose a directory to save the image");
+                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                int result = fileChooser.showSaveDialog(null);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    String filePath = fileChooser.getSelectedFile().getAbsolutePath();
+                    String[] commands = new String[3];
+                    commands[0] = "save";
+                    commands[1] = filePath;
+                    commands[2] = imageName;
+                    Save loadOperation = new Save(commands);
+                    try {
+                        loadOperation.goCommand(model, view);
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    } catch (NoSuchFieldException ex) {
+                        throw new RuntimeException(ex);
+                    } catch (IllegalAccessException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
+            }
+
+
+        });
 
         BrightenButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -152,33 +205,44 @@ public class ImageProcessorUI extends JFrame {
         setVisible(true);
     }
 
-    //public static void main(String[] args) {
-    //new ImageProcessorUI();
-    //}
 
     public void loadImageOnscreen(TypeOfImage image) {
         int width = image.getWidth();
         int height = image.getHeight();
         BufferedImage imageBuffer;
-        imageBuffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        for (int y = 0; y < image.getHeight(); y++) {
-            for (int x = 0; x < image.getWidth(); x++) {
-                TypeofImageObject pixel = image.getPixels()[x][y];
-                if (pixel != null) {
-                    int red = pixel.getChanne11();
-                    int green = pixel.getChanne12();
-                    int blue = pixel.getChanne13();
-                    int rgb = (red << 16) | (green << 8) | blue;
 
-                    imageBuffer.setRGB(x, y, rgb);
+        if (image.getPixels()[0][0].hasAlpha() == null) {
+            imageBuffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+            for (int y = 0; y < image.getHeight(); y++) {
+                for (int x = 0; x < image.getWidth(); x++) {
+                    TypeofImageObject pixel = image.getPixels()[x][y];
+                    if (pixel != null) {
+                        int red = pixel.getChanne11();
+                        int green = pixel.getChanne12();
+                        int blue = pixel.getChanne13();
+                        int rgb = (red << 16) | (green << 8) | blue;
+
+                        imageBuffer.setRGB(x, y, rgb);
+                    }
+                }
+            }
+        } else {
+            imageBuffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+            //saving for image with alpha channel
+            for (int y = 0; y < image.getHeight(); y++) {
+                for (int x = 0; x < image.getWidth(); x++) {
+                    TypeofImageObject pixel = image.getPixels()[x][y];
+                    if (pixel != null) {
+                        int alpha = 255; // set alpha to 255 (fully opaque)
+                        int red = pixel.getChanne11();
+                        int green = pixel.getChanne12();
+                        int blue = pixel.getChanne13();
+                        int argb = (alpha << 24) | (red << 16) | (green << 8) | blue;
+                        imageBuffer.setRGB(x, y, argb);
+                    }
                 }
             }
         }
-        //JLabel label = new JLabel(new ImageIcon(imageBuffer));
-        //JFrame frame = new JFrame();
-        //frame.getContentPane().add(label);
-        //frame.pack();
-        //frame.setVisible(true);
         ImageIcon icon = new ImageIcon(imageBuffer);
         imageLabel.setIcon(icon);
 
