@@ -1,24 +1,35 @@
 package view;
 
+import controller.CommandDesignOperations;
+import controller.ImageProcessCallbacks;
+import controller.commands.Load;
+import model.Model;
+import model.Operations;
+
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 
-public class ImageProcessorUI extends JFrame {
+public class ImageProcessorUI extends JFrame implements ViewI {
 
-    private JButton uploadButton;
-    private JButton saveButton;
+    private final JButton uploadButton,saveButton,brightenButton;
     private JLabel imageLabel;
     private JFileChooser fileChooser;
-
-    public ImageProcessorUI() {
+    private Operations m;
+    private ViewI view;
+    JTextArea logTextArea;
+    ImageProcessCallbacks callbacks;
+    public ImageProcessorUI(ImageProcessCallbacks callbacks) {
 
         super();
         this.setTitle("Image Processor");
         this.setSize(10000, 10000);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.m = new Model();
 
         uploadButton = new JButton("Upload");
         saveButton = new JButton("Save");
@@ -39,7 +50,18 @@ public class ImageProcessorUI extends JFrame {
         operationsPanel.setLayout(new GridLayout(18, 2, 20, 20)); // 5 rows, 3 columns, gap of 5 pixels
         operationsPanel.setBorder(BorderFactory.createTitledBorder("OPERATIONS"));
 
-        JButton brightenButton = new JButton("Brighten");
+        brightenButton = new JButton("Brighten");
+        brightenButton.setActionCommand("Brighten button");
+        this.add(brightenButton);
+        brightenButton.addActionListener(e -> {
+            try {
+                callbacks.executeFeatures("brighten 10 koala koala-brighten");
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+            System.out.println("Success");
+        });
+
         JButton valueButton = new JButton("Value");
         JButton intensityButton = new JButton("Intensity");
         JButton lumaButton = new JButton("Luma");
@@ -87,6 +109,11 @@ public class ImageProcessorUI extends JFrame {
         JPanel errorPanel = new JPanel();
         errorPanel.setBorder(BorderFactory.createTitledBorder("LOG"));
         errorPanel.setPreferredSize(new Dimension(0, 250));
+        logTextArea = new JTextArea();
+        logTextArea.setEditable(true);
+        JScrollPane logScrollPane = new JScrollPane(logTextArea);
+        errorPanel.add(logScrollPane, BorderLayout.CENTER);
+        add(errorPanel, BorderLayout.CENTER);
         imagePanel.add(errorPanel, BorderLayout.SOUTH);
         add(imagePanel, BorderLayout.CENTER);
 
@@ -99,10 +126,18 @@ public class ImageProcessorUI extends JFrame {
         uploadButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 int result = fileChooser.showOpenDialog(ImageProcessorUI.this);
-                if (result == JFileChooser.APPROVE_OPTION) {
+                int returnValue = fileChooser.showOpenDialog(null);
+                if (returnValue == JFileChooser.APPROVE_OPTION) {
                     File selectedFile = fileChooser.getSelectedFile();
-                    ImageIcon imageIcon = new ImageIcon(selectedFile.getPath());
-                    imageLabel.setIcon(imageIcon);
+                    String imagePath = selectedFile.getAbsolutePath();
+                    String imageName = selectedFile.getName();
+                    String[] loadCommand = {"load", imagePath, imageName};
+                    CommandDesignOperations load = new Load(loadCommand);
+                    try {
+                        load.goCommand(m, view);
+                    } catch (IOException | NoSuchFieldException | IllegalAccessException ex) {
+                        ex.printStackTrace();
+                    }
                 }
             }
         });
@@ -118,9 +153,30 @@ public class ImageProcessorUI extends JFrame {
         setVisible(true);
     }
 
-    public static void main(String[] args) {
-        new ImageProcessorUI();
+
+    @Override
+    public void printWelcomeMessage() {
+
     }
 
+    @Override
+    public void printOutput(String output) throws IOException {
+        logTextArea.append(output + "\n");
+    }
+
+    @Override
+    public void addFeatures(ImageProcessCallbacks callbacks) {
+//        brightenButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                callbacks.executeFeatures("brighten koala koala-brighten");
+//                try {
+//                    printOutput("Success");
+//                } catch (IOException ex) {
+//                    throw new RuntimeException(ex);
+//                }
+//            }
+//        });
+    }
 
 }

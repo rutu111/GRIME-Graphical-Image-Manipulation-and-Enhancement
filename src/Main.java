@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import model.Operations;
+import view.ImageProcessorUI;
 import view.View;
 import controller.ImageController;
 

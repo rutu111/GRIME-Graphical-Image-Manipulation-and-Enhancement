@@ -14,11 +14,13 @@ import controller.commands.TransformGreyscale;
 import controller.commands.ValueIntensityLumaAndVisualizeComponent;
 import controller.commands.VerticalFlip;
 import model.Operations;
+import view.ImageProcessorUI;
 import view.ViewI;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -29,16 +31,17 @@ import java.util.function.Function;
  * (command line), tells the model
  * what to do and returns output to the user.
  */
-public class ImageController {
+public class ImageController implements ImageProcessCallbacks {
 
   final Readable in;
   private final Operations model;
   boolean go_script = true;
+
+  ImageProcessCallbacks callbacks;
   private ViewI view;
   //hashmap of image operations (key) and lambda operation (value)
   //the lambda operation maps a list of strings to a CommandDesignOperations object.
   private Map<String, Function<String[], CommandDesignOperations>> commandMap;
-
 
   /**
    * This constructor creates a controller object.
@@ -51,6 +54,7 @@ public class ImageController {
     this.model = model;
     this.in = in;
     this.view = view;
+    view.addFeatures(this);
   }
 
 
@@ -108,7 +112,11 @@ public class ImageController {
             }
             go = false;
             view.printOutput("Exit the program \n");
-          } else {
+          } else if (commandParts[0].equals("GUI")){
+            callbacks = new ImageController(model, in, view);
+            new ImageProcessorUI(callbacks);
+          }
+          else {
             commandExecutionNew(commandParts);
           }
         }
@@ -192,7 +200,43 @@ public class ImageController {
       throw new RuntimeException(e);
     }
   }
+
+  @Override
+  public void executeFeatures(String actionCommand) throws IOException {
+    String[] actionCommands = actionCommand.split(" ");//ERROR HERE
+
+    if (actionCommands.length == 0 || actionCommands[0].trim().isEmpty()) {
+      view.printOutput("Please enter appropriate command. \n");
+      return;
+    }
+    try {
+      CommandDesignOperations c;
+      //this gets the action event string based on what is present in the hashmap
+      Function<String[], CommandDesignOperations> cmd = commandMap.get(actionCommands[0]);
+      System.out.println(cmd);
+      if (cmd == null) {
+        go_script = false;
+        throw new NullPointerException("Invalid command: " + actionCommands[0]);
+      } else {
+        try {
+          c = cmd.apply(actionCommands);
+          c.goCommand(this.model, this.view); //execute the command
+          System.out.println("Success");
+        } catch (NoSuchFieldException | IllegalAccessException | IOException ex) {
+          throw new RuntimeException(ex);
+        }
+      }
+    } catch (IllegalArgumentException e) {
+      go_script = false;
+      throw e;
+    }
+  }
+
+
+
 }
+
+
 
 
 
