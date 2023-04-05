@@ -13,50 +13,49 @@ import java.io.IOException;
  */
 public class ValueIntensityLumaAndVisualizeComponent implements CommandDesignOperations {
 
-  private MeasurementType measure = null;
+    private MeasurementType measure = null;
 
-  private ComponentRGB component = null;
+    private ComponentRGB component = null;
 
-  private String imageName;
+    private String imageName;
 
-  private String updatedImageName;
+    private String updatedImageName;
 
 
-  /**
-   * This constructor takes in a list a commands.
-   *
-   * @param commands a list of commands, typed by the user.
-   * @throws IllegalArgumentException if number of arguments not as expected.
-   */
-  public ValueIntensityLumaAndVisualizeComponent(String[] commands)
-      throws IllegalArgumentException {
-    if (commands.length != 4) {
-      throw new IllegalArgumentException("Invalid command format.");
+    /**
+     * This constructor takes in a list a commands.
+     *
+     * @param commands a list of commands, typed by the user.
+     * @throws IllegalArgumentException if number of arguments not as expected.
+     */
+    public ValueIntensityLumaAndVisualizeComponent(String[] commands) throws IllegalArgumentException {
+        if (commands.length != 4) {
+            throw new IllegalArgumentException("Invalid command format.");
+        }
+        this.imageName = commands[2];
+        this.updatedImageName = commands[3];
+
+        //go to appropiate class based on component requested.
+        String component = commands[1];
+        String[] componentParts = component.split("-");
+        if (componentParts[0].equals("red") || componentParts[0].equals("green")
+                || componentParts[0].equals("blue")) {
+            this.component = ComponentRGB.valueOf(componentParts[0]);
+        } else {
+            this.measure = MeasurementType.valueOf(componentParts[0]);
+        }
     }
-    this.imageName = commands[2];
-    this.updatedImageName = commands[3];
 
-    //go to appropiate class based on component requested.
-    String component = commands[1];
-    String[] componentParts = component.split("-");
-    if (componentParts[0].equals("red") || componentParts[0].equals("green")
-        || componentParts[0].equals("blue")) {
-      this.component = ComponentRGB.valueOf(componentParts[0]);
-    } else {
-      this.measure = MeasurementType.valueOf(componentParts[0]);
+    @Override
+    public void goCommand(Operations m, ViewI view)
+            throws IOException, NoSuchFieldException, IllegalAccessException {
+        if (measure != null) {
+            m.visualizeValueIntensityLuma(imageName, updatedImageName, measure);
+        }
+        if (component != null) {
+            m.visIndividualComponent(imageName, updatedImageName, component);
+        }
+        view.printOutput(
+                "Image '" + imageName + "' stored as greyscale '" + updatedImageName + "'" + "\n");
     }
-  }
-
-  @Override
-  public void goCommand(Operations m, ViewI view)
-      throws IOException, NoSuchFieldException, IllegalAccessException {
-    if (measure != null) {
-      m.visualizeValueIntensityLuma(imageName, updatedImageName, measure);
-    }
-    if (component != null) {
-      m.visIndividualComponent(imageName, updatedImageName, component);
-    }
-    view.printOutput(
-        "Image '" + imageName + "' stored as greyscale '" + updatedImageName + "'" + "\n");
-  }
 }
