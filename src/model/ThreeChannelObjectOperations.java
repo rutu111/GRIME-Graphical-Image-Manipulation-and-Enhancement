@@ -114,11 +114,13 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
         }
         //luma
         if (measure.toString().equals("luma")) {
-          double luma = 0.2126 * this.getPixels()[i][j].getChanne11()
-              + 0.7152 * this.getPixels()[i][j].getChanne12()
-              + 0.0722 * this.getPixels()[i][j].getChanne13();
-          new_image[i][j] = getObject((int) luma, (int) luma, (int) luma,
-              this.getPixels()[i][j].hasAlpha());
+          if(this.getPixels()[i][j]!=null) {
+            double luma = 0.2126 * this.getPixels()[i][j].getChanne11()
+                    + 0.7152 * this.getPixels()[i][j].getChanne12()
+                    + 0.0722 * this.getPixels()[i][j].getChanne13();
+            new_image[i][j] = getObject((int) luma, (int) luma, (int) luma,
+                    this.getPixels()[i][j].hasAlpha());
+          }
         }
       }
     }
@@ -137,20 +139,22 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
         //get each pixel (3x1 matrix).
         double[][] result = new double[3][1];
         int[][] pixelValues = new int[3][1];
-        pixelValues[0][0] = this.getPixels()[i][j].getChanne11();
-        pixelValues[1][0] = this.getPixels()[i][j].getChanne12();
-        pixelValues[2][0] = this.getPixels()[i][j].getChanne13();
-        for (int m = 0; m < 3; m++) {
-          for (int n = 0; n < 1; n++) {
-            for (int k = 0; k < 3; k++) {
-              result[m][n] += sepia[m][k] * pixelValues[k][n];
+        if (this.getPixels()[i][j] != null) {
+          pixelValues[0][0] = this.getPixels()[i][j].getChanne11();
+          pixelValues[1][0] = this.getPixels()[i][j].getChanne12();
+          pixelValues[2][0] = this.getPixels()[i][j].getChanne13();
+          for (int m = 0; m < 3; m++) {
+            for (int n = 0; n < 1; n++) {
+              for (int k = 0; k < 3; k++) {
+                result[m][n] += sepia[m][k] * pixelValues[k][n];
+              }
             }
           }
+          Integer r = (int) min(255, Math.max(0, result[0][0]));
+          Integer g = (int) min(255, Math.max(0, result[1][0]));
+          Integer b = (int) min(255, Math.max(0, result[2][0]));
+          new_image[i][j] = getObject(r, g, b, this.getPixels()[i][j].hasAlpha());
         }
-        Integer r = (int) min(255, Math.max(0, result[0][0]));
-        Integer g = (int) min(255, Math.max(0, result[1][0]));
-        Integer b = (int) min(255, Math.max(0, result[2][0]));
-        new_image[i][j] = getObject(r, g, b, this.getPixels()[i][j].hasAlpha());
       }
     }
     return getOImage(new_image, this.getWidth(), this.getHeight());
@@ -182,18 +186,22 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
             if (xx >= 0 && xx < this.width && yy >= 0 && yy < this.height) {
               oldPixel = this.pixels[xx][yy];
               double weight = filter[i + 1][j + 1];
-              r += weight * oldPixel.getChanne11();
-              g += weight * oldPixel.getChanne12();
-              b += weight * oldPixel.getChanne13();
+              if(oldPixel!=null) {
+                r += weight * oldPixel.getChanne11();
+                g += weight * oldPixel.getChanne12();
+                b += weight * oldPixel.getChanne13();
+              }
             }
           }
         }
         // Add the amount parameter to the filtered values and clamp to [0, 255]
-        int r2 = (int) Math.min(255, Math.max(0, Math.round(r)));
-        int g2 = (int) Math.min(255, Math.max(0, Math.round(g)));
-        int b2 = (int) Math.min(255, Math.max(0, Math.round(b)));
+        Integer r2 = (int) Math.min(255, Math.max(0, Math.round(r)));
+        Integer g2 = (int) Math.min(255, Math.max(0, Math.round(g)));
+        Integer b2 = (int) Math.min(255, Math.max(0, Math.round(b)));
         // Set the value of the corresponding pixel in the new image object
-        newPixels[x][y] = getObject(r2, g2, b2, oldPixel.hasAlpha());
+        if(oldPixel!=null && r2!=null && g2!=null && b2!=null) {
+          newPixels[x][y] = getObject(r2, g2, b2, oldPixel.hasAlpha());
+        }
       }
     }
 
@@ -229,22 +237,27 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
             if (xx >= 0 && xx < this.width && yy >= 0 && yy < this.height) {
               oldPixel = this.pixels[xx][yy];
               double weight = filter[i + 1][j + 1];
-              r += weight * oldPixel.getChanne11();
-              g += weight * oldPixel.getChanne12();
-              b += weight * oldPixel.getChanne13();
+              if (oldPixel != null) {
+                r += weight * oldPixel.getChanne11();
+                g += weight * oldPixel.getChanne12();
+                b += weight * oldPixel.getChanne13();
+              }
             }
           }
+
+          // Add the amount parameter to the filtered values and clamp to [0, 255]
+          Integer r2 = (int) Math.min(255, Math.max(0, r));
+          Integer g2 = (int) Math.min(255, Math.max(0, g));
+          Integer b2 = (int) Math.min(255, Math.max(0, b));
+
+          // Set the value of the corresponding pixel in the new image object
+          if(oldPixel!=null && r2!=null && g2!=null && b2!=null) {
+            newPixels[x][y] = getObject(r2, g2, b2, oldPixel.hasAlpha());
+          }
         }
-
-        // Add the amount parameter to the filtered values and clamp to [0, 255]
-        Integer r2 = (int) Math.min(255, Math.max(0, r));
-        Integer g2 = (int) Math.min(255, Math.max(0, g));
-        Integer b2 = (int) Math.min(255, Math.max(0, b));
-
-        // Set the value of the corresponding pixel in the new image object
-        newPixels[x][y] = getObject(r2, g2, b2, oldPixel.hasAlpha());
       }
     }
+
     return getOImage(newPixels, this.getWidth(), this.getHeight());
   }
 
@@ -256,52 +269,63 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
     for (int r = 0; r < greyScaleImage.getHeight(); r++) {
       for (int c = 0; c < greyScaleImage.getWidth(); c++) {
         TypeofImageObject oldPixel = greyScaleImage.getPixels()[c][r];
-        int oldColor = oldPixel.getChanne11();
-        int newColor = (oldColor > 128) ? 255 : 0;
-        newPixels[c][r] = getObject(newColor, newColor, newColor, oldPixel.hasAlpha());
-        int error = oldColor - newColor;
+        if (oldPixel != null) {
+          int oldColor = oldPixel.getChanne11();
+          int newColor = (oldColor > 128) ? 255 : 0;
+          newPixels[c][r] = getObject(newColor, newColor, newColor, oldPixel.hasAlpha());
+          int error = oldColor - newColor;
 
-        if (c + 1 < greyScaleImage.getWidth()) {
-          // Add to pixel on the right
-          TypeofImageObject rightPixel = greyScaleImage.getPixels()[c + 1][r];
-          int rightError = (int) (error * 7.0 / 16.0);
-          int newRed = rightPixel.getChanne11() + rightError;
-          newRed = Math.max(0, Math.min(255, newRed));
-          TypeofImageObject updatedRightPixel = getObject(newRed, newRed, newRed,
-              rightPixel.hasAlpha());
-          greyScaleImage.getPixels()[c + 1][r] = updatedRightPixel;
-        }
 
-        if (r + 1 < greyScaleImage.getHeight() && c - 1 >= 0) {
-          // Add to pixel on the next-row-left
-          TypeofImageObject bottomLeftPixel = greyScaleImage.getPixels()[c - 1][r + 1];
-          int bottomLeftError = (int) (error * 3.0 / 16.0);
-          int newRed = bottomLeftPixel.getChanne11() + bottomLeftError;
-          newRed = Math.max(0, Math.min(255, newRed));
-          TypeofImageObject updatedBottomLeftPixel = getObject(newRed, newRed, newRed,
-              bottomLeftPixel.hasAlpha());
-          greyScaleImage.getPixels()[c - 1][r + 1] = updatedBottomLeftPixel;
-        }
+          if (c + 1 < greyScaleImage.getWidth()) {
+            // Add to pixel on the right
+            TypeofImageObject rightPixel = greyScaleImage.getPixels()[c + 1][r];
+            int rightError = (int) (error * 7.0 / 16.0);
+            if (rightPixel != null) {
+              int newRed = rightPixel.getChanne11() + rightError;
+              newRed = Math.max(0, Math.min(255, newRed));
+              TypeofImageObject updatedRightPixel = getObject(newRed, newRed, newRed,
+                      rightPixel.hasAlpha());
+              greyScaleImage.getPixels()[c + 1][r] = updatedRightPixel;
+            }
+          }
 
-        if (r + 1 < greyScaleImage.getHeight()) {
-          // Add to pixel on the next-row
-          TypeofImageObject bottomPixel = greyScaleImage.getPixels()[c][r + 1];
-          int bottomError = (int) (error * 5.0 / 16.0);
-          int newRed = bottomPixel.getChanne11() + bottomError;
-          newRed = Math.max(0, Math.min(255, newRed));
-          TypeofImageObject updatedBottomPixel = getObject(newRed, newRed, newRed,
-              bottomPixel.hasAlpha());
-          greyScaleImage.getPixels()[c][r + 1] = updatedBottomPixel;
-        }
-        if (r < greyScaleImage.getHeight() - 1 && c < greyScaleImage.getWidth() - 1) {
-          // Add to pixel on the next-row-right
-          TypeofImageObject bottomRightPixel = this.getPixels()[c + 1][r + 1];
-          int bottomRightError = (int) (error * 1.0 / 16.0);
-          int newRed = bottomRightPixel.getChanne11() + bottomRightError;
-          newRed = Math.max(0, Math.min(255, newRed));
-          TypeofImageObject updatedBottomRightPixel = getObject(newRed, newRed, newRed,
-              bottomRightPixel.hasAlpha());
-          greyScaleImage.getPixels()[c + 1][r + 1] = updatedBottomRightPixel;
+          if (r + 1 < greyScaleImage.getHeight() && c - 1 >= 0) {
+            // Add to pixel on the next-row-left
+            TypeofImageObject bottomLeftPixel = greyScaleImage.getPixels()[c - 1][r + 1];
+            int bottomLeftError = (int) (error * 3.0 / 16.0);
+            if (bottomLeftPixel != null) {
+              int newRed = bottomLeftPixel.getChanne11() + bottomLeftError;
+              newRed = Math.max(0, Math.min(255, newRed));
+              TypeofImageObject updatedBottomLeftPixel = getObject(newRed, newRed, newRed,
+                      bottomLeftPixel.hasAlpha());
+              greyScaleImage.getPixels()[c - 1][r + 1] = updatedBottomLeftPixel;
+            }
+          }
+
+          if (r + 1 < greyScaleImage.getHeight()) {
+            // Add to pixel on the next-row
+            TypeofImageObject bottomPixel = greyScaleImage.getPixels()[c][r + 1];
+            int bottomError = (int) (error * 5.0 / 16.0);
+            if (bottomPixel != null) {
+              int newRed = bottomPixel.getChanne11() + bottomError;
+              newRed = Math.max(0, Math.min(255, newRed));
+              TypeofImageObject updatedBottomPixel = getObject(newRed, newRed, newRed,
+                      bottomPixel.hasAlpha());
+              greyScaleImage.getPixels()[c][r + 1] = updatedBottomPixel;
+            }
+          }
+          if (r < greyScaleImage.getHeight() - 1 && c < greyScaleImage.getWidth() - 1) {
+            // Add to pixel on the next-row-right
+            TypeofImageObject bottomRightPixel = this.getPixels()[c + 1][r + 1];
+            int bottomRightError = (int) (error * 1.0 / 16.0);
+            if (bottomRightPixel != null) {
+              int newRed = bottomRightPixel.getChanne11() + bottomRightError;
+              newRed = Math.max(0, Math.min(255, newRed));
+              TypeofImageObject updatedBottomRightPixel = getObject(newRed, newRed, newRed,
+                      bottomRightPixel.hasAlpha());
+              greyScaleImage.getPixels()[c + 1][r + 1] = updatedBottomRightPixel;
+            }
+          }
         }
       }
     }

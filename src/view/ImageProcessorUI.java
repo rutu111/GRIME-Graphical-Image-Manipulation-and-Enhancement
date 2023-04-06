@@ -1,6 +1,8 @@
 package view;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,9 +28,9 @@ public class ImageProcessorUI extends JFrame {
     private JFileChooser fileChooser;
 
 
-    public ImageProcessorUI(Operations model, ImageProcessCallbacks callbacks) {
+    public ImageProcessorUI(Operations model, ImageProcessCallbacks callbacks, String imageNameX) {
         super();
-
+        imageName = imageNameX;
 
         this.setTitle("Image Processor");
         this.setSize(10000, 10000);
@@ -38,6 +40,7 @@ public class ImageProcessorUI extends JFrame {
         saveButton = new JButton("Save");
         imageLabel = new JLabel();
         fileChooser = new JFileChooser();
+        JSlider slider = new JSlider(JSlider.HORIZONTAL, -100, 100, 0);
 
 
         JPanel buttonPanel = new JPanel();
@@ -89,6 +92,7 @@ public class ImageProcessorUI extends JFrame {
         buttonPanel2.add(SharpenButton);
         buttonPanel2.add(BlurButton);
         buttonPanel2.add(greyscaleButton);
+        buttonPanel2.add(slider);
 
         JPanel rightPanel = new JPanel(new BorderLayout());
         rightPanel.add(buttonPanel2, BorderLayout.NORTH);
@@ -140,8 +144,9 @@ public class ImageProcessorUI extends JFrame {
 
         BrightenButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String[] commands = new String[3];
-                commands[0] = "Brighten";
+                String[] commands = new String[4];
+                //what about darken?
+                commands[0] = "brighten";
                 commands[1] = "10";
                 commands[2] = imageName;
                 imageName = "loadedImage-brighten";
@@ -158,11 +163,12 @@ public class ImageProcessorUI extends JFrame {
 
         ValueButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String[] commands = new String[3];
-                commands[0] = "Value";
-                commands[1] = imageName;
-                imageName = "loadedImage-Value";
+                String[] commands = new String[4];
+                commands[0] = "greyscale";
+                commands[1] = "component-value";
                 commands[2] = imageName;
+                imageName = "loadedImage-Value";
+                commands[3] = imageName;
                 try {
                     callbacks.executeFeatures(commands, view);
                 } catch (IOException ex) {
@@ -175,11 +181,12 @@ public class ImageProcessorUI extends JFrame {
 
         intensityButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String[] commands = new String[3];
-                commands[0] = "Intensity";
-                commands[1] = imageName;
-                imageName = "loadedImage-intensity";
+                String[] commands = new String[4];
+                commands[0] = "greyscale";
+                commands[1] = "component-intensity";
                 commands[2] = imageName;
+                imageName = "loadedImage-intensity";
+                commands[3] = imageName;
                 try {
                     callbacks.executeFeatures(commands, view);
                 } catch (IOException ex) {
@@ -192,11 +199,12 @@ public class ImageProcessorUI extends JFrame {
 
         LumaButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String[] commands = new String[3];
-                commands[0] = "Luma";
-                commands[1] = imageName;
-                imageName = "loadedImage-Luma";
+                String[] commands = new String[4];
+                commands[0] = "greyscale";
+                commands[1] = "component-luma";
                 commands[2] = imageName;
+                imageName = "loadedImage-luma";
+                commands[3] = imageName;
                 try {
                     callbacks.executeFeatures(commands, view);
                 } catch (IOException ex) {
@@ -210,7 +218,7 @@ public class ImageProcessorUI extends JFrame {
         horizontalFlipButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String[] commands = new String[3];
-                commands[0] = "HorizontalFlip";
+                commands[0] = "horizontal-flip";
                 commands[1] = imageName;
                 imageName = "loadedImage-HorizontalFlip";
                 commands[2] = imageName;
@@ -227,7 +235,7 @@ public class ImageProcessorUI extends JFrame {
         verticalFlipButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String[] commands = new String[3];
-                commands[0] = "VerticalFlip";
+                commands[0] = "vertical-flip";
                 commands[1] = imageName;
                 imageName = "loadedImage-VerticalFlip";
                 commands[2] = imageName;
@@ -243,11 +251,12 @@ public class ImageProcessorUI extends JFrame {
 
         redButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String[] commands = new String[3];
-                commands[0] = "Red";
-                commands[1] = imageName;
-                imageName = "loadedImage-red";
+                String[] commands = new String[4];
+                commands[0] = "greyscale";
+                commands[1] = "component-red";
                 commands[2] = imageName;
+                imageName = "loadedImage-red";
+                commands[3] = imageName;
                 try {
                     callbacks.executeFeatures(commands, view);
                 } catch (IOException ex) {
@@ -260,11 +269,12 @@ public class ImageProcessorUI extends JFrame {
 
         blueButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String[] commands = new String[3];
-                commands[0] = "Blue";
-                commands[1] = imageName;
-                imageName = "loadedImage-blue";
+                String[] commands = new String[4];
+                commands[0] = "greyscale";
+                commands[1] = "component-blue";
                 commands[2] = imageName;
+                imageName = "loadedImage-blue";
+                commands[3] = imageName;
                 try {
                     callbacks.executeFeatures(commands, view);
                 } catch (IOException ex) {
@@ -277,11 +287,12 @@ public class ImageProcessorUI extends JFrame {
 
         greenButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String[] commands = new String[3];
-                commands[0] = "Green";
-                commands[1] = imageName;
-                imageName = "loadedImage-green";
+                String[] commands = new String[4];
+                commands[0] = "greyscale";
+                commands[1] = "component-green";
                 commands[2] = imageName;
+                imageName = "loadedImage-green";
+                commands[3] = imageName;
                 try {
                     callbacks.executeFeatures(commands, view);
                 } catch (IOException ex) {
@@ -294,12 +305,18 @@ public class ImageProcessorUI extends JFrame {
 
         splitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String[] commands = new String[3];
+                String[] commands = new String[5];
                 //need more number of commands here
-                commands[0] = "Split";
+                //show 3 files on screen?
+                //how to manipultae each
+                //how to save each?
+
+                commands[0] = "rgb-split";
                 commands[1] = imageName;
-                imageName = "loadedImage-split";
+                imageName = "loadedImage-red";
                 commands[2] = imageName;
+                commands[3] = "loadedImage-green";
+                commands[4] = "loadedImage-blue";
                 try {
                     callbacks.executeFeatures(commands, view);
                 } catch (IOException ex) {
@@ -307,12 +324,17 @@ public class ImageProcessorUI extends JFrame {
                 }
                 TypeOfImage testgrey = model.getObject(imageName);
                 loadImageOnscreen(testgrey);
+
+                new ImageProcessorUI(model, callbacks, "loadedImage-green");
+                new ImageProcessorUI(model, callbacks, "loadedImage-blue");
             }
         });
 
         combineButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String[] commands = new String[3];
+                //ask for 3 file names for load
+                //when when user clickc on combine, ask them for input 2 more files.
                 commands[0] = "Combine";
                 commands[1] = imageName;
                 imageName = "loadedImage-combine";
@@ -330,7 +352,7 @@ public class ImageProcessorUI extends JFrame {
         SepiaButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String[] commands = new String[3];
-                commands[0] = "Sepia";
+                commands[0] = "transform-sepia";
                 commands[1] = imageName;
                 imageName = "loadedImage-sepia";
                 commands[2] = imageName;
@@ -347,7 +369,7 @@ public class ImageProcessorUI extends JFrame {
         DitherButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String[] commands = new String[3];
-                commands[0] = "Dither";
+                commands[0] = "dither";
                 commands[1] = imageName;
                 imageName = "loadedImage-dither";
                 commands[2] = imageName;
@@ -364,7 +386,7 @@ public class ImageProcessorUI extends JFrame {
         SharpenButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String[] commands = new String[3];
-                commands[0] = "Sharpen";
+                commands[0] = "filter-sharpen";
                 commands[1] = imageName;
                 imageName = "loadedImage-sharpen";
                 commands[2] = imageName;
@@ -381,7 +403,7 @@ public class ImageProcessorUI extends JFrame {
         BlurButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String[] commands = new String[3];
-                commands[0] = "Blur";
+                commands[0] = "filter-blur";
                 commands[1] = imageName;
                 imageName = "loadedImage-blur";
                 commands[2] = imageName;
@@ -398,7 +420,7 @@ public class ImageProcessorUI extends JFrame {
         greyscaleButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String[] commands = new String[3];
-                commands[0] = "Greyscale";
+                commands[0] = "transform-greyscale";
                 commands[1] = imageName;
                 imageName = "loadedImage-greyscale";
                 commands[2] = imageName;
@@ -432,10 +454,34 @@ public class ImageProcessorUI extends JFrame {
                     }
                 }
             }
-
-
         });
 
+        slider.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                int value = slider.getValue();
+                String[] commands = new String[4];
+                //what about darken?
+                commands[0] = "brighten";
+                commands[1] = Integer.toString(value);
+                commands[2] = imageName;
+                imageName = "loadedImage-brighten";
+                commands[3] = imageName;
+                try {
+                    callbacks.executeFeatures(commands, view);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+                TypeOfImage testgrey = model.getObject(imageName);
+                loadImageOnscreen(testgrey);
+            }
+        });
+
+        if (!imageName.isEmpty()) {
+            System.out.print(imageName);
+            TypeOfImage testgrey = model.getObject(imageName);
+            System.out.print(testgrey);
+            loadImageOnscreen(testgrey);
+        }
 
         pack();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

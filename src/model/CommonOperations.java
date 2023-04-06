@@ -27,6 +27,8 @@ public abstract class CommonOperations implements TypeOfImage {
   @Override
   public TypeOfImage verticalFlip() {
     TypeofImageObject[][] flippedImage = getMatrix(this.width, this.height);
+    System.out.println(this.width);
+    System.out.println(this.height);
     //flip the columns
     for (int row = 0; row < this.pixels.length; row++) {
       for (int col = 0; col < this.pixels[row].length / 2; col++) {
@@ -35,8 +37,9 @@ public abstract class CommonOperations implements TypeOfImage {
         flippedImage[row][flippedImage[row].length - col - 1] = temp;
       }
     }
+    System.out.println(this.width);
+    System.out.println(this.height);
     return getOImage(flippedImage, this.width, this.height);
-
   }
 
   @Override
