@@ -29,7 +29,7 @@ public class ValueIntensityLumaAndVisualizeComponent implements CommandDesignOpe
    * @throws IllegalArgumentException if number of arguments not as expected.
    */
   public ValueIntensityLumaAndVisualizeComponent(String[] commands)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     if (commands.length != 4) {
       throw new IllegalArgumentException("Invalid command format.");
     }
@@ -40,7 +40,7 @@ public class ValueIntensityLumaAndVisualizeComponent implements CommandDesignOpe
     String component = commands[1];
     String[] componentParts = component.split("-");
     if (componentParts[1].equals("red") || componentParts[1].equals("green")
-            || componentParts[1].equals("blue")) {
+        || componentParts[1].equals("blue")) {
       this.component = ComponentRGB.valueOf(componentParts[1]);
     } else {
       this.measure = MeasurementType.valueOf(componentParts[1]);
@@ -49,7 +49,7 @@ public class ValueIntensityLumaAndVisualizeComponent implements CommandDesignOpe
 
   @Override
   public void goCommand(Operations m, ViewI view)
-          throws IOException, NoSuchFieldException, IllegalAccessException {
+      throws IOException, NoSuchFieldException, IllegalAccessException {
     if (measure != null) {
       m.visualizeValueIntensityLuma(imageName, updatedImageName, measure);
     }
@@ -57,6 +57,6 @@ public class ValueIntensityLumaAndVisualizeComponent implements CommandDesignOpe
       m.visIndividualComponent(imageName, updatedImageName, component);
     }
     view.printOutput(
-            "Image '" + imageName + "' stored as greyscale '" + updatedImageName + "'" + "\n");
+        "Image '" + imageName + "' stored as greyscale '" + updatedImageName + "'" + "\n");
   }
 }
