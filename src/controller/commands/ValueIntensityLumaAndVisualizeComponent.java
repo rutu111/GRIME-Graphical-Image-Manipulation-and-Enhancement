@@ -39,11 +39,11 @@ public class ValueIntensityLumaAndVisualizeComponent implements CommandDesignOpe
     //go to appropiate class based on component requested.
     String component = commands[1];
     String[] componentParts = component.split("-");
-    if (componentParts[0].equals("red") || componentParts[0].equals("green")
-        || componentParts[0].equals("blue")) {
-      this.component = ComponentRGB.valueOf(componentParts[0]);
+    if (componentParts[1].equals("red") || componentParts[1].equals("green")
+        || componentParts[1].equals("blue")) {
+      this.component = ComponentRGB.valueOf(componentParts[1]);
     } else {
-      this.measure = MeasurementType.valueOf(componentParts[0]);
+      this.measure = MeasurementType.valueOf(componentParts[1]);
     }
   }
 

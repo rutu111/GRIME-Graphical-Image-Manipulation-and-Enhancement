@@ -198,12 +198,7 @@ public class ImageController implements ImageProcessCallbacks {
   public void GUIOperations() {
     //open up the window
     callbacks = new ImageController(model, in, view);
-    ImageProcessorUI GUI = new ImageProcessorUI(this.model, callbacks);
-    //find command in controller hashmap based on which button got clicked
-    //send in the expected format. We will need to provide strings
-    //print any error message
-    //update image
-    //histogram
+    ImageProcessorUI GUI = new ImageProcessorUI(this.model, callbacks, "");
 
   }
   @Override
@@ -223,15 +218,10 @@ public class ImageController implements ImageProcessCallbacks {
     commandMap.put("dither", l -> new Dither(l));
     commandMap.put("save", l -> new Save(l));
 
-    if (actionCommands.length == 0 || actionCommands[0].trim().isEmpty()) {
-      view.printOutput("Please enter appropriate command. \n");
-      return;
-    }
     try {
       CommandDesignOperations c;
 
       Function<String[], CommandDesignOperations> cmd = commandMap.getOrDefault(actionCommands[0], null);
-      System.out.println(cmd);
       if (cmd == null) {
         go_script = false;
         throw new NullPointerException("Invalid command: " + actionCommands[0]);
@@ -239,13 +229,14 @@ public class ImageController implements ImageProcessCallbacks {
         try {
           c = cmd.apply(actionCommands);
           c.goCommand(this.model, viewx); //execute the command
-          System.out.println("Success");
+          //System.out.println("Success");
         } catch (NoSuchFieldException | IllegalAccessException | IOException ex) {
           throw new RuntimeException(ex);
         }
       }
     } catch (IllegalArgumentException e) {
       go_script = false;
+      viewx.printOutput("Error: " + e.getMessage() + "\n");
       throw e;
     }
   }
