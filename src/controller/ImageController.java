@@ -20,10 +20,7 @@ import view.ViewI;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 import java.util.function.Function;
 
 /**
@@ -35,10 +32,9 @@ public class ImageController implements ImageProcessCallbacks {
 
   final Readable in;
   private final Operations model;
-  boolean go_script = true;
-
-  ImageProcessCallbacks callbacks;
   private ViewI view;
+  boolean go_script = true;
+  ImageProcessCallbacks callbacks;
   //hashmap of image operations (key) and lambda operation (value)
   //the lambda operation maps a list of strings to a CommandDesignOperations object.
   private Map<String, Function<String[], CommandDesignOperations>> commandMap;
@@ -112,9 +108,8 @@ public class ImageController implements ImageProcessCallbacks {
             }
             go = false;
             view.printOutput("Exit the program \n");
-          } else if (commandParts[0].equals("GUI")){
-            callbacks = new ImageController(model, in, view);
-            new ImageProcessorUI(callbacks);
+          } else if (commandParts[0].equals("gui")){
+            GUIOperations();
           }
           else {
             commandExecutionNew(commandParts);
@@ -201,9 +196,33 @@ public class ImageController implements ImageProcessCallbacks {
     }
   }
 
+  public void GUIOperations() {
+    //open up the window
+    callbacks = new ImageController(model, in, view);
+    ImageProcessorUI GUI = new ImageProcessorUI(this.model, callbacks);
+    //find command in controller hashmap based on which button got clicked
+    //send in the expected format. We will need to provide strings
+    //print any error message
+    //update image
+    //histogram
+
+  }
   @Override
-  public void executeFeatures(String actionCommand) throws IOException {
-    String[] actionCommands = actionCommand.split(" ");//ERROR HERE
+  public void executeFeatures(String[] actionCommands, ViewI viewx) throws IOException {
+    commandMap = new HashMap<>();
+    commandMap.put("load", l -> new Load(l));
+    commandMap.put("brighten", l -> new Brighten(l));
+    commandMap.put("vertical-flip", l -> new VerticalFlip(l));
+    commandMap.put("horizontal-flip", l -> new HorizontalFlip(l));
+    commandMap.put("greyscale", l -> new ValueIntensityLumaAndVisualizeComponent(l));
+    commandMap.put("rgb-split", l -> new RGBSplit(l));
+    commandMap.put("rgb-combine", l -> new Combine(l));
+    commandMap.put("filter-blur", l -> new Blur(l));
+    commandMap.put("filter-sharpen", l -> new Sharpen(l));
+    commandMap.put("transform-greyscale", l -> new TransformGreyscale(l));
+    commandMap.put("transform-sepia", l -> new Sepia(l));
+    commandMap.put("dither", l -> new Dither(l));
+    commandMap.put("save", l -> new Save(l));
 
     if (actionCommands.length == 0 || actionCommands[0].trim().isEmpty()) {
       view.printOutput("Please enter appropriate command. \n");
@@ -212,7 +231,13 @@ public class ImageController implements ImageProcessCallbacks {
     try {
       CommandDesignOperations c;
       //this gets the action event string based on what is present in the hashmap
-      Function<String[], CommandDesignOperations> cmd = commandMap.get(actionCommands[0]);
+      //System.out.println(actionCommand);
+      //System.out.println(commandList.get(0));
+      //System.out.println(commandList.get(0).length());
+      //System.out.println(commandMap.get(commandList.get(0)));
+
+      Function<String[], CommandDesignOperations> cmd = commandMap.getOrDefault(actionCommands[0], null);
+      //Function<String[], CommandDesignOperations> cmd = commandMap.get(commandList.get(0));
       System.out.println(cmd);
       if (cmd == null) {
         go_script = false;
@@ -220,7 +245,7 @@ public class ImageController implements ImageProcessCallbacks {
       } else {
         try {
           c = cmd.apply(actionCommands);
-          c.goCommand(this.model, this.view); //execute the command
+          c.goCommand(this.model, viewx); //execute the command
           System.out.println("Success");
         } catch (NoSuchFieldException | IllegalAccessException | IOException ex) {
           throw new RuntimeException(ex);

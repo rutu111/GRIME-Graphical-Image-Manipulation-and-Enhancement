@@ -1,5 +1,7 @@
 package view;
 
+import controller.ImageProcessCallbacks;
+
 import javax.swing.*;
 import java.io.IOException;
 
@@ -22,6 +24,11 @@ public class ViewGUI extends JFrame implements ViewI  {
     @Override
     public void printOutput(String output) throws IOException {
         label.setText(output);
+
+    }
+
+    @Override
+    public void addFeatures(ImageProcessCallbacks features) {
 
     }
 }

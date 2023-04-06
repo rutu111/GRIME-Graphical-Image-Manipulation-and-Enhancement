@@ -7,6 +7,10 @@ import model.Operations;
 import view.ImageProcessorUI;
 import view.View;
 import controller.ImageController;
+import view.ViewGUI;
+import view.ViewI;
+
+import javax.swing.*;
 
 
 /**
@@ -17,7 +21,6 @@ public class Main {
      * This is the method main used to run the program.
      */
     public static void main(String[] args) throws IOException {
-
         Operations model = new Model();
         View view = new View(System.out);
         ImageController controller = new ImageController(model, new InputStreamReader(System.in), view);
