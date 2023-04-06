@@ -25,10 +25,8 @@ public class ImageProcessorUI extends JFrame {
     private JFileChooser fileChooser;
 
 
-    public ImageProcessorUI(Operations model) {
+    public ImageProcessorUI(Operations model, ImageProcessCallbacks callbacks) {
         super();
-        //this.model = model;
-        //this.view = view;
 
 
         this.setTitle("Image Processor");
@@ -127,9 +125,8 @@ public class ImageProcessorUI extends JFrame {
                     commands[0] = "load";
                     commands[1] = path;
                     commands[2] = imageName;
-                    Load loadOperation = new Load(commands);
                     try {
-                        loadOperation.goCommand(model, view);
+                        callbacks.executeFeatures(commands, view);
                     } catch (IOException ex) {
                         throw new RuntimeException(ex);
                     }
@@ -140,16 +137,272 @@ public class ImageProcessorUI extends JFrame {
             }
         });
 
-        greyscaleButton.addActionListener(new ActionListener() {
+        BrightenButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String[] commands = new String[3];
+                commands[0] = "Brighten";
+                commands[1] = "10";
+                commands[2] = imageName;
+                imageName = "loadedImage-brighten";
+                commands[3] = imageName;
+                try {
+                    callbacks.executeFeatures(commands, view);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+                TypeOfImage testgrey = model.getObject(imageName);
+                loadImageOnscreen(testgrey);
+            }
+        });
+
+        ValueButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String[] commands = new String[3];
+                commands[0] = "Value";
+                commands[1] = imageName;
+                imageName = "loadedImage-Value";
+                commands[2] = imageName;
+                try {
+                    callbacks.executeFeatures(commands, view);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+                TypeOfImage testgrey = model.getObject(imageName);
+                loadImageOnscreen(testgrey);
+            }
+        });
+
+        intensityButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String[] commands = new String[3];
+                commands[0] = "Intensity";
+                commands[1] = imageName;
+                imageName = "loadedImage-intensity";
+                commands[2] = imageName;
+                try {
+                    callbacks.executeFeatures(commands, view);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+                TypeOfImage testgrey = model.getObject(imageName);
+                loadImageOnscreen(testgrey);
+            }
+        });
+
+        LumaButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String[] commands = new String[3];
                 commands[0] = "Luma";
                 commands[1] = imageName;
+                imageName = "loadedImage-Luma";
+                commands[2] = imageName;
+                try {
+                    callbacks.executeFeatures(commands, view);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+                TypeOfImage testgrey = model.getObject(imageName);
+                loadImageOnscreen(testgrey);
+            }
+        });
+
+        horizontalFlipButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String[] commands = new String[3];
+                commands[0] = "HorizontalFlip";
+                commands[1] = imageName;
+                imageName = "loadedImage-HorizontalFlip";
+                commands[2] = imageName;
+                try {
+                    callbacks.executeFeatures(commands, view);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+                TypeOfImage testgrey = model.getObject(imageName);
+                loadImageOnscreen(testgrey);
+            }
+        });
+
+        verticalFlipButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String[] commands = new String[3];
+                commands[0] = "VerticalFlip";
+                commands[1] = imageName;
+                imageName = "loadedImage-VerticalFlip";
+                commands[2] = imageName;
+                try {
+                    callbacks.executeFeatures(commands, view);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+                TypeOfImage testgrey = model.getObject(imageName);
+                loadImageOnscreen(testgrey);
+            }
+        });
+
+        redButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String[] commands = new String[3];
+                commands[0] = "Red";
+                commands[1] = imageName;
+                imageName = "loadedImage-red";
+                commands[2] = imageName;
+                try {
+                    callbacks.executeFeatures(commands, view);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+                TypeOfImage testgrey = model.getObject(imageName);
+                loadImageOnscreen(testgrey);
+            }
+        });
+
+        blueButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String[] commands = new String[3];
+                commands[0] = "Blue";
+                commands[1] = imageName;
+                imageName = "loadedImage-blue";
+                commands[2] = imageName;
+                try {
+                    callbacks.executeFeatures(commands, view);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+                TypeOfImage testgrey = model.getObject(imageName);
+                loadImageOnscreen(testgrey);
+            }
+        });
+
+        greenButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String[] commands = new String[3];
+                commands[0] = "Green";
+                commands[1] = imageName;
+                imageName = "loadedImage-green";
+                commands[2] = imageName;
+                try {
+                    callbacks.executeFeatures(commands, view);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+                TypeOfImage testgrey = model.getObject(imageName);
+                loadImageOnscreen(testgrey);
+            }
+        });
+
+        splitButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String[] commands = new String[3];
+                //need more number of commands here
+                commands[0] = "Split";
+                commands[1] = imageName;
+                imageName = "loadedImage-split";
+                commands[2] = imageName;
+                try {
+                    callbacks.executeFeatures(commands, view);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+                TypeOfImage testgrey = model.getObject(imageName);
+                loadImageOnscreen(testgrey);
+            }
+        });
+
+        combineButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String[] commands = new String[3];
+                commands[0] = "Combine";
+                commands[1] = imageName;
+                imageName = "loadedImage-combine";
+                commands[2] = imageName;
+                try {
+                    callbacks.executeFeatures(commands, view);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+                TypeOfImage testgrey = model.getObject(imageName);
+                loadImageOnscreen(testgrey);
+            }
+        });
+
+        SepiaButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String[] commands = new String[3];
+                commands[0] = "Sepia";
+                commands[1] = imageName;
+                imageName = "loadedImage-sepia";
+                commands[2] = imageName;
+                try {
+                    callbacks.executeFeatures(commands, view);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+                TypeOfImage testgrey = model.getObject(imageName);
+                loadImageOnscreen(testgrey);
+            }
+        });
+
+        DitherButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String[] commands = new String[3];
+                commands[0] = "Dither";
+                commands[1] = imageName;
+                imageName = "loadedImage-dither";
+                commands[2] = imageName;
+                try {
+                    callbacks.executeFeatures(commands, view);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+                TypeOfImage testgrey = model.getObject(imageName);
+                loadImageOnscreen(testgrey);
+            }
+        });
+
+        SharpenButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String[] commands = new String[3];
+                commands[0] = "Sharpen";
+                commands[1] = imageName;
+                imageName = "loadedImage-sharpen";
+                commands[2] = imageName;
+                try {
+                    callbacks.executeFeatures(commands, view);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+                TypeOfImage testgrey = model.getObject(imageName);
+                loadImageOnscreen(testgrey);
+            }
+        });
+
+        BlurButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String[] commands = new String[3];
+                commands[0] = "Blur";
+                commands[1] = imageName;
+                imageName = "loadedImage-blur";
+                commands[2] = imageName;
+                try {
+                    callbacks.executeFeatures(commands, view);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+                TypeOfImage testgrey = model.getObject(imageName);
+                loadImageOnscreen(testgrey);
+            }
+        });
+
+        greyscaleButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String[] commands = new String[3];
+                commands[0] = "Greyscale";
+                commands[1] = imageName;
                 imageName = "loadedImage-greyscale";
                 commands[2] = imageName;
-                TransformGreyscale greyscale = new TransformGreyscale(commands);
                 try {
-                    greyscale.goCommand(model, view);
+                    callbacks.executeFeatures(commands, view);
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -171,14 +424,9 @@ public class ImageProcessorUI extends JFrame {
                     commands[0] = "save";
                     commands[1] = filePath;
                     commands[2] = imageName;
-                    Save loadOperation = new Save(commands);
                     try {
-                        loadOperation.goCommand(model, view);
+                        callbacks.executeFeatures(commands, view);
                     } catch (IOException ex) {
-                        throw new RuntimeException(ex);
-                    } catch (NoSuchFieldException ex) {
-                        throw new RuntimeException(ex);
-                    } catch (IllegalAccessException ex) {
                         throw new RuntimeException(ex);
                     }
                 }
@@ -187,18 +435,6 @@ public class ImageProcessorUI extends JFrame {
 
         });
 
-        BrightenButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-
-
-        saveButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // Perform image processing operations here
-            }
-        });
 
         pack();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
