@@ -75,6 +75,7 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
         newPixels[i][j] = getObject(r, g, b, oldPixel.hasAlpha());
       }
     }
+
     return getOImage(newPixels, this.width, this.height);
   }
 
@@ -86,8 +87,10 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
     for (int i = 0; i < this.getWidth(); i++) {
       for (int j = 0; j < this.getHeight(); j++) {
         TypeofImageObject object = this.getPixels()[i][j];
-        new_image[i][j] = getObject((Integer) field.get(object),
-            (Integer) field.get(object), (Integer) field.get(object), object.hasAlpha());
+        if(object!=null) {
+          new_image[i][j] = getObject((Integer) field.get(object),
+                  (Integer) field.get(object), (Integer) field.get(object), object.hasAlpha());
+        }
       }
     }
     return getOImage(new_image, this.getWidth(), this.getHeight());
