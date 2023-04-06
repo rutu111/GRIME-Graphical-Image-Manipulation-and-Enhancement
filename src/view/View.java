@@ -1,5 +1,7 @@
 package view;
 
+import controller.ImageProcessCallbacks;
+
 import java.io.IOException;
 
 /**
@@ -49,4 +51,5 @@ public class View implements ViewI {
   public void printOutput(String output) throws IOException {
     this.out.append(output);
   }
+
 }

@@ -50,7 +50,6 @@ public class ImageController implements ImageProcessCallbacks {
     this.model = model;
     this.in = in;
     this.view = view;
-    view.addFeatures(this);
   }
 
 
@@ -230,14 +229,8 @@ public class ImageController implements ImageProcessCallbacks {
     }
     try {
       CommandDesignOperations c;
-      //this gets the action event string based on what is present in the hashmap
-      //System.out.println(actionCommand);
-      //System.out.println(commandList.get(0));
-      //System.out.println(commandList.get(0).length());
-      //System.out.println(commandMap.get(commandList.get(0)));
 
       Function<String[], CommandDesignOperations> cmd = commandMap.getOrDefault(actionCommands[0], null);
-      //Function<String[], CommandDesignOperations> cmd = commandMap.get(commandList.get(0));
       System.out.println(cmd);
       if (cmd == null) {
         go_script = false;

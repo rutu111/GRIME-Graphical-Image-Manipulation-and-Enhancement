@@ -27,8 +27,4 @@ public class ViewGUI extends JFrame implements ViewI  {
 
     }
 
-    @Override
-    public void addFeatures(ImageProcessCallbacks features) {
-
-    }
 }
