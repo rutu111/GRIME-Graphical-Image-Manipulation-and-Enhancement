@@ -69,13 +69,14 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
       for (int j = 0; j < this.height; j++) {
         TypeofImageObject oldPixel = this.pixels[i][j];
         //Add increment value to RGB values and clamp to [0, 255]
-        Integer r = (int) min(255, Math.max(0, oldPixel.getChanne11() + increment));
-        Integer g = (int) min(255, Math.max(0, oldPixel.getChanne12() + increment));
-        Integer b = (int) min(255, Math.max(0, oldPixel.getChanne13() + increment));
-        newPixels[i][j] = getObject(r, g, b, oldPixel.hasAlpha());
+        if(oldPixel!=null) {
+          Integer r = (int) min(255, Math.max(0, oldPixel.getChanne11() + increment));
+          Integer g = (int) min(255, Math.max(0, oldPixel.getChanne12() + increment));
+          Integer b = (int) min(255, Math.max(0, oldPixel.getChanne13() + increment));
+          newPixels[i][j] = getObject(r, g, b, oldPixel.hasAlpha());
+        }
       }
     }
-
     return getOImage(newPixels, this.width, this.height);
   }
 
@@ -102,18 +103,22 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
     for (int i = 0; i < this.getWidth(); i++) {
       for (int j = 0; j < this.getHeight(); j++) {
         if (measure.toString().equals("value")) {
-          Integer value = Math.max(this.getPixels()[i][j].getChanne11(),
-              Math.max(this.getPixels()[i][j].getChanne12(),
-                  this.getPixels()[i][j].getChanne13()));
-          new_image[i][j] = getObject(value, value, value, this.getPixels()[i][j].hasAlpha());
+          if(this.getPixels()[i][j]!=null) {
+            Integer value = Math.max(this.getPixels()[i][j].getChanne11(),
+                    Math.max(this.getPixels()[i][j].getChanne12(),
+                            this.getPixels()[i][j].getChanne13()));
+            new_image[i][j] = getObject(value, value, value, this.getPixels()[i][j].hasAlpha());
+          }
         }
         //intensity
         if (measure.toString().equals("intensity")) {
-          Integer intensity =
-              (this.getPixels()[i][j].getChanne11() + this.getPixels()[i][j].getChanne12()
-                  + this.getPixels()[i][j].getChanne13()) / 3;
-          new_image[i][j] = getObject(intensity, intensity, intensity,
-              this.getPixels()[i][j].hasAlpha());
+          if(this.getPixels()[i][j]!=null) {
+            Integer intensity =
+                    (this.getPixels()[i][j].getChanne11() + this.getPixels()[i][j].getChanne12()
+                            + this.getPixels()[i][j].getChanne13()) / 3;
+            new_image[i][j] = getObject(intensity, intensity, intensity,
+                    this.getPixels()[i][j].hasAlpha());
+          }
         }
         //luma
         if (measure.toString().equals("luma")) {
