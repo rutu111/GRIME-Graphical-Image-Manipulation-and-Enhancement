@@ -27,6 +27,10 @@ public class ImageProcessorUI extends JFrame {
     private JLabel imageLabel;
     private JFileChooser fileChooser;
 
+    JPanel imagePanel;
+
+    JPanel histogramPanel;
+
 
     public ImageProcessorUI(Operations model, ImageProcessCallbacks callbacks, String imageNameX) {
         super();
@@ -36,11 +40,15 @@ public class ImageProcessorUI extends JFrame {
         this.setSize(10000, 10000);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        int[] histogramData; // the histogram data
+        int imageSize; // the size of the image
+
+
         uploadButton = new JButton("Load");
         saveButton = new JButton("Save");
         imageLabel = new JLabel();
         fileChooser = new JFileChooser();
-        JSlider slider = new JSlider(JSlider.HORIZONTAL, -100, 100, 0);
+        //JSlider slider = new JSlider(JSlider.HORIZONTAL, -100, 100, 0);
 
 
         JPanel buttonPanel = new JPanel();
@@ -50,7 +58,7 @@ public class ImageProcessorUI extends JFrame {
         add(buttonPanel, BorderLayout.NORTH);
         add(imageLabel, BorderLayout.CENTER);
 
-        JPanel imagePanel = new JPanel(new BorderLayout());
+        imagePanel = new JPanel(new BorderLayout());
         imagePanel.add(imageLabel, BorderLayout.CENTER);
 
 
@@ -61,6 +69,7 @@ public class ImageProcessorUI extends JFrame {
 
         //operations
         JButton BrightenButton = new JButton("Brighten");
+        JButton DarkenButton = new JButton("Darken");
         JButton ValueButton = new JButton("Value");
         JButton intensityButton = new JButton("Intensity");
         JButton LumaButton = new JButton("Luma");
@@ -77,6 +86,7 @@ public class ImageProcessorUI extends JFrame {
         JButton BlurButton = new JButton("Blur");
         JButton greyscaleButton = new JButton("Greyscale");
         buttonPanel2.add(BrightenButton);
+        buttonPanel2.add(DarkenButton);
         buttonPanel2.add(ValueButton);
         buttonPanel2.add(intensityButton);
         buttonPanel2.add(LumaButton);
@@ -92,15 +102,16 @@ public class ImageProcessorUI extends JFrame {
         buttonPanel2.add(SharpenButton);
         buttonPanel2.add(BlurButton);
         buttonPanel2.add(greyscaleButton);
-        buttonPanel2.add(slider);
+        //buttonPanel2.add(slider);
 
         JPanel rightPanel = new JPanel(new BorderLayout());
         rightPanel.add(buttonPanel2, BorderLayout.NORTH);
         add(rightPanel, BorderLayout.EAST);
 
-        JPanel histogramPanel = new JPanel();
+        histogramPanel = new JPanel();
         histogramPanel.setBorder(BorderFactory.createTitledBorder("HISTOGRAM"));
         histogramPanel.setPreferredSize(new Dimension(0, 250));
+        histogramPanel.setLayout(new GridLayout(1, 0, 10, 10));
         imagePanel.add(histogramPanel, BorderLayout.SOUTH);
         add(imagePanel, BorderLayout.CENTER);
 
@@ -137,6 +148,8 @@ public class ImageProcessorUI extends JFrame {
                     }
                     TypeOfImage test = model.getObject(imageName);
                     loadImageOnscreen(test);
+                    histogram(test);
+
 
                 }
             }
@@ -148,6 +161,25 @@ public class ImageProcessorUI extends JFrame {
                 //what about darken?
                 commands[0] = "brighten";
                 commands[1] = "10";
+                commands[2] = imageName;
+                imageName = "loadedImage-brighten";
+                commands[3] = imageName;
+                try {
+                    callbacks.executeFeatures(commands, view);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+                TypeOfImage testgrey = model.getObject(imageName);
+                loadImageOnscreen(testgrey);
+            }
+        });
+
+        DarkenButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String[] commands = new String[4];
+                //what about darken?
+                commands[0] = "brighten";
+                commands[1] = "-10";
                 commands[2] = imageName;
                 imageName = "loadedImage-brighten";
                 commands[3] = imageName;
@@ -306,10 +338,6 @@ public class ImageProcessorUI extends JFrame {
         splitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String[] commands = new String[5];
-                //need more number of commands here
-                //show 3 files on screen?
-                //how to manipultae each
-                //how to save each?
 
                 commands[0] = "rgb-split";
                 commands[1] = imageName;
@@ -332,18 +360,58 @@ public class ImageProcessorUI extends JFrame {
 
         combineButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String[] commands = new String[3];
+                String[] commands = new String[5];
                 //ask for 3 file names for load
                 //when when user clickc on combine, ask them for input 2 more files.
-                commands[0] = "Combine";
-                commands[1] = imageName;
-                imageName = "loadedImage-combine";
+                //uploadButton.doClick();
+                //uploadButton.doClick();
+
+                int result = fileChooser.showOpenDialog(ImageProcessorUI.this);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    imageName = "loadedImage2";
+                    File selectedFile = fileChooser.getSelectedFile();
+                    String path = selectedFile.getPath();
+                    String[] commands1 = new String[3];
+                    commands1[0] = "load";
+                    commands1[1] = path;
+                    commands1[2] = imageName;
+                    try {
+                        callbacks.executeFeatures(commands1, view);
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
+
+                int result2 = fileChooser.showOpenDialog(ImageProcessorUI.this);
+                if (result2 == JFileChooser.APPROVE_OPTION) {
+                    imageName = "loadedImage3";
+                    File selectedFile = fileChooser.getSelectedFile();
+                    String path = selectedFile.getPath();
+                    String[] commands2 = new String[3];
+                    commands2[0] = "load";
+                    commands2[1] = path;
+                    commands2[2] = imageName;
+                    try {
+                        System.out.println();
+                        callbacks.executeFeatures(commands2, view);
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+
+                }
+                commands[0] = "rgb-combine";
                 commands[2] = imageName;
+                commands[3] = "loadedImage2";
+                commands[4] = "loadedImage3";
+                imageName = "loadedImage-combine";
+                commands[1] = imageName;
+
                 try {
                     callbacks.executeFeatures(commands, view);
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
+
                 TypeOfImage testgrey = model.getObject(imageName);
                 loadImageOnscreen(testgrey);
             }
@@ -456,6 +524,7 @@ public class ImageProcessorUI extends JFrame {
             }
         });
 
+        /*
         slider.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
                 int value = slider.getValue();
@@ -476,16 +545,61 @@ public class ImageProcessorUI extends JFrame {
             }
         });
 
+         */
+
         if (!imageName.isEmpty()) {
-            System.out.print(imageName);
             TypeOfImage testgrey = model.getObject(imageName);
-            System.out.print(testgrey);
             loadImageOnscreen(testgrey);
         }
 
         pack();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
+    }
+
+
+
+    public void histogram(TypeOfImage image) {
+
+        int width = image.getWidth();
+        int height = image.getHeight();
+        BufferedImage imageBuffer = null;
+
+        if (image.getPixels()[0][0].hasAlpha() == null) {
+            imageBuffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+            for (int y = 0; y < image.getHeight(); y++) {
+                for (int x = 0; x < image.getWidth(); x++) {
+                    TypeofImageObject pixel = image.getPixels()[x][y];
+                    if (pixel != null) {
+                        int red = pixel.getChanne11();
+                        int green = pixel.getChanne12();
+                        int blue = pixel.getChanne13();
+                        int rgb = (red << 16) | (green << 8) | blue;
+
+                        imageBuffer.setRGB(x, y, rgb);
+                    }
+                }
+            }
+        }
+
+        // create a grayscale histogram of the image
+        int[] histogramData = new int[256];
+        int imageSize = imageBuffer.getWidth() * imageBuffer.getHeight();
+        for (int y = 0; y < imageBuffer.getHeight(); y++) {
+            for (int x = 0; x < imageBuffer.getWidth(); x++) {
+                int rgb = imageBuffer.getRGB(x, y);
+                int gray = (int) (0.2126 * ((rgb >> 16) & 0xff) + 0.7152 * ((rgb >> 8) & 0xff) + 0.0722 * (rgb & 0xff));
+                histogramData[gray]++;
+            }
+        }
+
+
+
+        // create a histogram panel and display it
+        Histogram histogramObject = new Histogram(histogramData, imageSize);
+        histogramPanel.add(histogramObject);
+
+
     }
 
 
