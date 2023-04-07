@@ -18,18 +18,23 @@ import controller.commands.TransformGreyscale;
 import model.Operations;
 import model.TypeOfImage;
 import model.TypeofImageObject;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
+
 
 public class ImageProcessorUI extends JFrame {
 
     private static String imageName;
+    JPanel imagePanel;
+    JPanel histogramPanel;
     private JButton uploadButton;
     private JButton saveButton;
     private JLabel imageLabel;
     private JFileChooser fileChooser;
-
-    JPanel imagePanel;
-
-    JPanel histogramPanel;
 
 
     public ImageProcessorUI(Operations model, ImageProcessCallbacks callbacks, String imageNameX) {
@@ -171,6 +176,8 @@ public class ImageProcessorUI extends JFrame {
                 }
                 TypeOfImage testgrey = model.getObject(imageName);
                 loadImageOnscreen(testgrey);
+                histogram(testgrey);
+
             }
         });
 
@@ -190,6 +197,8 @@ public class ImageProcessorUI extends JFrame {
                 }
                 TypeOfImage testgrey = model.getObject(imageName);
                 loadImageOnscreen(testgrey);
+                histogram(testgrey);
+
             }
         });
 
@@ -208,6 +217,8 @@ public class ImageProcessorUI extends JFrame {
                 }
                 TypeOfImage testgrey = model.getObject(imageName);
                 loadImageOnscreen(testgrey);
+                histogram(testgrey);
+
             }
         });
 
@@ -226,6 +237,8 @@ public class ImageProcessorUI extends JFrame {
                 }
                 TypeOfImage testgrey = model.getObject(imageName);
                 loadImageOnscreen(testgrey);
+                histogram(testgrey);
+
             }
         });
 
@@ -244,6 +257,8 @@ public class ImageProcessorUI extends JFrame {
                 }
                 TypeOfImage testgrey = model.getObject(imageName);
                 loadImageOnscreen(testgrey);
+                histogram(testgrey);
+
             }
         });
 
@@ -261,6 +276,8 @@ public class ImageProcessorUI extends JFrame {
                 }
                 TypeOfImage testgrey = model.getObject(imageName);
                 loadImageOnscreen(testgrey);
+                histogram(testgrey);
+
             }
         });
 
@@ -278,6 +295,8 @@ public class ImageProcessorUI extends JFrame {
                 }
                 TypeOfImage testgrey = model.getObject(imageName);
                 loadImageOnscreen(testgrey);
+                histogram(testgrey);
+
             }
         });
 
@@ -296,6 +315,8 @@ public class ImageProcessorUI extends JFrame {
                 }
                 TypeOfImage testgrey = model.getObject(imageName);
                 loadImageOnscreen(testgrey);
+                histogram(testgrey);
+
             }
         });
 
@@ -314,6 +335,8 @@ public class ImageProcessorUI extends JFrame {
                 }
                 TypeOfImage testgrey = model.getObject(imageName);
                 loadImageOnscreen(testgrey);
+                histogram(testgrey);
+
             }
         });
 
@@ -332,6 +355,8 @@ public class ImageProcessorUI extends JFrame {
                 }
                 TypeOfImage testgrey = model.getObject(imageName);
                 loadImageOnscreen(testgrey);
+                histogram(testgrey);
+
             }
         });
 
@@ -352,6 +377,7 @@ public class ImageProcessorUI extends JFrame {
                 }
                 TypeOfImage testgrey = model.getObject(imageName);
                 loadImageOnscreen(testgrey);
+                histogram(testgrey);
 
                 new ImageProcessorUI(model, callbacks, "loadedImage-green");
                 new ImageProcessorUI(model, callbacks, "loadedImage-blue");
@@ -414,6 +440,8 @@ public class ImageProcessorUI extends JFrame {
 
                 TypeOfImage testgrey = model.getObject(imageName);
                 loadImageOnscreen(testgrey);
+                histogram(testgrey);
+
             }
         });
 
@@ -431,6 +459,8 @@ public class ImageProcessorUI extends JFrame {
                 }
                 TypeOfImage testgrey = model.getObject(imageName);
                 loadImageOnscreen(testgrey);
+                histogram(testgrey);
+
             }
         });
 
@@ -448,6 +478,8 @@ public class ImageProcessorUI extends JFrame {
                 }
                 TypeOfImage testgrey = model.getObject(imageName);
                 loadImageOnscreen(testgrey);
+                histogram(testgrey);
+
             }
         });
 
@@ -465,6 +497,8 @@ public class ImageProcessorUI extends JFrame {
                 }
                 TypeOfImage testgrey = model.getObject(imageName);
                 loadImageOnscreen(testgrey);
+                histogram(testgrey);
+
             }
         });
 
@@ -482,6 +516,8 @@ public class ImageProcessorUI extends JFrame {
                 }
                 TypeOfImage testgrey = model.getObject(imageName);
                 loadImageOnscreen(testgrey);
+                histogram(testgrey);
+
             }
         });
 
@@ -499,6 +535,8 @@ public class ImageProcessorUI extends JFrame {
                 }
                 TypeOfImage testgrey = model.getObject(imageName);
                 loadImageOnscreen(testgrey);
+                histogram(testgrey);
+
             }
         });
 
@@ -550,6 +588,7 @@ public class ImageProcessorUI extends JFrame {
         if (!imageName.isEmpty()) {
             TypeOfImage testgrey = model.getObject(imageName);
             loadImageOnscreen(testgrey);
+            histogram(testgrey);
         }
 
         pack();
@@ -558,47 +597,33 @@ public class ImageProcessorUI extends JFrame {
     }
 
 
-
     public void histogram(TypeOfImage image) {
 
         int width = image.getWidth();
         int height = image.getHeight();
-        BufferedImage imageBuffer = null;
+        BufferedImage imageBuffer;
 
-        if (image.getPixels()[0][0].hasAlpha() == null) {
-            imageBuffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-            for (int y = 0; y < image.getHeight(); y++) {
-                for (int x = 0; x < image.getWidth(); x++) {
-                    TypeofImageObject pixel = image.getPixels()[x][y];
-                    if (pixel != null) {
-                        int red = pixel.getChanne11();
-                        int green = pixel.getChanne12();
-                        int blue = pixel.getChanne13();
-                        int rgb = (red << 16) | (green << 8) | blue;
-
-                        imageBuffer.setRGB(x, y, rgb);
-                    }
+        imageBuffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        for (int y = 0; y < image.getHeight(); y++) {
+            for (int x = 0; x < image.getWidth(); x++) {
+                TypeofImageObject pixel = image.getPixels()[x][y];
+                if (pixel != null) {
+                    int red = pixel.getChanne11();
+                    int green = pixel.getChanne12();
+                    int blue = pixel.getChanne13();
+                    int intensity = (int) (red+green+blue)/3;
+                    int argb = (intensity << 24) | (red << 16) | (green << 8) | blue;
+                    imageBuffer.setRGB(x, y, argb);
                 }
             }
         }
 
-        // create a grayscale histogram of the image
-        int[] histogramData = new int[256];
-        int imageSize = imageBuffer.getWidth() * imageBuffer.getHeight();
-        for (int y = 0; y < imageBuffer.getHeight(); y++) {
-            for (int x = 0; x < imageBuffer.getWidth(); x++) {
-                int rgb = imageBuffer.getRGB(x, y);
-                int gray = (int) (0.2126 * ((rgb >> 16) & 0xff) + 0.7152 * ((rgb >> 8) & 0xff) + 0.0722 * (rgb & 0xff));
-                histogramData[gray]++;
-            }
-        }
+        //make sure intensity is also there where creating the histogram.
 
-
-
-        // create a histogram panel and display it
-        Histogram histogramObject = new Histogram(histogramData, imageSize);
-        histogramPanel.add(histogramObject);
-
+        Histogram histogramObject = new Histogram(imageBuffer);
+        ChartPanel chartPanel = histogramObject.createChartPanel();
+        histogramPanel.removeAll();
+        histogramPanel.add(chartPanel);
 
     }
 
