@@ -27,29 +27,20 @@ public abstract class CommonOperations implements TypeOfImage {
   @Override
   public TypeOfImage verticalFlip() {
     TypeofImageObject[][] flippedImage = getMatrix(this.width, this.height);
-    System.out.println(this.width);
-    System.out.println(this.height);
-    //flip the columns
     for (int row = 0; row < this.pixels.length; row++) {
-      for (int col = 0; col < this.pixels[row].length / 2; col++) {
-        TypeofImageObject temp = this.pixels[row][col];
-        flippedImage[row][col] = this.pixels[row][this.pixels[row].length - col - 1];
-        flippedImage[row][flippedImage[row].length - col - 1] = temp;
+      for (int col = 0; col < this.pixels[row].length; col++) {
+        flippedImage[row][col] = this.pixels[this.pixels.length - row - 1][col];
       }
     }
-    System.out.println(this.width);
-    System.out.println(this.height);
     return getOImage(flippedImage, this.width, this.height);
   }
 
   @Override
   public TypeOfImage horizontalFlip() {
     TypeofImageObject[][] flippedImage = getMatrix(this.width, this.height);
-    for (int col = 0; col < this.pixels[0].length; col++) {
-      for (int row = 0; row < this.pixels.length / 2; row++) {
-        TypeofImageObject temp = this.pixels[row][col];
-        flippedImage[row][col] = this.pixels[this.pixels.length - row - 1][col];
-        flippedImage[flippedImage.length - row - 1][col] = temp;
+    for (int row = 0; row < this.pixels.length; row++) {
+      for (int col = 0; col < this.pixels[row].length; col++) {
+        flippedImage[row][col] = this.pixels[row][this.pixels[row].length - col - 1];
       }
     }
     return getOImage(flippedImage, this.width, this.height);

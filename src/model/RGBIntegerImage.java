@@ -56,7 +56,7 @@ public class RGBIntegerImage extends ThreeChannelObjectOperations {
 
   @Override
   public TypeOfImage getOImage(TypeofImageObject[][] flippedImage, int width, int height) {
-    return new RGBIntegerImage(flippedImage, width, height);
+    return new RGBIntegerImage(flippedImage, this.width, this.height);
   }
 
   @Override
