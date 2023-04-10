@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.awt.event.AWTEventListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -76,6 +77,8 @@ public class ImageProcessorUI extends JFrame {
         //ImageViewPanel
         JPanel imageViewPanel = new JPanel();
         imageViewPanel.setLayout(new BorderLayout());
+        imageLabel.setHorizontalAlignment(JLabel.CENTER);
+        imageLabel.setVerticalAlignment(JLabel.CENTER);
         imageViewPanel.add(imageLabel, BorderLayout.CENTER);
 
         JScrollPane scrollPane = new JScrollPane();
@@ -95,7 +98,7 @@ public class ImageProcessorUI extends JFrame {
 
 // Add newPanel to the top of buttonPanel2 with spacing
         JPanel mainPanel = new JPanel(new BorderLayout());
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 0));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
         mainPanel.add(newPanel, BorderLayout.NORTH);
         mainPanel.add(Box.createVerticalStrut(50)); // Add spacing
 
@@ -626,6 +629,7 @@ public class ImageProcessorUI extends JFrame {
         pack();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
+
     }
 
 
