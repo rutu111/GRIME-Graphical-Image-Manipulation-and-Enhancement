@@ -82,7 +82,6 @@ public class ImageProcessorUI extends JFrame {
         scrollPane.setViewportView(imageViewPanel);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-
         imagePanel.add(scrollPane, BorderLayout.CENTER);
 
 
@@ -96,12 +95,12 @@ public class ImageProcessorUI extends JFrame {
 
 // Add newPanel to the top of buttonPanel2 with spacing
         JPanel mainPanel = new JPanel(new BorderLayout());
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 50, 0, 0));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 0));
         mainPanel.add(newPanel, BorderLayout.NORTH);
         mainPanel.add(Box.createVerticalStrut(50)); // Add spacing
 
 // Add all buttons to buttonPanel2 below the new panel with spacing
-        JPanel buttonPanel2 = new JPanel(new GridLayout(16, 1, 10, 10));
+        JPanel buttonPanel2 = new JPanel(new GridLayout(18, 1, 10, 10));
         buttonPanel2.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 50));
         buttonPanel2.setBorder(BorderFactory.createTitledBorder("OPERATIONS"));
 
@@ -161,10 +160,13 @@ public class ImageProcessorUI extends JFrame {
         errorPanel.setPreferredSize(new Dimension(0, 375));
 
 
+
+
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, histogramPanel, errorPanel);
         splitPane.setResizeWeight(0.5); // adjust the divider position
         splitPane.setDividerLocation(0.5);
         imagePanel.add(splitPane, BorderLayout.SOUTH);
+
 
         add(buttonPanel2, BorderLayout.EAST);
 
