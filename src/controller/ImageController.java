@@ -52,6 +52,21 @@ public class ImageController implements ImageProcessCallbacks {
     this.model = model;
     this.in = in;
     this.view = view;
+
+    commandMap = new HashMap<>();
+    commandMap.put("load", l -> new Load(l));
+    commandMap.put("brighten", l -> new Brighten(l));
+    commandMap.put("vertical-flip", l -> new VerticalFlip(l));
+    commandMap.put("horizontal-flip", l -> new HorizontalFlip(l));
+    commandMap.put("greyscale", l -> new ValueIntensityLumaAndVisualizeComponent(l));
+    commandMap.put("rgb-split", l -> new RGBSplit(l));
+    commandMap.put("rgb-combine", l -> new Combine(l));
+    commandMap.put("filter-blur", l -> new Blur(l));
+    commandMap.put("filter-sharpen", l -> new Sharpen(l));
+    commandMap.put("transform-greyscale", l -> new TransformGreyscale(l));
+    commandMap.put("transform-sepia", l -> new Sepia(l));
+    commandMap.put("dither", l -> new Dither(l));
+    commandMap.put("save", l -> new Save(l));
   }
 
 
@@ -68,20 +83,6 @@ public class ImageController implements ImageProcessCallbacks {
     Scanner scanner = new Scanner(this.in);
 
     //initiazing the hashmap for command design pattern.
-    commandMap = new HashMap<>();
-    commandMap.put("load", l -> new Load(l));
-    commandMap.put("brighten", l -> new Brighten(l));
-    commandMap.put("vertical-flip", l -> new VerticalFlip(l));
-    commandMap.put("horizontal-flip", l -> new HorizontalFlip(l));
-    commandMap.put("greyscale", l -> new ValueIntensityLumaAndVisualizeComponent(l));
-    commandMap.put("rgb-split", l -> new RGBSplit(l));
-    commandMap.put("rgb-combine", l -> new Combine(l));
-    commandMap.put("filter-blur", l -> new Blur(l));
-    commandMap.put("filter-sharpen", l -> new Sharpen(l));
-    commandMap.put("transform-greyscale", l -> new TransformGreyscale(l));
-    commandMap.put("transform-sepia", l -> new Sepia(l));
-    commandMap.put("dither", l -> new Dither(l));
-    commandMap.put("save", l -> new Save(l));
 
     while (go) {
       try {
@@ -205,21 +206,6 @@ public class ImageController implements ImageProcessCallbacks {
   }
   @Override
   public void executeFeatures(String[] actionCommands, ViewI viewGUI) throws IOException {
-
-    commandMap = new HashMap<>();
-    commandMap.put("load", l -> new Load(l));
-    commandMap.put("brighten", l -> new Brighten(l));
-    commandMap.put("vertical-flip", l -> new VerticalFlip(l));
-    commandMap.put("horizontal-flip", l -> new HorizontalFlip(l));
-    commandMap.put("greyscale", l -> new ValueIntensityLumaAndVisualizeComponent(l));
-    commandMap.put("rgb-split", l -> new RGBSplit(l));
-    commandMap.put("rgb-combine", l -> new Combine(l));
-    commandMap.put("filter-blur", l -> new Blur(l));
-    commandMap.put("filter-sharpen", l -> new Sharpen(l));
-    commandMap.put("transform-greyscale", l -> new TransformGreyscale(l));
-    commandMap.put("transform-sepia", l -> new Sepia(l));
-    commandMap.put("dither", l -> new Dither(l));
-    commandMap.put("save", l -> new Save(l));
 
     try {
       CommandDesignOperations c;
