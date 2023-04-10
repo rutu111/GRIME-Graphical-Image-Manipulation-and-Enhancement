@@ -2,6 +2,7 @@ package view;
 
 import controller.ImageProcessCallbacks;
 
+import javax.swing.*;
 import java.io.IOException;
 
 /**
@@ -24,6 +25,7 @@ public interface ViewI {
    * @throws IOException if there is an IO exception..
    */
   void printOutput(String output) throws IOException;
+
 
 
 }

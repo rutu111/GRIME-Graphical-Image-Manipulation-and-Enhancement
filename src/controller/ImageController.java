@@ -204,7 +204,8 @@ public class ImageController implements ImageProcessCallbacks {
 
   }
   @Override
-  public void executeFeatures(String[] actionCommands, ViewI viewx) throws IOException {
+  public void executeFeatures(String[] actionCommands, ViewI viewGUI) throws IOException {
+
     commandMap = new HashMap<>();
     commandMap.put("load", l -> new Load(l));
     commandMap.put("brighten", l -> new Brighten(l));
@@ -230,7 +231,7 @@ public class ImageController implements ImageProcessCallbacks {
       } else {
         try {
           c = cmd.apply(actionCommands);
-          c.goCommand(this.model, viewx); //execute the command
+          c.goCommand(this.model, viewGUI); //execute the command
           //System.out.println("Success");
         } catch (NoSuchFieldException | IllegalAccessException | IOException ex) {
           throw new RuntimeException(ex);
@@ -238,10 +239,10 @@ public class ImageController implements ImageProcessCallbacks {
       }
     } catch (IllegalArgumentException e) {
       go_script = false;
-      viewx.printOutput("Error: " + e.getMessage() + "\n");
+      viewGUI.printOutput("Error: " + e.getMessage() + "\n");
       throw e;
     } catch (NoSuchElementException e) {
-      viewx.printOutput("Error: " + e.getMessage() + "\n");
+      viewGUI.printOutput("Error: " + e.getMessage() + "\n");
       throw e;
     }
   }

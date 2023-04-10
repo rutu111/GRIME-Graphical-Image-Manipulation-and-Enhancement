@@ -42,7 +42,7 @@ public class ImageProcessorUI extends JFrame {
     public ImageProcessorUI(Operations model, ImageProcessCallbacks callbacks, String imageNameX) {
         super();
         imageName = imageNameX;
-        System.out.println(imageName);
+
         this.setTitle("Image Processor");
         this.setSize(10000, 10000);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

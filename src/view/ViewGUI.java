@@ -24,7 +24,7 @@ public class ViewGUI extends JFrame implements ViewI  {
     }
 
     @Override
-    public void printOutput(String output)  {
+    public void printOutput(String output) {
         String outputx = "<html>" + output + "</html>";
         label.setText(outputx);
 
