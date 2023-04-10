@@ -276,7 +276,7 @@ public class ImageUtil {
    * @throws IOException if IOexception occurs..
    */
   public static void imgeIOWrite(Operations model, String filePath, String imageName)
-      throws IOException {
+      throws IOException, FileNotFoundException {
 
     TypeOfImage imageOutput;
 
@@ -292,10 +292,10 @@ public class ImageUtil {
       BufferedImage image;
       String fileTypeStore = filePath.split("\\.")[1];
       if (imageOutput.getPixels()[0][0].hasAlpha() != null & fileTypeStore.equals("ppm")
-          | imageOutput.getPixels()[0][0].hasAlpha() != null & fileTypeStore.equals("bmp")
-          | imageOutput.getPixels()[0][0].hasAlpha() != null & fileTypeStore.equals("jpg")
-          | imageOutput.getPixels()[0][0].hasAlpha() != null & fileTypeStore.equals("jpeg")
-          | imageOutput.getPixels()[0][0].hasAlpha() == null) {
+              | imageOutput.getPixels()[0][0].hasAlpha() != null & fileTypeStore.equals("bmp")
+              | imageOutput.getPixels()[0][0].hasAlpha() != null & fileTypeStore.equals("jpg")
+              | imageOutput.getPixels()[0][0].hasAlpha() != null & fileTypeStore.equals("jpeg")
+              | imageOutput.getPixels()[0][0].hasAlpha() == null) {
         image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         for (int y = 0; y < imageOutput.getHeight(); y++) {
           for (int x = 0; x < imageOutput.getWidth(); x++) {
@@ -332,7 +332,9 @@ public class ImageUtil {
       String fileType = filePath.split("\\.")[1];
       ImageIO.write(image, fileType, output);
 
-    } catch (Exception e) {
+    } catch (FileNotFoundException e) {
+        throw e;
+      } catch (Exception e) {
       throw e;
     }
 

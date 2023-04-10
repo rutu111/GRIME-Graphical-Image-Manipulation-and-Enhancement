@@ -7,7 +7,7 @@ import java.util.Objects;
  */
 public class RGBIntegerAlphaObject implements TypeofImageObject {
 
-  public final Integer alpha;
+  protected final Integer alpha;
   protected final Integer red;
   protected final Integer green;
   protected final Integer blue;

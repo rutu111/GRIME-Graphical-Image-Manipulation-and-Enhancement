@@ -7,9 +7,9 @@ package model;
  */
 public abstract class CommonOperations implements TypeOfImage {
 
-  protected TypeofImageObject[][] pixels;
-  protected int width;
-  protected int height;
+  protected final TypeofImageObject[][] pixels;
+  protected final int width;
+  protected final int height;
 
   /**
    * Constructor represents a TypeOfImage containing TypeofImageObject objects.

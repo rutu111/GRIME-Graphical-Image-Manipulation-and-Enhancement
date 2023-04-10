@@ -51,6 +51,12 @@ public class Load implements CommandDesignOperations {
       view.printOutput("Loaded image '" + imageName + "' from '" + imagePath + "'" + "\n");
     } catch (FileNotFoundException e) {
       view.printOutput("File not found: " + imageName + "\n");
-    }
+    } catch (IllegalArgumentException e) {
+      view.printOutput( "Invalid file extension! This program only accepts PPM, JPG, PNG and BMP.");
+    }  catch (IOException e) {
+    view.printOutput(e.getMessage());
+    } catch (ArrayIndexOutOfBoundsException e) {
+    view.printOutput("Please provide a valid path");
+  }
   }
 }

@@ -15,6 +15,8 @@ import controller.commands.ValueIntensityLumaAndVisualizeComponent;
 import controller.commands.VerticalFlip;
 import model.Operations;
 import view.ImageProcessorUI;
+import view.View;
+import view.ViewGUI;
 import view.ViewI;
 
 import java.io.File;
@@ -236,6 +238,9 @@ public class ImageController implements ImageProcessCallbacks {
       }
     } catch (IllegalArgumentException e) {
       go_script = false;
+      viewx.printOutput("Error: " + e.getMessage() + "\n");
+      throw e;
+    } catch (NoSuchElementException e) {
       viewx.printOutput("Error: " + e.getMessage() + "\n");
       throw e;
     }

@@ -16,14 +16,17 @@ public class ViewGUI extends JFrame implements ViewI  {
         label = new JLabel();
         errorPanel.add(label);
     }
+
+
     @Override
     public void printWelcomeMessage() {
 
     }
 
     @Override
-    public void printOutput(String output) throws IOException {
-        label.setText(output);
+    public void printOutput(String output)  {
+        String outputx = "<html>" + output + "</html>";
+        label.setText(outputx);
 
     }
 

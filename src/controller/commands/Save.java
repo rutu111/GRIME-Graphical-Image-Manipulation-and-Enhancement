@@ -50,6 +50,12 @@ public class Save implements CommandDesignOperations {
       view.printOutput("Image " + imageName + " saved as file: " + imagePath + "\n");
     } catch (FileNotFoundException e) {
       view.printOutput("File path does not exist.\n");
+    } catch (IllegalArgumentException e) {
+      view.printOutput( "Invalid file extension! This program only accepts PPM, JPG, PNG and BMP.");
+    } catch (IOException e) {
+      view.printOutput(e.getMessage());
+    } catch (ArrayIndexOutOfBoundsException e) {
+      view.printOutput("Please provide a valid path");
     }
   }
 }
