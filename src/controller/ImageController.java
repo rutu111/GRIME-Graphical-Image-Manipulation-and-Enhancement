@@ -54,7 +54,6 @@ public class ImageController implements ImageProcessCallbacks {
     this.model = model;
     this.in = in;
     this.view = view;
-
     commandMap = new HashMap<>();
     commandMap.put("load", l -> new Load(l));
     commandMap.put("brighten", l -> new Brighten(l));
@@ -71,6 +70,57 @@ public class ImageController implements ImageProcessCallbacks {
     commandMap.put("save", l -> new Save(l));
   }
 
+  public void runCode() throws IOException {
+    // no command-line arguments, run GUI mode
+    GUIOperations();
+    boolean go_code = true;
+    Scanner scanner = new Scanner(this.in);
+    while (go_code) {
+      try {
+        String command;
+        command = scanner.nextLine().trim();
+        String[] commandParts = command.split(" ");
+        if (commandParts[0].equals("-file")) {
+          if (commandParts.length != 2) {
+            throw new IllegalArgumentException("Invalid command format.\n");
+          }
+          String filename = commandParts[1];
+          if (!filename.split("\\.")[1].equals("txt")) {
+            throw new IllegalArgumentException("Only txt files are accepted as script files!\n");
+          }
+          readScriptFile(filename);
+          if (go_script) {
+            view.printOutput("Script file ran successfully \n");
+          }
+        } else if (commandParts[0].equals("-text")) {
+          if (commandParts.length != 1) {
+            throw new IllegalArgumentException("Invalid command format.\n");
+          }
+          run();
+        } else if (commandParts[0].equals("-exit")) {
+            if (commandParts.length != 1) {
+              throw new IllegalArgumentException("Invalid command format.");
+            }
+            view.printOutput("Exit the program \n");
+            go_code = false;
+          }
+          else {
+          view.printOutput("Please enter a valid command \n");
+        }
+      } catch (NoSuchFieldException e) {
+        throw new RuntimeException(e);
+      } catch (IllegalAccessException e) {
+        throw new RuntimeException(e);
+      } catch (IllegalArgumentException e) {
+        view.printOutput("Error: " + e.getMessage() + "\n");
+      } catch (Exception e) {
+        view.printOutput("Error: " + e.getMessage() + "\n");
+      }
+
+    }
+    scanner.close();
+  }
+
 
   /**
    * Run method should run the command based on user input. 1. Runs:
@@ -85,7 +135,6 @@ public class ImageController implements ImageProcessCallbacks {
     Scanner scanner = new Scanner(this.in);
 
     //initiazing the hashmap for command design pattern.
-
     while (go) {
       try {
         String command;
@@ -94,28 +143,13 @@ public class ImageController implements ImageProcessCallbacks {
         if (commandParts.length == 0) {
           return;
         } else {
-          if (commandParts[0].equals("-file")) {
-            if (commandParts.length != 2) {
-              throw new IllegalArgumentException("Invalid command format.");
-            }
-            String filename = commandParts[1];
-            if (!filename.split("\\.")[1].equals("txt")) {
-              throw new IllegalArgumentException("Only txt files are accepted as script files!");
-            }
-            readScriptFile(filename);
-            if (go_script) {
-              view.printOutput("Script file ran successfully \n");
-            }
-          } else if (commandParts[0].equals("exit")) {
+           if (commandParts[0].equals("exit")) {
             if (commandParts.length != 1) {
               throw new IllegalArgumentException("Invalid command format.");
             }
-            go = false;
-            view.printOutput("Exit the program \n");
-          } else if (commandParts[0].equals("gui")){
-            GUIOperations();
-          }
-          else {
+            view.printOutput("Exit text mode \n");
+            return;
+          } else {
             commandExecutionNew(commandParts);
           }
         }
