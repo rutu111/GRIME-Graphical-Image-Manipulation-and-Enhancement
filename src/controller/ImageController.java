@@ -54,7 +54,6 @@ public class ImageController implements ImageProcessCallbacks {
     this.model = model;
     this.in = in;
     this.view = view;
-
     commandMap = new HashMap<>();
     commandMap.put("load", l -> new Load(l));
     commandMap.put("brighten", l -> new Brighten(l));
@@ -71,35 +70,49 @@ public class ImageController implements ImageProcessCallbacks {
     commandMap.put("save", l -> new Save(l));
   }
 
-  public void runCode() throws IOException, NoSuchFieldException, IllegalAccessException {
+  public void runCode() throws IOException {
     // no command-line arguments, run GUI mode
     GUIOperations();
-    // check for command-line arguments
+    boolean go = true;
     Scanner scanner = new Scanner(this.in);
-    String command;
-    command = scanner.nextLine().trim();
-    String[] commandParts = command.split(" ");
-    if (commandParts.length > 0) {
-      if (commandParts[0].equals("-file")) {
-        if (commandParts.length != 2) {
-          throw new IllegalArgumentException("Invalid command format.");
+    while (go) {
+      try {
+        String command;
+        command = scanner.nextLine().trim();
+        String[] commandParts = command.split(" ");
+        if (commandParts.length == 0 || commandParts[0].trim().isEmpty()) {
+          view.printOutput("Please enter appropriate command. \n");
+          return;
         }
-        String filename = commandParts[1];
-        if (!filename.split("\\.")[1].equals("txt")) {
-          throw new IllegalArgumentException("Only txt files are accepted as script files!");
+        if (commandParts[0].equals("-file")) {
+          if (commandParts.length != 2) {
+            throw new IllegalArgumentException("Invalid command format.");
+          }
+          String filename = commandParts[1];
+          if (!filename.split("\\.")[1].equals("txt")) {
+            throw new IllegalArgumentException("Only txt files are accepted as script files!");
+          }
+          readScriptFile(filename);
+          if (go_script) {
+            view.printOutput("Script file ran successfully \n");
+          }
+          return;
+        } else if (commandParts[0].equals("-text")) {
+          if (commandParts.length != 1) {
+            throw new IllegalArgumentException("Invalid command format.");
+          }else{
+            view.printOutput("Please enter a valid command");
+          }
+          run();
+          return;
         }
-        readScriptFile(filename);
-        if (go_script) {
-          view.printOutput("Script file ran successfully \n");
-        }
-        return;
-      } else if (commandParts[0].equals("-text")) {
-        // run in interactive text mode
-        run();
-        return;
+      } catch (IllegalArgumentException e) {
+        view.printOutput("Error: " + e.getMessage() + "\n");
+      } catch (Exception e) {
+        view.printOutput("Error: " + e.getMessage() + "\n");
       }
     }
-
+    scanner.close();
   }
 
   /**
@@ -123,7 +136,7 @@ public class ImageController implements ImageProcessCallbacks {
         if (commandParts.length == 0) {
           return;
         } else {
-          if (commandParts[0].equals("-file")) {
+          if (commandParts[0].equals("run")) {
             if (commandParts.length != 2) {
               throw new IllegalArgumentException("Invalid command format.");
             }
