@@ -14,6 +14,8 @@ import controller.commands.TransformGreyscale;
 import controller.commands.ValueIntensityLumaAndVisualizeComponent;
 import controller.commands.VerticalFlip;
 import model.Operations;
+import model.ROModel;
+import model.ROModelImpl;
 import view.ImageProcessorUI;
 import view.View;
 import view.ViewGUI;
@@ -92,7 +94,7 @@ public class ImageController implements ImageProcessCallbacks {
         if (commandParts.length == 0) {
           return;
         } else {
-          if (commandParts[0].equals("run")) {
+          if (commandParts[0].equals("-file")) {
             if (commandParts.length != 2) {
               throw new IllegalArgumentException("Invalid command format.");
             }
@@ -201,7 +203,8 @@ public class ImageController implements ImageProcessCallbacks {
   public void GUIOperations() {
     //open up the window
     callbacks = new ImageController(model, in, view);
-    ImageProcessorUI GUI = new ImageProcessorUI(this.model, callbacks, "");
+    ROModel modelRO = new ROModelImpl(this.model);
+    ImageProcessorUI GUI = new ImageProcessorUI(modelRO, callbacks, "");
 
   }
   @Override
@@ -218,7 +221,7 @@ public class ImageController implements ImageProcessCallbacks {
         try {
           c = cmd.apply(actionCommands);
           c.goCommand(this.model, viewGUI); //execute the command
-          //System.out.println("Success");
+          //System.out.println("Success");7
         } catch (NoSuchFieldException | IllegalAccessException | IOException ex) {
           throw new RuntimeException(ex);
         }

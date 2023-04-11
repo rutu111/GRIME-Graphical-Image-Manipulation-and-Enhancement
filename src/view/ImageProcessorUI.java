@@ -18,6 +18,7 @@ import controller.commands.Load;
 import controller.commands.Save;
 import controller.commands.TransformGreyscale;
 import model.Operations;
+import model.ROModel;
 import model.TypeOfImage;
 import model.TypeofImageObject;
 import org.jfree.chart.ChartFactory;
@@ -39,7 +40,7 @@ public class ImageProcessorUI extends JFrame {
     private JFileChooser fileChooser;
 
 
-    public ImageProcessorUI(Operations model, ImageProcessCallbacks callbacks, String imageNameX) {
+    public ImageProcessorUI(ROModel model, ImageProcessCallbacks callbacks, String imageNameX) {
         super();
         imageName = imageNameX;
 
