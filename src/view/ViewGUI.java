@@ -1,16 +1,25 @@
 package view;
 
-import controller.ImageProcessCallbacks;
-
 import javax.swing.*;
-import java.io.IOException;
 
-public class ViewGUI extends JFrame implements ViewI  {
+/**
+ * View class for thr GUI.
+ * Takes in error panel object as ar argument
+ * so that we can display  messages on the GUI.
+ */
+
+public class ViewGUI extends JFrame implements ViewI {
 
     private JPanel errorPanel;
 
-    JLabel label;
+    private JLabel label;
 
+    /**
+     * Constructor takes in an error panel object.
+     * Purpose of doing this is to display logs on the GUI.
+     *
+     * @param errorPanel a panel to display log messages.
+     */
     public ViewGUI(JPanel errorPanel) {
         this.errorPanel = errorPanel;
         label = new JLabel();

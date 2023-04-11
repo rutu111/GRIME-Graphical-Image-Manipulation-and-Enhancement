@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Paint;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -14,7 +15,9 @@ import org.jfree.chart.renderer.xy.StandardXYBarPainter;
 import org.jfree.chart.renderer.xy.XYBarRenderer;
 import org.jfree.data.statistics.HistogramDataset;
 
-
+/**
+ * The following class is usedto create histograms on the GUI.
+ */
 public class Histogram {
 
     private static final int BINS = 256;
@@ -22,10 +25,20 @@ public class Histogram {
     private XYBarRenderer renderer;
     private BufferedImage image;
 
-   public Histogram(BufferedImage image) {
-       this.image = image;
-   }
+    /**
+     * The following constructor takes in a buffer image
+     * as ar argument and sets it.
+     * @param image buffered image.
+     */
+    public Histogram(BufferedImage image) {
+        this.image = image;
+    }
 
+    /**
+     * This function creates a chart panel containing
+     * a histogram with red, blue, green and intensity line graphs.
+     * @return a chart panel.
+     */
     public ChartPanel createChartPanel() {
         // dataset
         dataset = new HistogramDataset();

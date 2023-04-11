@@ -1,5 +1,8 @@
 package model;
 
+/**
+ * Read only model created for interactions between the GUI and model.
+ */
 public interface ROModel {
 
     /**
