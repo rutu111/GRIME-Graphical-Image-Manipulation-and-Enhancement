@@ -71,6 +71,36 @@ public class ImageController implements ImageProcessCallbacks {
     commandMap.put("save", l -> new Save(l));
   }
 
+  public void runCode() throws IOException, NoSuchFieldException, IllegalAccessException {
+    // no command-line arguments, run GUI mode
+    GUIOperations();
+    // check for command-line arguments
+    Scanner scanner = new Scanner(this.in);
+    String command;
+    command = scanner.nextLine().trim();
+    String[] commandParts = command.split(" ");
+    if (commandParts.length > 0) {
+      if (commandParts[0].equals("-file")) {
+        if (commandParts.length != 2) {
+          throw new IllegalArgumentException("Invalid command format.");
+        }
+        String filename = commandParts[1];
+        if (!filename.split("\\.")[1].equals("txt")) {
+          throw new IllegalArgumentException("Only txt files are accepted as script files!");
+        }
+        readScriptFile(filename);
+        if (go_script) {
+          view.printOutput("Script file ran successfully \n");
+        }
+        return;
+      } else if (commandParts[0].equals("-text")) {
+        // run in interactive text mode
+        run();
+        return;
+      }
+    }
+
+  }
 
   /**
    * Run method should run the command based on user input. 1. Runs:
@@ -85,7 +115,6 @@ public class ImageController implements ImageProcessCallbacks {
     Scanner scanner = new Scanner(this.in);
 
     //initiazing the hashmap for command design pattern.
-
     while (go) {
       try {
         String command;
