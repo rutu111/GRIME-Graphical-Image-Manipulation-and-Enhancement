@@ -31,8 +31,9 @@ public class ImageProcessorUI extends JFrame {
 
     /**
      * Constructor for the GUI class.
-     * @param model Takes in the Read only model as the input.
-     * @param callbacks callbacks to communicate with the controller.
+     *
+     * @param model      Takes in the Read only model as the input.
+     * @param callbacks  callbacks to communicate with the controller.
      * @param imageNameX keeps track of the current image on screen.
      */
     public ImageProcessorUI(ROModel model, ImageProcessCallbacks callbacks, String imageNameX) {
@@ -595,6 +596,7 @@ public class ImageProcessorUI extends JFrame {
             }
         });
 
+        //this is when split is called with image names
         if (!imageName.isEmpty()) {
             TypeOfImage testgrey = model.getObject(imageName);
             loadImageOnscreen(testgrey);
@@ -608,6 +610,11 @@ public class ImageProcessorUI extends JFrame {
     }
 
 
+    /**
+     * Function to display histogram.
+     *
+     * @param image takes an image as argument.
+     */
     public void histogram(TypeOfImage image) {
 
         int width = image.getWidth();
@@ -637,7 +644,11 @@ public class ImageProcessorUI extends JFrame {
 
     }
 
-
+    /**
+     * Displays image on screen.
+     *
+     * @param image takes image as argument.
+     */
     public void loadImageOnscreen(TypeOfImage image) {
         int width = image.getWidth();
         int height = image.getHeight();

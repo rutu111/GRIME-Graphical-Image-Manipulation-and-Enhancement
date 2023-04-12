@@ -3,8 +3,8 @@
     <output-path>$PROJECT_DIR$/out/artifacts/assignnent4_take2_jar</output-path>
     <root id="archive" name="assignnent4_take2.jar">
       <element id="module-output" name="assignnent4_take2" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/../../../jfreechart-1.0.19/lib/jfreechart-1.0.19.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/../../../jcommon-1.0.23/jcommon-1.0.23.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/jcommon-1.0.23/jcommon-1.0.23/jcommon-1.0.23.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/jfreechart-1.0.19/jfreechart-1.0.19/lib/jfreechart-1.0.19.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

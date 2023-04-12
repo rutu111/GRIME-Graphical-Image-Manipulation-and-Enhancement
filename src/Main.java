@@ -2,6 +2,7 @@ import model.Model;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 
 import model.Operations;
 import view.ImageProcessorUI;
@@ -28,6 +29,10 @@ public class Main {
             controller.runMain(args);
         } catch (IOException e) {
             view.printOutput("Error: " + e.getMessage() + "\n");
+        } catch (ArrayIndexOutOfBoundsException e) {
+            view.printOutput("Please provide a valid path");
+        } catch (IllegalArgumentException e) {
+            view.printOutput("Please provide a valid path");
         }
     }
 }

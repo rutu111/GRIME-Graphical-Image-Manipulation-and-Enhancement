@@ -70,6 +70,10 @@ public class ImageController implements ImageProcessCallbacks {
     commandMap.put("save", l -> new Save(l));
   }
 
+  /**
+   * Thi function handles the command line interaction.
+   * @throws IOException if one ocurs.
+   */
   public void runCode() throws IOException {
     // no command-line arguments, run GUI mode
     GUIOperations();
@@ -121,6 +125,13 @@ public class ImageController implements ImageProcessCallbacks {
     scanner.close();
   }
 
+  /**
+   * this is the first function called from the main
+   * @param args
+   * @throws IOException
+   * @throws NoSuchFieldException
+   * @throws IllegalAccessException
+   */
   public void runMain(String[] args) throws IOException, NoSuchFieldException, IllegalAccessException {
     boolean guiMode = false;
     boolean textMode = false;
@@ -139,7 +150,7 @@ public class ImageController implements ImageProcessCallbacks {
           throw new IllegalArgumentException("File path not provided");
         }
       } else {
-        throw new IllegalArgumentException("Invalid command format");
+        view.printOutput("Please enter a valid command \n" );
       }
     } else {
       guiMode = true;
@@ -150,7 +161,7 @@ public class ImageController implements ImageProcessCallbacks {
       run();
     } else if (fileMode) {
       if (!filePath.split("\\.")[1].equals("txt")) {
-        throw new IllegalArgumentException("Only txt files are accepted as script files!\n");
+        view.printOutput("Only txt files are accepted as script files!\n");
       }
       readScriptFile(filePath);
       if (go_script) {
