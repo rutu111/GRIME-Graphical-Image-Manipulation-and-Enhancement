@@ -24,6 +24,10 @@ public class Main {
         Operations model = new Model();
         View view = new View(System.out);
         ImageController controller = new ImageController(model, new InputStreamReader(System.in), view);
-        controller.runCode();
+        try {
+            controller.runMain(args);
+        } catch (IOException e) {
+            view.printOutput("Error: " + e.getMessage() + "\n");
+        }
     }
 }
