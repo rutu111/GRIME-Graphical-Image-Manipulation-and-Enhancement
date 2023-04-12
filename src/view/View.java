@@ -25,6 +25,7 @@ public class View implements ViewI {
   /**
    * Prints the welcome message and the list of available commands.
    */
+  @Override
   public void printWelcomeMessage() {
     System.out.println("Welcome to image processing with PPM files! You can enter commands here. "
             + "Type exit to exit the program anytime.\n");

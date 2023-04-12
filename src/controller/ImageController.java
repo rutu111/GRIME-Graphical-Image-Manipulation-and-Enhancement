@@ -234,6 +234,9 @@ public class ImageController implements ImageProcessCallbacks {
     }
   }
 
+  /**
+   * The following method is used to create a GUI object and work with it.
+   */
   public void GUIOperations() {
     //open up the window
     callbacks = new ImageController(model, in, view);
@@ -241,6 +244,16 @@ public class ImageController implements ImageProcessCallbacks {
     ImageProcessorUI GUI = new ImageProcessorUI(modelRO, callbacks, "");
 
   }
+
+  /**
+   * The following method is a callback method from the GUI.
+   * When buttons are clicked, they pass a list of commands to this method
+   * and a view object. The function then goes and fetches the appropiate
+   * lambda function (same as the function above) passed on the operation.
+   * @param actionCommands list of commands mimicking user input when button clickec..
+   * @param viewGUI viewGUI object.
+   * @throws IOException if one occurs.
+   */
   @Override
   public void executeFeatures(String[] actionCommands, ViewI viewGUI) throws IOException {
 

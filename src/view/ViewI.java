@@ -1,8 +1,5 @@
 package view;
 
-import controller.ImageProcessCallbacks;
-
-import javax.swing.*;
 import java.io.IOException;
 
 /**

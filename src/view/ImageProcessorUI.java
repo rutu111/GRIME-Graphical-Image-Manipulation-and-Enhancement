@@ -1,45 +1,40 @@
 package view;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+
 import java.awt.*;
-import java.awt.event.AWTEventListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.NoSuchElementException;
+
 
 import controller.ImageProcessCallbacks;
-import controller.commands.Load;
-import controller.commands.Save;
-import controller.commands.TransformGreyscale;
-import model.Operations;
 import model.ROModel;
 import model.TypeOfImage;
 import model.TypeofImageObject;
-import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
 
-
+/**
+ * Class fpr the GUI.
+ */
 public class ImageProcessorUI extends JFrame {
 
-    private  String imageName;
-    JPanel imagePanel;
-    JPanel histogramPanel;
+    private JPanel imagePanel;
+    private JPanel histogramPanel;
+    private String imageName;
     private JButton uploadButton;
     private JButton saveButton;
     private JLabel imageLabel;
     private JFileChooser fileChooser;
 
-
+    /**
+     * Constructor for the GUI class.
+     * @param model Takes in the Read only model as the input.
+     * @param callbacks callbacks to communicate with the controller.
+     * @param imageNameX keeps track of the current image on screen.
+     */
     public ImageProcessorUI(ROModel model, ImageProcessCallbacks callbacks, String imageNameX) {
         super();
         imageName = imageNameX;
@@ -61,14 +56,6 @@ public class ImageProcessorUI extends JFrame {
         buttonPanel.add(uploadButton);
         buttonPanel.add(saveButton);
 
-        //add(buttonPanel, BorderLayout.NORTH);
-        //add(imageLabel, BorderLayout.CENTER);
-        //imagePanel.setPreferredSize(new Dimension(800, 600));
-
-        //JPanel imagePanel = new JPanel(new BorderLayout());
-        //imagePanel.add(imageLabel, BorderLayout.CENTER);
-
-
         //ImagePanel
         imagePanel = new JPanel();
         imagePanel.setBorder(BorderFactory.createTitledBorder("Image Panel"));
@@ -88,22 +75,14 @@ public class ImageProcessorUI extends JFrame {
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         imagePanel.add(scrollPane, BorderLayout.CENTER);
 
-
-        //scrollPane.add(imageViewPanel, BorderLayout.CENTER);
-        //imagePanel.add(scrollPane);
-
-
-// Add buttonPanel to the center of a new panel
         JPanel newPanel = new JPanel(new BorderLayout());
         newPanel.add(buttonPanel, BorderLayout.NORTH);
 
-// Add newPanel to the top of buttonPanel2 with spacing
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
         mainPanel.add(newPanel, BorderLayout.NORTH);
         mainPanel.add(Box.createVerticalStrut(50)); // Add spacing
 
-// Add all buttons to buttonPanel2 below the new panel with spacing
         JPanel buttonPanel2 = new JPanel(new GridLayout(18, 1, 10, 10));
         buttonPanel2.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 50));
         buttonPanel2.setBorder(BorderFactory.createTitledBorder("OPERATIONS"));
@@ -149,8 +128,6 @@ public class ImageProcessorUI extends JFrame {
         rightPanel.add(buttonPanel2, BorderLayout.NORTH);
         add(rightPanel, BorderLayout.EAST);
 
-        // Create the button panel and add the buttons
-
 
         histogramPanel = new JPanel();
         histogramPanel.setBorder(BorderFactory.createTitledBorder("HISTOGRAM"));
@@ -164,13 +141,10 @@ public class ImageProcessorUI extends JFrame {
         errorPanel.setPreferredSize(new Dimension(0, 375));
 
 
-
-
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, histogramPanel, errorPanel);
         splitPane.setResizeWeight(0.5); // adjust the divider position
         splitPane.setDividerLocation(0.5);
         imagePanel.add(splitPane, BorderLayout.SOUTH);
-
 
         add(buttonPanel2, BorderLayout.EAST);
 
@@ -492,8 +466,8 @@ public class ImageProcessorUI extends JFrame {
                         TypeOfImage testgrey = model.getObject(imageName);
                         loadImageOnscreen(testgrey);
                         histogram(testgrey);
+                    }
                 }
-            }
             }
         });
 
@@ -655,7 +629,6 @@ public class ImageProcessorUI extends JFrame {
             }
         }
 
-        //make sure intensity is also there where creating the histogram.
 
         Histogram histogramObject = new Histogram(imageBuffer);
         ChartPanel chartPanel = histogramObject.createChartPanel();
