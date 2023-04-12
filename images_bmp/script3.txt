@@ -11,7 +11,7 @@ vertical-flip koala koala-vertical
 horizontal-flip koala-vertical koala-vertical-horizontal
 
 #create a greyscale using only the value component, as an image koala-greyscale
-greyscale value-component koala koala-greyscale
+greyscale component-value koala koala-greyscale
 
 #save koala-brighter
 save images_bmp/koala-brighter.bmp koala-brighter
