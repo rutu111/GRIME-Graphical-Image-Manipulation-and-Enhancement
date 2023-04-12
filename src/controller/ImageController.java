@@ -121,6 +121,43 @@ public class ImageController implements ImageProcessCallbacks {
     scanner.close();
   }
 
+  public void runMain(String[] args) throws IOException, NoSuchFieldException, IllegalAccessException {
+    boolean guiMode = false;
+    boolean textMode = false;
+    boolean fileMode = false;
+    String filePath = null;
+
+    // Check for command-line arguments
+    if (args.length > 0) {
+      if (args[0].equals("-text")) {
+        textMode = true;
+      } else if (args[0].equals("-file")) {
+        fileMode = true;
+        if (args.length > 1) {
+          filePath = args[1];
+        } else {
+          throw new IllegalArgumentException("File path not provided");
+        }
+      } else {
+        throw new IllegalArgumentException("Invalid command format");
+      }
+    } else {
+      guiMode = true;
+    }if (guiMode) {
+      runCode();
+      //GUIOperations();
+    }else if (textMode) {
+      run();
+    } else if (fileMode) {
+      if (!filePath.split("\\.")[1].equals("txt")) {
+        throw new IllegalArgumentException("Only txt files are accepted as script files!\n");
+      }
+      readScriptFile(filePath);
+      if (go_script) {
+        view.printOutput("Script file ran successfully \n");
+      }
+    }
+  }
 
   /**
    * Run method should run the command based on user input. 1. Runs:
