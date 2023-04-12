@@ -17,14 +17,15 @@ import model.Operations;
 import model.ROModel;
 import model.ROModelImpl;
 import view.ImageProcessorUI;
-import view.View;
-import view.ViewGUI;
 import view.ViewI;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
 import java.util.function.Function;
 
 /**
@@ -36,12 +37,12 @@ public class ImageController implements ImageProcessCallbacks {
 
   final Readable in;
   private final Operations model;
-  private ViewI view;
+  private final ViewI view;
   boolean go_script = true;
   ImageProcessCallbacks callbacks;
   //hashmap of image operations (key) and lambda operation (value)
   //the lambda operation maps a list of strings to a CommandDesignOperations object.
-  private Map<String, Function<String[], CommandDesignOperations>> commandMap;
+  private final Map<String, Function<String[], CommandDesignOperations>> commandMap;
 
   /**
    * This constructor creates a controller object.
@@ -71,12 +72,13 @@ public class ImageController implements ImageProcessCallbacks {
   }
 
   /**
-   * Thi function handles the command line interaction.
+   * This function handles the command line interaction.
+   *
    * @throws IOException if one ocurs.
    */
   public void runCode() throws IOException {
     // no command-line arguments, run GUI mode
-    GUIOperations();
+    guiOperations();
     boolean go_code = true;
     Scanner scanner = new Scanner(this.in);
     while (go_code) {
@@ -102,13 +104,12 @@ public class ImageController implements ImageProcessCallbacks {
           }
           run();
         } else if (commandParts[0].equals("-exit")) {
-            if (commandParts.length != 1) {
-              throw new IllegalArgumentException("Invalid command format.");
-            }
-            view.printOutput("Exit the program \n");
-            go_code = false;
+          if (commandParts.length != 1) {
+            throw new IllegalArgumentException("Invalid command format.");
           }
-          else {
+          view.printOutput("Exit the program \n");
+          go_code = false;
+        } else {
           view.printOutput("Please enter a valid command \n");
         }
       } catch (NoSuchFieldException e) {
@@ -126,13 +127,15 @@ public class ImageController implements ImageProcessCallbacks {
   }
 
   /**
-   * this is the first function called from the main
-   * @param args
-   * @throws IOException
-   * @throws NoSuchFieldException
-   * @throws IllegalAccessException
+   * This is the first function called from the main.
+   *
+   * @param args String array
+   * @throws IOException            throws IOException
+   * @throws NoSuchFieldException   throws NoSuchFieldException
+   * @throws IllegalAccessException throws IllegalAccessException
    */
-  public void runMain(String[] args) throws IOException, NoSuchFieldException, IllegalAccessException {
+  public void runMain(String[] args) throws IOException, NoSuchFieldException,
+      IllegalAccessException {
     boolean guiMode = false;
     boolean textMode = false;
     boolean fileMode = false;
@@ -150,14 +153,15 @@ public class ImageController implements ImageProcessCallbacks {
           throw new IllegalArgumentException("File path not provided");
         }
       } else {
-        view.printOutput("Please enter a valid command \n" );
+        view.printOutput("Please enter a valid command \n");
       }
     } else {
       guiMode = true;
-    }if (guiMode) {
+    }
+    if (guiMode) {
       runCode();
       //GUIOperations();
-    }else if (textMode) {
+    } else if (textMode) {
       run();
     } else if (fileMode) {
       if (!filePath.split("\\.")[1].equals("txt")) {
@@ -191,7 +195,7 @@ public class ImageController implements ImageProcessCallbacks {
         if (commandParts.length == 0) {
           return;
         } else {
-           if (commandParts[0].equals("exit")) {
+          if (commandParts[0].equals("exit")) {
             if (commandParts.length != 1) {
               throw new IllegalArgumentException("Invalid command format.");
             }
@@ -218,7 +222,7 @@ public class ImageController implements ImageProcessCallbacks {
    * @throws IOException throws IO exception.
    */
   public void readScriptFile(String filename)
-          throws IOException, NoSuchFieldException, IllegalAccessException {
+      throws IOException, NoSuchFieldException, IllegalAccessException {
     try {
       File file = new File(filename);
       if (file.exists() && file.length() == 0) {
@@ -257,7 +261,7 @@ public class ImageController implements ImageProcessCallbacks {
    * @throws IllegalAccessException if illegal access.
    */
   public void commandExecutionNew(String[] commands)
-          throws IOException, NoSuchFieldException, IllegalAccessException {
+      throws IOException, NoSuchFieldException, IllegalAccessException {
     if (commands.length == 0 || commands[0].trim().isEmpty()) {
       view.printOutput("Please enter appropriate command. \n");
       return;
@@ -285,11 +289,11 @@ public class ImageController implements ImageProcessCallbacks {
   /**
    * The following method is used to create a GUI object and work with it.
    */
-  public void GUIOperations() {
+  public void guiOperations() {
     //open up the window
     callbacks = new ImageController(model, in, view);
     ROModel modelRO = new ROModelImpl(this.model);
-    ImageProcessorUI GUI = new ImageProcessorUI(modelRO, callbacks, "");
+    ImageProcessorUI gui = new ImageProcessorUI(modelRO, callbacks, "");
 
   }
 
@@ -298,8 +302,9 @@ public class ImageController implements ImageProcessCallbacks {
    * When buttons are clicked, they pass a list of commands to this method
    * and a view object. The function then goes and fetches the appropiate
    * lambda function (same as the function above) passed on the operation.
+   *
    * @param actionCommands list of commands mimicking user input when button clickec..
-   * @param viewGUI viewGUI object.
+   * @param viewGUI        viewGUI object.
    * @throws IOException if one occurs.
    */
   @Override
@@ -308,10 +313,11 @@ public class ImageController implements ImageProcessCallbacks {
     try {
       CommandDesignOperations c;
 
-      Function<String[], CommandDesignOperations> cmd = commandMap.getOrDefault(actionCommands[0], null);
+      Function<String[], CommandDesignOperations> cmd = commandMap.getOrDefault(
+          actionCommands[0], null);
       if (cmd == null) {
         go_script = false;
-        throw new NullPointerException("Invalid command: " + actionCommands[0]);
+        throw new IllegalArgumentException("Invalid command: " + actionCommands[0]);
       } else {
         try {
           c = cmd.apply(actionCommands);

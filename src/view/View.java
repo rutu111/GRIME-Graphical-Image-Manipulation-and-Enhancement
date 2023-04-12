@@ -1,8 +1,5 @@
 package view;
 
-import controller.ImageProcessCallbacks;
-
-import javax.swing.*;
 import java.io.IOException;
 
 /**
@@ -28,7 +25,7 @@ public class View implements ViewI {
   @Override
   public void printWelcomeMessage() {
     System.out.println("Welcome to image processing with PPM files! You can enter commands here. "
-            + "Type exit to exit the program anytime.\n");
+        + "Type exit to exit the program anytime.\n");
     System.out.println("You can use the following commands to perform the following operations:\n");
     System.out.println("LOAD: load filepath imageName\n");
     System.out.println("SAVE: save filepath imageName\n");
@@ -37,9 +34,9 @@ public class View implements ViewI {
     System.out.println("VERTICAL-FLIP: vertical-flip imageName newimageName\n");
     System.out.println("GREYSCALE component: greyscale component-type imageName newimageName\n");
     System.out.println("RGB TO GREYSCALE: rgb-split imageName newimageNameR newimageNameG "
-            + "newimageNameB\n");
+        + "newimageNameB\n");
     System.out.println("GREYSCALE TO RGB: rgb-combine newimageName imageNameR imageNameG imageNameB"
-            + "\n");
+        + "\n");
     System.out.println("Blur: filter-blur imageName newimageName\n");
     System.out.println("Dither: dither imageName newimageName\n");
     System.out.println("Sharpen: filter-sharpen imageName newimageName\n");

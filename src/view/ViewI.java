@@ -24,5 +24,4 @@ public interface ViewI {
   void printOutput(String output) throws IOException;
 
 
-
 }

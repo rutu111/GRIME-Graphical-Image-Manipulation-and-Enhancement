@@ -1,8 +1,8 @@
 package model;
 
-import static java.lang.Math.min;
-
 import java.lang.reflect.Field;
+
+import static java.lang.Math.min;
 
 /**
  * The following class contains implements that are common for all 3 channel objects.
@@ -23,7 +23,7 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
 
   @Override
   public TypeOfImage combineGreyScaleToRGB(TypeOfImage image2,
-      TypeOfImage image3) throws IllegalArgumentException {
+                                           TypeOfImage image3) throws IllegalArgumentException {
     TypeofImageObject[][] new_image;
     //check if height and width of all images is the same
     //if yes, set height and width of RBG the same
@@ -69,7 +69,7 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
       for (int j = 0; j < this.height; j++) {
         TypeofImageObject oldPixel = this.pixels[i][j];
         //Add increment value to RGB values and clamp to [0, 255]
-        if(oldPixel!=null) {
+        if (oldPixel != null) {
           Integer r = (int) min(255, Math.max(0, oldPixel.getChanne11() + increment));
           Integer g = (int) min(255, Math.max(0, oldPixel.getChanne12() + increment));
           Integer b = (int) min(255, Math.max(0, oldPixel.getChanne13() + increment));
@@ -88,9 +88,9 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
     for (int i = 0; i < this.getWidth(); i++) {
       for (int j = 0; j < this.getHeight(); j++) {
         TypeofImageObject object = this.getPixels()[i][j];
-        if(object!=null) {
+        if (object != null) {
           new_image[i][j] = getObject((Integer) field.get(object),
-                  (Integer) field.get(object), (Integer) field.get(object), object.hasAlpha());
+              (Integer) field.get(object), (Integer) field.get(object), object.hasAlpha());
         }
       }
     }
@@ -103,31 +103,31 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
     for (int i = 0; i < this.getWidth(); i++) {
       for (int j = 0; j < this.getHeight(); j++) {
         if (measure.toString().equals("value")) {
-          if(this.getPixels()[i][j]!=null) {
+          if (this.getPixels()[i][j] != null) {
             Integer value = Math.max(this.getPixels()[i][j].getChanne11(),
-                    Math.max(this.getPixels()[i][j].getChanne12(),
-                            this.getPixels()[i][j].getChanne13()));
+                Math.max(this.getPixels()[i][j].getChanne12(),
+                    this.getPixels()[i][j].getChanne13()));
             new_image[i][j] = getObject(value, value, value, this.getPixels()[i][j].hasAlpha());
           }
         }
         //intensity
         if (measure.toString().equals("intensity")) {
-          if(this.getPixels()[i][j]!=null) {
+          if (this.getPixels()[i][j] != null) {
             Integer intensity =
-                    (this.getPixels()[i][j].getChanne11() + this.getPixels()[i][j].getChanne12()
-                            + this.getPixels()[i][j].getChanne13()) / 3;
+                (this.getPixels()[i][j].getChanne11() + this.getPixels()[i][j].getChanne12()
+                    + this.getPixels()[i][j].getChanne13()) / 3;
             new_image[i][j] = getObject(intensity, intensity, intensity,
-                    this.getPixels()[i][j].hasAlpha());
+                this.getPixels()[i][j].hasAlpha());
           }
         }
         //luma
         if (measure.toString().equals("luma")) {
-          if(this.getPixels()[i][j]!=null) {
+          if (this.getPixels()[i][j] != null) {
             double luma = 0.2126 * this.getPixels()[i][j].getChanne11()
-                    + 0.7152 * this.getPixels()[i][j].getChanne12()
-                    + 0.0722 * this.getPixels()[i][j].getChanne13();
+                + 0.7152 * this.getPixels()[i][j].getChanne12()
+                + 0.0722 * this.getPixels()[i][j].getChanne13();
             new_image[i][j] = getObject((int) luma, (int) luma, (int) luma,
-                    this.getPixels()[i][j].hasAlpha());
+                this.getPixels()[i][j].hasAlpha());
           }
         }
       }
@@ -194,7 +194,7 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
             if (xx >= 0 && xx < this.width && yy >= 0 && yy < this.height) {
               oldPixel = this.pixels[xx][yy];
               double weight = filter[i + 1][j + 1];
-              if(oldPixel!=null) {
+              if (oldPixel != null) {
                 r += weight * oldPixel.getChanne11();
                 g += weight * oldPixel.getChanne12();
                 b += weight * oldPixel.getChanne13();
@@ -207,7 +207,7 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
         Integer g2 = (int) Math.min(255, Math.max(0, Math.round(g)));
         Integer b2 = (int) Math.min(255, Math.max(0, Math.round(b)));
         // Set the value of the corresponding pixel in the new image object
-        if(oldPixel!=null && r2!=null && g2!=null && b2!=null) {
+        if (oldPixel != null && r2 != null && g2 != null && b2 != null) {
           newPixels[x][y] = getObject(r2, g2, b2, oldPixel.hasAlpha());
         }
       }
@@ -259,7 +259,7 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
           Integer b2 = (int) Math.min(255, Math.max(0, b));
 
           // Set the value of the corresponding pixel in the new image object
-          if(oldPixel!=null && r2!=null && g2!=null && b2!=null) {
+          if (oldPixel != null && r2 != null && g2 != null && b2 != null) {
             newPixels[x][y] = getObject(r2, g2, b2, oldPixel.hasAlpha());
           }
         }
@@ -292,7 +292,7 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
               int newRed = rightPixel.getChanne11() + rightError;
               newRed = Math.max(0, Math.min(255, newRed));
               TypeofImageObject updatedRightPixel = getObject(newRed, newRed, newRed,
-                      rightPixel.hasAlpha());
+                  rightPixel.hasAlpha());
               greyScaleImage.getPixels()[c + 1][r] = updatedRightPixel;
             }
           }
@@ -305,7 +305,7 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
               int newRed = bottomLeftPixel.getChanne11() + bottomLeftError;
               newRed = Math.max(0, Math.min(255, newRed));
               TypeofImageObject updatedBottomLeftPixel = getObject(newRed, newRed, newRed,
-                      bottomLeftPixel.hasAlpha());
+                  bottomLeftPixel.hasAlpha());
               greyScaleImage.getPixels()[c - 1][r + 1] = updatedBottomLeftPixel;
             }
           }
@@ -318,7 +318,7 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
               int newRed = bottomPixel.getChanne11() + bottomError;
               newRed = Math.max(0, Math.min(255, newRed));
               TypeofImageObject updatedBottomPixel = getObject(newRed, newRed, newRed,
-                      bottomPixel.hasAlpha());
+                  bottomPixel.hasAlpha());
               greyScaleImage.getPixels()[c][r + 1] = updatedBottomPixel;
             }
           }
@@ -330,7 +330,7 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
               int newRed = bottomRightPixel.getChanne11() + bottomRightError;
               newRed = Math.max(0, Math.min(255, newRed));
               TypeofImageObject updatedBottomRightPixel = getObject(newRed, newRed, newRed,
-                      bottomRightPixel.hasAlpha());
+                  bottomRightPixel.hasAlpha());
               greyScaleImage.getPixels()[c + 1][r + 1] = updatedBottomRightPixel;
             }
           }
@@ -350,7 +350,7 @@ public abstract class ThreeChannelObjectOperations extends CommonOperations {
    * @return TypeofImageObject of type extending this class.
    */
   protected abstract TypeofImageObject getObject(int value1, int value2, int value3,
-      Integer value4);
+                                                 Integer value4);
 
   /**
    * This is a method returns all the fields of the object inside the matrix of the class

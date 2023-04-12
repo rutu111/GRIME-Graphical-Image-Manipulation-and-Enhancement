@@ -36,8 +36,7 @@ public class ModelTest {
 
 
   /**
-   * This method is used to setup all the images required for
-   * testing purposes.
+   * This method is used to setup all the images required for testing purposes.
    */
   @Before
   public void setUp() {
@@ -55,8 +54,7 @@ public class ModelTest {
   }
 
   /**
-   * This is a method used to test if the brighten method in
-   * the model works.
+   * This is a method used to test if the brighten method in the model works.
    */
   @Test
   public void testIfBrightenWorks() {
@@ -67,9 +65,9 @@ public class ModelTest {
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         expectedImage.addPixelAtPosition(j, i,
-                new RGBIntegerObject(((int) Math.min(255, Math.max(0, c + increment))),
-                        ((int) Math.min(255, Math.max(0, c + increment))),
-                        (int) Math.min(255, Math.max(0, c + increment))));
+            new RGBIntegerObject(((int) Math.min(255, Math.max(0, c + increment))),
+                ((int) Math.min(255, Math.max(0, c + increment))),
+                (int) Math.min(255, Math.max(0, c + increment))));
         c += 1;
       }
     }
@@ -77,17 +75,16 @@ public class ModelTest {
     model.addImageToModel(testImage1.buildImage(), "test+image");
     model.addImageToModel(expectedImage.buildImage(), "expected+imageBrightenBy10");
     assertFalse(
-            model.getObject("test+image").equals(model.getObject("expected+imageBrightenBy10")));
+        model.getObject("test+image").equals(model.getObject("expected+imageBrightenBy10")));
 
     //after brighterning
     model.brighten("test+image", "test-bright", 10);
     assertTrue(
-            model.getObject("test-bright").equals(model.getObject("expected+imageBrightenBy10")));
+        model.getObject("test-bright").equals(model.getObject("expected+imageBrightenBy10")));
   }
 
   /**
-   * This is a method used to test if the brighten method works
-   * by performing darken using the
+   * This is a method used to test if the brighten method works by performing darken using the
    * increment value in the model works.
    */
   @Test
@@ -99,9 +96,9 @@ public class ModelTest {
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         expectedImage.addPixelAtPosition(j, i,
-                new RGBIntegerObject(((int) Math.min(255, Math.max(0, c + increment))),
-                        ((int) Math.min(255, Math.max(0, c + increment))),
-                        (int) Math.min(255, Math.max(0, c + increment))));
+            new RGBIntegerObject(((int) Math.min(255, Math.max(0, c + increment))),
+                ((int) Math.min(255, Math.max(0, c + increment))),
+                (int) Math.min(255, Math.max(0, c + increment))));
         c += 1;
       }
     }
@@ -119,8 +116,8 @@ public class ModelTest {
   }
 
   /**
-   * This is a method used to test if exception is thrown
-   * when then name of image not present in hashmap.
+   * This is a method used to test if exception is thrown when then name of image not present in
+   * hashmap.
    */
   @Test(expected = NoSuchElementException.class)
   public void testIfBrightenThrowsException() {
@@ -131,9 +128,9 @@ public class ModelTest {
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         expectedImage.addPixelAtPosition(j, i,
-                new RGBIntegerObject(((int) Math.min(255, Math.max(0, c + increment))),
-                        ((int) Math.min(255, Math.max(0, c + increment))),
-                        (int) Math.min(255, Math.max(0, c + increment))));
+            new RGBIntegerObject(((int) Math.min(255, Math.max(0, c + increment))),
+                ((int) Math.min(255, Math.max(0, c + increment))),
+                (int) Math.min(255, Math.max(0, c + increment))));
         c += 1;
       }
     }
@@ -141,17 +138,16 @@ public class ModelTest {
     model.addImageToModel(testImage1.buildImage(), "test+image");
     model.addImageToModel(expectedImage.buildImage(), "expected+imageBrightenBy10");
     assertFalse(
-            model.getObject("test+image").equals(model.getObject("expected+imageBrightenBy10")));
+        model.getObject("test+image").equals(model.getObject("expected+imageBrightenBy10")));
 
     //after brighterning
     model.brighten("test+image", "test-bright", 10);
     assertTrue(
-            model.getObject("test-bright01").equals(model.getObject("expected+imageBrightenBy10")));
+        model.getObject("test-bright01").equals(model.getObject("expected+imageBrightenBy10")));
   }
 
   /**
-   * This is a method to test exception thrown when rgb
-   * values are negative.
+   * This is a method to test exception thrown when rgb values are negative.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testForBrightenNegRGB() {
@@ -162,9 +158,9 @@ public class ModelTest {
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         expectedImage.addPixelAtPosition(j, i,
-                new RGBIntegerObject(((int) Math.min(255, Math.max(0, c + increment))),
-                        ((int) Math.min(255, Math.max(0, c + increment))),
-                        (int) Math.min(255, Math.max(0, c + increment))));
+            new RGBIntegerObject(((int) Math.min(255, Math.max(0, c + increment))),
+                ((int) Math.min(255, Math.max(0, c + increment))),
+                (int) Math.min(255, Math.max(0, c + increment))));
       }
     }
     testImage1 = new RGBIntegerImageBuilder(width, height);
@@ -179,12 +175,12 @@ public class ModelTest {
     model.addImageToModel(testImage1.buildImage(), "test+image");
     model.addImageToModel(expectedImage.buildImage(), "expected+imageBrightenBy10");
     assertFalse(
-            model.getObject("test+image").equals(model.getObject("expected+imageBrightenBy10")));
+        model.getObject("test+image").equals(model.getObject("expected+imageBrightenBy10")));
 
     //after
     model.brighten("test+image", "test-brighten", 10);
     assertTrue(
-            model.getObject("test-brighten").equals(model.getObject("expected+imageBrightenBy10")));
+        model.getObject("test-brighten").equals(model.getObject("expected+imageBrightenBy10")));
   }
 
   /**
@@ -199,9 +195,9 @@ public class ModelTest {
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         expectedImage.addPixelAtPosition(j, i,
-                new RGBIntegerObject(((int) Math.min(255, Math.max(0, c + increment))),
-                        ((int) Math.min(255, Math.max(0, c + increment))),
-                        (int) Math.min(255, Math.max(0, c + increment))));
+            new RGBIntegerObject(((int) Math.min(255, Math.max(0, c + increment))),
+                ((int) Math.min(255, Math.max(0, c + increment))),
+                (int) Math.min(255, Math.max(0, c + increment))));
       }
     }
     testImage1 = new RGBIntegerImageBuilder(width, height);
@@ -216,18 +212,17 @@ public class ModelTest {
     model.addImageToModel(testImage1.buildImage(), "test+image");
     model.addImageToModel(expectedImage.buildImage(), "expected+imageBrightenBy10");
     assertFalse(
-            model.getObject("test+image").equals(model.getObject("expected+imageBrightenBy10")));
+        model.getObject("test+image").equals(model.getObject("expected+imageBrightenBy10")));
 
     //after
     model.brighten("test+image", "test-brighten", 10);
     assertTrue(
-            model.getObject("test-brighten").equals(model.getObject("expected+imageBrightenBy10")));
+        model.getObject("test-brighten").equals(model.getObject("expected+imageBrightenBy10")));
   }
 
   /**
-   * This method is used to test if the darken method works to darken
-   * an all balck image or if
-   * the value is the same.
+   * This method is used to test if the darken method works to darken an all balck image or if the
+   * value is the same.
    */
   @Test
   public void testForDarkenAllBlack() {
@@ -238,9 +233,9 @@ public class ModelTest {
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         expectedImage.addPixelAtPosition(j, i,
-                new RGBIntegerObject(((int) Math.min(255, Math.max(0, c + increment))),
-                        ((int) Math.min(255, Math.max(0, c + increment))),
-                        (int) Math.min(255, Math.max(0, c + increment))));
+            new RGBIntegerObject(((int) Math.min(255, Math.max(0, c + increment))),
+                ((int) Math.min(255, Math.max(0, c + increment))),
+                (int) Math.min(255, Math.max(0, c + increment))));
       }
     }
     testImage2 = new RGBIntegerImageBuilder(width, height);
@@ -255,17 +250,16 @@ public class ModelTest {
     model.addImageToModel(testImage2.buildImage(), "test+image");
     model.addImageToModel(expectedImage.buildImage(), "expected+imageDarkenBlackBy10");
     assertTrue(
-            model.getObject("test+image").equals(model.getObject("expected+imageDarkenBlackBy10")));
+        model.getObject("test+image").equals(model.getObject("expected+imageDarkenBlackBy10")));
 
     //after
     model.brighten("test+image", "test-brighten", -10);
     assertTrue(
-            model.getObject("test-brighten").equals(model.getObject("expected+imageDarkenBlackBy10")));
+        model.getObject("test-brighten").equals(model.getObject("expected+imageDarkenBlackBy10")));
   }
 
   /**
-   * This method is used to test if the brighten method works
-   * for all white image.
+   * This method is used to test if the brighten method works for all white image.
    */
   @Test
   public void testForBrightenAllWhite() {
@@ -276,9 +270,9 @@ public class ModelTest {
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         expectedImage.addPixelAtPosition(j, i,
-                new RGBIntegerObject(((Integer) Math.min(255, Math.max(0, c + increment))),
-                        ((Integer) Math.min(255, Math.max(0, c + increment))),
-                        (Integer) Math.min(255, Math.max(0, c + increment))));
+            new RGBIntegerObject(((Integer) Math.min(255, Math.max(0, c + increment))),
+                ((Integer) Math.min(255, Math.max(0, c + increment))),
+                (Integer) Math.min(255, Math.max(0, c + increment))));
       }
     }
     testImage2 = new RGBIntegerImageBuilder(width, height);
@@ -297,12 +291,11 @@ public class ModelTest {
     //after
     model.brighten("test+image", "test-brighten", 10);
     assertTrue(
-            model.getObject("test-brighten").equals(model.getObject("expected+imageBrightenBy10")));
+        model.getObject("test-brighten").equals(model.getObject("expected+imageBrightenBy10")));
   }
 
   /**
-   * This method is used to test if the darken method works
-   * for all white image.
+   * This method is used to test if the darken method works for all white image.
    */
   @Test
   public void testForDarkenAllWhite() {
@@ -329,12 +322,12 @@ public class ModelTest {
     model.addImageToModel(testImage1.buildImage(), "test+image");
     model.addImageToModel(expectedImage.buildImage(), "expected+imageBrightenBy10");
     assertFalse(
-            model.getObject("test+image").equals(model.getObject("expected+imageBrightenBy10")));
+        model.getObject("test+image").equals(model.getObject("expected+imageBrightenBy10")));
 
     //after
     model.brighten("test+image", "test-brighten", -10);
     assertTrue(
-            model.getObject("test-brighten").equals(model.getObject("expected+imageBrightenBy10")));
+        model.getObject("test-brighten").equals(model.getObject("expected+imageBrightenBy10")));
   }
 
   /**
@@ -349,9 +342,9 @@ public class ModelTest {
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         expectedImage.addPixelAtPosition(j, i,
-                new RGBIntegerObject(((int) Math.min(255, Math.max(0, c + increment))),
-                        ((int) Math.min(255, Math.max(0, c + increment))),
-                        (int) Math.min(255, Math.max(0, c + increment))));
+            new RGBIntegerObject(((int) Math.min(255, Math.max(0, c + increment))),
+                ((int) Math.min(255, Math.max(0, c + increment))),
+                (int) Math.min(255, Math.max(0, c + increment))));
       }
     }
     testImage1 = new RGBIntegerImageBuilder(width, height);
@@ -365,12 +358,12 @@ public class ModelTest {
     model.addImageToModel(testImage1.buildImage(), "test+image");
     model.addImageToModel(expectedImage.buildImage(), "expected+imageBrightenBy10");
     assertFalse(
-            model.getObject("test+image").equals(model.getObject("expected+imageBrightenBy10")));
+        model.getObject("test+image").equals(model.getObject("expected+imageBrightenBy10")));
 
     //after
     model.brighten("test+image", "test-brighten", 10);
     assertTrue(
-            model.getObject("test-brighten").equals(model.getObject("expected+imageBrightenBy10")));
+        model.getObject("test-brighten").equals(model.getObject("expected+imageBrightenBy10")));
   }
 
   /**
@@ -385,9 +378,9 @@ public class ModelTest {
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         expectedImage.addPixelAtPosition(j, i,
-                new RGBIntegerObject(((int) Math.min(255, Math.max(0, c + increment))),
-                        ((int) Math.min(255, Math.max(0, c + increment))),
-                        (int) Math.min(255, Math.max(0, c + increment))));
+            new RGBIntegerObject(((int) Math.min(255, Math.max(0, c + increment))),
+                ((int) Math.min(255, Math.max(0, c + increment))),
+                (int) Math.min(255, Math.max(0, c + increment))));
         c += 1;
       }
     }
@@ -396,12 +389,12 @@ public class ModelTest {
     model.addImageToModel(testImage1.buildImage(), "test+image");
     model.addImageToModel(expectedImage.buildImage(), "expected+imageBrightenBy10");
     assertFalse(
-            model.getObject("test+image").equals(model.getObject("expected+imageBrightenBy10")));
+        model.getObject("test+image").equals(model.getObject("expected+imageBrightenBy10")));
 
     //after
     model.brighten("test+image", "test-brighten", 50.25);
     assertTrue(
-            model.getObject("test-brighten").equals(model.getObject("expected+imageBrightenBy10")));
+        model.getObject("test-brighten").equals(model.getObject("expected+imageBrightenBy10")));
   }
 
 
@@ -419,8 +412,8 @@ public class ModelTest {
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         expectedImage.addPixelAtPosition(j, i,
-                new RGBIntegerObject(Math.max(c, Math.max(c, c)), Math.max(c, Math.max(c, c)),
-                        Math.max(c, Math.max(c, c))));
+            new RGBIntegerObject(Math.max(c, Math.max(c, c)), Math.max(c, Math.max(c, c)),
+                Math.max(c, Math.max(c, c))));
         c += 1;
       }
     }
@@ -428,12 +421,12 @@ public class ModelTest {
     model.addImageToModel(testImage1.buildImage(), "test+image");
     model.addImageToModel(expectedImage.buildImage(), "expected+imageValue");
     assertTrue(
-            model.getObject("test+image").equals(model.getObject("expected+imageValue")));
+        model.getObject("test+image").equals(model.getObject("expected+imageValue")));
 
     //after
     model.visualizeValueIntensityLuma("test+image", "test-value", MeasurementType.value);
     assertTrue(
-            model.getObject("test-value").equals(model.getObject("expected+imageValue")));
+        model.getObject("test-value").equals(model.getObject("expected+imageValue")));
   }
 
   /**
@@ -449,7 +442,7 @@ public class ModelTest {
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         expectedImage.addPixelAtPosition(j, i,
-                new RGBIntegerObject((c + c + c) / 3, (c + c + c) / 3, (c + c + c) / 3));
+            new RGBIntegerObject((c + c + c) / 3, (c + c + c) / 3, (c + c + c) / 3));
         c += 1;
       }
     }
@@ -457,12 +450,12 @@ public class ModelTest {
     model.addImageToModel(testImage1.buildImage(), "test+image");
     model.addImageToModel(expectedImage.buildImage(), "expected+imageValue");
     assertTrue(
-            model.getObject("test+image").equals(model.getObject("expected+imageValue")));
+        model.getObject("test+image").equals(model.getObject("expected+imageValue")));
 
     //after
     model.visualizeValueIntensityLuma("test+image", "test-intensity", MeasurementType.intensity);
     assertTrue(
-            model.getObject("test-intensity").equals(model.getObject("expected+imageValue")));
+        model.getObject("test-intensity").equals(model.getObject("expected+imageValue")));
   }
 
   /**
@@ -479,7 +472,7 @@ public class ModelTest {
       for (int j = 0; j < width; j++) {
         double luma = 0.2126 * c + 0.7152 * c + 0.0722 * c;
         expectedImage.addPixelAtPosition(j, i,
-                new RGBIntegerObject((int) luma, (int) luma, (int) luma));
+            new RGBIntegerObject((int) luma, (int) luma, (int) luma));
         c += 1;
       }
     }
@@ -490,7 +483,7 @@ public class ModelTest {
     //after
     model.visualizeValueIntensityLuma("test+image", "test-luma", MeasurementType.luma);
     assertTrue(
-            model.getObject("test-luma").equals(model.getObject("expected+imageValue")));
+        model.getObject("test-luma").equals(model.getObject("expected+imageValue")));
   }
 
   /**
@@ -515,7 +508,7 @@ public class ModelTest {
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         expectedImage.addPixelAtPosition(j, i,
-                new RGBIntegerObject(c, c, c));
+            new RGBIntegerObject(c, c, c));
       }
     }
     //before
@@ -524,7 +517,7 @@ public class ModelTest {
     //after
     model.visIndividualComponent("test+image", "test-red", ComponentRGB.red);
     assertTrue(
-            model.getObject("test-red").equals(model.getObject("expected+imageValue")));
+        model.getObject("test-red").equals(model.getObject("expected+imageValue")));
   }
 
   /**
@@ -549,7 +542,7 @@ public class ModelTest {
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         expectedImage.addPixelAtPosition(j, i,
-                new RGBIntegerObject(c2, c2, c2));
+            new RGBIntegerObject(c2, c2, c2));
       }
     }
     //before
@@ -558,7 +551,7 @@ public class ModelTest {
     //after
     model.visIndividualComponent("test+image", "test-green", ComponentRGB.green);
     assertTrue(
-            model.getObject("test-green").equals(model.getObject("expected+imageValue")));
+        model.getObject("test-green").equals(model.getObject("expected+imageValue")));
   }
 
   /**
@@ -583,7 +576,7 @@ public class ModelTest {
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         expectedImage.addPixelAtPosition(j, i,
-                new RGBIntegerObject(c3, c3, c3));
+            new RGBIntegerObject(c3, c3, c3));
       }
     }
     //before
@@ -592,7 +585,7 @@ public class ModelTest {
     //after
     model.visIndividualComponent("test+image", "test-blue", ComponentRGB.blue);
     assertTrue(
-            model.getObject("test-blue").equals(model.getObject("expected+imageValue")));
+        model.getObject("test-blue").equals(model.getObject("expected+imageValue")));
   }
 
   /**
@@ -630,8 +623,8 @@ public class ModelTest {
     for (int i = 0; i < width; i++) {
       for (int j = 0; j < height; j++) {
         new RGBIntegerObject(testImageR.buildImage().getPixels()[i][j].getChanne11(),
-                testImageR.buildImage().getPixels()[i][j].getChanne12(),
-                testImageR.buildImage().getPixels()[i][j].getChanne13());
+            testImageR.buildImage().getPixels()[i][j].getChanne12(),
+            testImageR.buildImage().getPixels()[i][j].getChanne13());
         c += 1;
       }
     }
@@ -643,7 +636,7 @@ public class ModelTest {
 
     model.combineGreyScaleToRGB("testR", "testG", "testB", "RGBNewImage");
     assertTrue(
-            model.getObject("RGBNewImage").equals(model.getObject("expected+imageValue")));
+        model.getObject("RGBNewImage").equals(model.getObject("expected+imageValue")));
   }
 
 
@@ -663,7 +656,7 @@ public class ModelTest {
 
     model.addImageToModel(testImage1.buildImage(), "RGBNewImage");
     model.splitInto3Images("RGBNewImage", "testR",
-            "testG", "testB");
+        "testG", "testB");
     RGBIntegerImageBuilder expectedtestImageR = new RGBIntegerImageBuilder(width, height);
     c = 0;
     for (int i = 0; i < height; i++) {
@@ -688,22 +681,20 @@ public class ModelTest {
       }
     }
 
-
     //before
     model.addImageToModel(expectedtestImageR.buildImage(), "newtestR");
     model.addImageToModel(expectedtestImageG.buildImage(), "newtestG");
     model.addImageToModel(expectedtestImageB.buildImage(), "newtestB");
 
-
     assertTrue(
-            model.getObject("testR").equals(model
-                    .getObject("newtestR")));
+        model.getObject("testR").equals(model
+            .getObject("newtestR")));
     assertTrue(
-            model.getObject("testG").equals(model
-                    .getObject("newtestG")));
+        model.getObject("testG").equals(model
+            .getObject("newtestG")));
     assertTrue(
-            model.getObject("testB").equals(model
-                    .getObject("newtestB")));
+        model.getObject("testB").equals(model
+            .getObject("newtestB")));
   }
 
   /**
@@ -721,7 +712,7 @@ public class ModelTest {
     }
     TypeOfImage newImage = expectedImage.buildImage();
     TypeofImageObject[][] flippedImage = new RGBIntegerObject[newImage.getWidth()]
-            [newImage.getHeight()];
+        [newImage.getHeight()];
     for (int col = 0; col < newImage.getPixels()[0].length; col++) {
       for (int row = 0; row < newImage.getPixels().length / 2; row++) {
         TypeofImageObject temp = newImage.getPixels()[row][col];
@@ -729,20 +720,19 @@ public class ModelTest {
         flippedImage[flippedImage.length - row - 1][col] = temp;
       }
     }
-//    TypeOfImage flipped = new RGBIntegerImage(flippedImage,newImage.getWidth(),newImage.
-//        getHeight());
+
     //before horizontal flip
     model.addImageToModel(testImage1.buildImage(), "test+image");
     model.addImageToModel(expectedImage.buildImage(), "expectedhori");
     assertTrue(
-            model.getObject("test+image").equals(model.getObject
-                    ("expectedhori")));
+        model.getObject("test+image").equals(model.getObject(
+                "expectedhori")));
 
     //after horizontal flip
     model.horizontalFlip("test+image", "test-hori");
     assertFalse(
-            model.getObject("test-hori").equals(model.getObject
-                    ("expectedhori")));
+        model.getObject("test-hori").equals(model.getObject(
+                "expectedhori")));
   }
 
 
@@ -770,7 +760,7 @@ public class ModelTest {
     }
     TypeOfImage newImage = expectedImage.buildImage();
     TypeofImageObject[][] flippedImage = new RGBIntegerObject[newImage.getWidth()]
-            [newImage.getHeight()];
+        [newImage.getHeight()];
     for (int col = 0; col < newImage.getPixels()[0].length; col++) {
       for (int row = 0; row < newImage.getPixels().length / 2; row++) {
         TypeofImageObject temp = newImage.getPixels()[row][col];
@@ -778,20 +768,18 @@ public class ModelTest {
         flippedImage[flippedImage.length - row - 1][col] = temp;
       }
     }
-//    TypeOfImage flipped = new RGBIntegerImage(flippedImage,newImage.getWidth(),newImage.
-//        getHeight());
     //before horizontal flip
     model.addImageToModel(testImage1.buildImage(), "test+image");
     model.addImageToModel(expectedImage.buildImage(), "expectedhori");
     assertFalse(
-            model.getObject("test+image").equals(model.getObject
-                    ("expectedhori")));
+        model.getObject("test+image").equals(model.getObject(
+                "expectedhori")));
 
     //after horizontal flip
     model.horizontalFlip("test+image", "test-hori");
     assertFalse(
-            model.getObject("test-hori").equals(model.getObject
-                    ("expectedhori")));
+        model.getObject("test-hori").equals(model.getObject(
+                "expectedhori")));
   }
 
   /**
@@ -818,7 +806,7 @@ public class ModelTest {
     }
     TypeOfImage newImage = expectedImage.buildImage();
     TypeofImageObject[][] flippedImage = new RGBIntegerObject[newImage.getWidth()]
-            [newImage.getHeight()];
+        [newImage.getHeight()];
     for (int col = 0; col < newImage.getPixels()[0].length; col++) {
       for (int row = 0; row < newImage.getPixels().length / 2; row++) {
         TypeofImageObject temp = newImage.getPixels()[row][col];
@@ -826,20 +814,18 @@ public class ModelTest {
         flippedImage[flippedImage.length - row - 1][col] = temp;
       }
     }
-//    TypeOfImage flipped = new RGBIntegerImage(flippedImage,newImage.getWidth(),newImage.
-//        getHeight());
     //before horizontal flip
     model.addImageToModel(testImage1.buildImage(), "test+image");
     model.addImageToModel(expectedImage.buildImage(), "expectedhori");
     assertFalse(
-            model.getObject("test+image").equals(model.getObject
-                    ("expectedhori")));
+        model.getObject("test+image").equals(model.getObject(
+                "expectedhori")));
 
     //after horizontal flip
     model.horizontalFlip("test+image", "test-hori");
     assertFalse(
-            model.getObject("test-hori").equals(model.getObject
-                    ("expectedhori")));
+        model.getObject("test-hori").equals(model.getObject(
+                "expectedhori")));
   }
 
   /**
@@ -857,29 +843,27 @@ public class ModelTest {
     }
     TypeOfImage newImage = expectedImage.buildImage();
     TypeofImageObject[][] flippedImage = new RGBIntegerObject[newImage.getWidth()]
-            [newImage.getHeight()];
+        [newImage.getHeight()];
     for (int row = 0; row < newImage.getPixels().length; row++) {
       for (int col = 0; col < newImage.getPixels()[row].length / 2; col++) {
         TypeofImageObject temp = newImage.getPixels()[row][col];
         flippedImage[row][col] = newImage.getPixels()[row][newImage.getPixels()
-                [row].length - col - 1];
+            [row].length - col - 1];
         flippedImage[row][flippedImage[row].length - col - 1] = temp;
       }
     }
-//    TypeOfImage flipped = new RGBIntegerImage(flippedImage,newImage.getWidth(),newImage.
-//        getHeight());
     //before horizontal flip
     model.addImageToModel(testImage1.buildImage(), "test+image");
     model.addImageToModel(expectedImage.buildImage(), "expectedverti");
     assertTrue(
-            model.getObject("test+image").equals(model.getObject
-                    ("expectedverti")));
+        model.getObject("test+image").equals(model.getObject(
+                "expectedverti")));
 
     //after horizontal flip
     model.horizontalFlip("test+image", "test-verti");
     assertFalse(
-            model.getObject("test-verti").equals(model.getObject
-                    ("expectedverti")));
+        model.getObject("test-verti").equals(model.getObject(
+                "expectedverti")));
   }
 
 
@@ -907,29 +891,27 @@ public class ModelTest {
     }
     TypeOfImage newImage = expectedImage.buildImage();
     TypeofImageObject[][] flippedImage = new RGBIntegerObject[newImage.getWidth()]
-            [newImage.getHeight()];
+        [newImage.getHeight()];
     for (int row = 0; row < newImage.getPixels().length; row++) {
       for (int col = 0; col < newImage.getPixels()[row].length / 2; col++) {
         TypeofImageObject temp = newImage.getPixels()[row][col];
         flippedImage[row][col] = newImage.getPixels()[row][newImage.getPixels()
-                [row].length - col - 1];
+            [row].length - col - 1];
         flippedImage[row][flippedImage[row].length - col - 1] = temp;
       }
     }
-//    TypeOfImage flipped = new RGBIntegerImage(flippedImage,newImage.getWidth(),newImage.
-//        getHeight());
     //before horizontal flip
     model.addImageToModel(testImage1.buildImage(), "test+image");
     model.addImageToModel(expectedImage.buildImage(), "expectedverti");
     assertFalse(
-            model.getObject("test+image").equals(model.getObject
-                    ("expectedverti")));
+        model.getObject("test+image").equals(model.getObject(
+                "expectedverti")));
 
     //after horizontal flip
     model.horizontalFlip("test+image", "test-verti");
     assertFalse(
-            model.getObject("test-verti").equals(model.getObject
-                    ("expectedverti")));
+        model.getObject("test-verti").equals(model.getObject(
+                "expectedverti")));
   }
 
   /**
@@ -956,29 +938,27 @@ public class ModelTest {
     }
     TypeOfImage newImage = expectedImage.buildImage();
     TypeofImageObject[][] flippedImage = new RGBIntegerObject[newImage.getWidth()]
-            [newImage.getHeight()];
+        [newImage.getHeight()];
     for (int row = 0; row < newImage.getPixels().length; row++) {
       for (int col = 0; col < newImage.getPixels()[row].length / 2; col++) {
         TypeofImageObject temp = newImage.getPixels()[row][col];
         flippedImage[row][col] = newImage.getPixels()[row][newImage.getPixels()
-                [row].length - col - 1];
+            [row].length - col - 1];
         flippedImage[row][flippedImage[row].length - col - 1] = temp;
       }
     }
-//    TypeOfImage flipped = new RGBIntegerImage(flippedImage,newImage.getWidth(),newImage.
-//        getHeight());
     //before horizontal flip
     model.addImageToModel(testImage1.buildImage(), "test+image");
     model.addImageToModel(expectedImage.buildImage(), "expectedverti");
     assertFalse(
-            model.getObject("test+image").equals(model.getObject
-                    ("expectedverti")));
+        model.getObject("test+image").equals(model.getObject(
+                "expectedverti")));
 
     //after horizontal flip
     model.horizontalFlip("test+image", "test-verti");
     assertFalse(
-            model.getObject("test-verti").equals(model.getObject
-                    ("expectedverti")));
+        model.getObject("test-verti").equals(model.getObject(
+                "expectedverti")));
   }
 
   /**
@@ -993,9 +973,9 @@ public class ModelTest {
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         expectedImage.addPixelAtPosition(j, i,
-                new RGBIntegerObject((Math.max(0, c + increment)),
-                        (Math.max(0, c + increment)),
-                        (Math.max(0, c + increment))));
+            new RGBIntegerObject((Math.max(0, c + increment)),
+                (Math.max(0, c + increment)),
+                (Math.max(0, c + increment))));
         c += 1;
       }
     }
@@ -1062,14 +1042,16 @@ public class ModelTest {
     }
     // Create a 3x3 Gaussian filter
     double[][] filter = {
-            {1.0 / 16.0, 1.0 / 8.0, 1.0 / 16.0},
-            {1.0 / 8.0, 1.0 / 4.0, 1.0 / 8.0},
-            {1.0 / 16.0, 1.0 / 8.0, 1.0 / 16.0}
+        {1.0 / 16.0, 1.0 / 8.0, 1.0 / 16.0},
+        {1.0 / 8.0, 1.0 / 4.0, 1.0 / 8.0},
+        {1.0 / 16.0, 1.0 / 8.0, 1.0 / 16.0}
     };
     TypeOfImage newImage = expectedImage.buildImage();
     for (int x = 0; x < width1; x++) {
       for (int y = 0; y < height1; y++) {
-        double r = 0, g = 0, b = 0;
+        double r = 0;
+        double g = 0;
+        double b = 0;
         TypeofImageObject oldPixel;
         for (int i = -1; i <= 1; i++) {
           for (int j = -1; j <= 1; j++) {
@@ -1096,14 +1078,14 @@ public class ModelTest {
     model.addImageToModel(testImage1.buildImage(), "test+image");
     model.addImageToModel(expectedImage.buildImage(), "expected+image+blur");
     assertFalse(
-            model.getObject("test+image").equals(model.getObject
-                    ("expected+image+blur")));
+        model.getObject("test+image").equals(model.getObject(
+                "expected+image+blur")));
 
     //after blur
     model.blur("test+image", "test-blur");
     assertFalse(
-            model.getObject("test-blur").equals(model.getObject
-                    ("expected+image+blur")));
+        model.getObject("test-blur").equals(model.getObject(
+                "expected+image+blur")));
   }
 
   /**
@@ -1129,16 +1111,18 @@ public class ModelTest {
       }
     }
     double[][] filter = {
-            {-1.0 / 8.0, -1.0 / 8.0, -1.0 / 8.0, -1.0 / 8.0, -1.0 / 8.0},
-            {-1.0 / 8.0, 1.0 / 4.0, 1.0 / 4.0, 1.0 / 4.0, -1.0 / 8.0},
-            {-1.0 / 8.0, 1.0 / 4.0, 1.0, 1.0 / 4.0, -1.0 / 8.0},
-            {-1.0 / 8.0, 1.0 / 4.0, 1.0 / 4.0, 1.0 / 4.0, -1.0 / 8.0},
-            {-1.0 / 8.0, -1.0 / 8.0, -1.0 / 8.0, -1.0 / 8.0, -1.0 / 8.0}
+        {-1.0 / 8.0, -1.0 / 8.0, -1.0 / 8.0, -1.0 / 8.0, -1.0 / 8.0},
+        {-1.0 / 8.0, 1.0 / 4.0, 1.0 / 4.0, 1.0 / 4.0, -1.0 / 8.0},
+        {-1.0 / 8.0, 1.0 / 4.0, 1.0, 1.0 / 4.0, -1.0 / 8.0},
+        {-1.0 / 8.0, 1.0 / 4.0, 1.0 / 4.0, 1.0 / 4.0, -1.0 / 8.0},
+        {-1.0 / 8.0, -1.0 / 8.0, -1.0 / 8.0, -1.0 / 8.0, -1.0 / 8.0}
     };
     TypeOfImage newImage = expectedImage.buildImage();
     for (int x = 0; x < width1; x++) {
       for (int y = 0; y < height1; y++) {
-        double r = 0, g = 0, b = 0;
+        double r = 0;
+        double g = 0;
+        double b = 0;
         TypeofImageObject oldPixel;
         for (int i = -1; i <= 1; i++) {
           for (int j = -1; j <= 1; j++) {
@@ -1165,13 +1149,13 @@ public class ModelTest {
     model.addImageToModel(testImage1.buildImage(), "test+image");
     model.addImageToModel(expectedImage.buildImage(), "expected+image+sharpen");
     assertFalse(
-            model.getObject("test+image").equals(model.getObject
-                    ("expected+image+sharpen")));
+        model.getObject("test+image").equals(model.getObject(
+                "expected+image+sharpen")));
     //after sharpen
     model.sharpen("test+image", "test-sharpen");
     assertFalse(
-            model.getObject("test-sharpen").equals(model.getObject
-                    ("expected+image+sharpen")));
+        model.getObject("test-sharpen").equals(model.getObject(
+                "expected+image+sharpen")));
   }
 
   /**
@@ -1185,7 +1169,7 @@ public class ModelTest {
       for (int j = 0; j < width; j++) {
         double luma = 0.2126 * c + 0.7152 * c + 0.0722 * c;
         expectedImage.addPixelAtPosition(j, i,
-                new RGBIntegerObject((int) luma, (int) luma, (int) luma));
+            new RGBIntegerObject((int) luma, (int) luma, (int) luma));
         c += 1;
       }
     }
@@ -1196,7 +1180,7 @@ public class ModelTest {
     //after
     model.visualizeValueIntensityLuma("test+image", "test-luma", MeasurementType.luma);
     assertTrue(
-            model.getObject("test-luma").equals(model.getObject("expected+imageValue")));
+        model.getObject("test-luma").equals(model.getObject("expected+imageValue")));
   }
 
   /**
@@ -1250,7 +1234,7 @@ public class ModelTest {
     //after
     model.colorTransformationSepia("test+image", "test-sepia");
     assertFalse(
-            model.getObject("test-sepia").equals(model.getObject("expected+imageValue")));
+        model.getObject("test-sepia").equals(model.getObject("expected+imageValue")));
   }
 
 

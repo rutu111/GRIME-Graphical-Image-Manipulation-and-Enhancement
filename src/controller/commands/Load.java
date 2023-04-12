@@ -14,7 +14,7 @@ import java.io.IOException;
 public class Load implements CommandDesignOperations {
 
   public String imageName;
-  private String imagePath;
+  private final String imagePath;
 
   /**
    * This constructor takes in a list a commands.
@@ -36,8 +36,8 @@ public class Load implements CommandDesignOperations {
     try {
       String extension = imagePath.split("\\.")[1];
       if (!extension.equals("ppm") & !extension.equals("png") & !extension.equals("jpg")
-          & !extension.equals("jpeg") &
-          !extension.equals("bmp")) {
+          & !extension.equals("jpeg")
+          & !extension.equals("bmp")) {
         throw new IllegalArgumentException(
             "Invalid file extension! This program only accepts PPM, JPG, PNG and BMP.");
       }
@@ -52,11 +52,11 @@ public class Load implements CommandDesignOperations {
     } catch (FileNotFoundException e) {
       view.printOutput("File not found: " + imageName + "\n");
     } catch (IllegalArgumentException e) {
-      view.printOutput( "Invalid file extension! This program only accepts PPM, JPG, PNG and BMP.");
-    }  catch (IOException e) {
-    view.printOutput(e.getMessage());
+      view.printOutput("Invalid file extension! This program only accepts PPM, JPG, PNG and BMP.");
+    } catch (IOException e) {
+      view.printOutput(e.getMessage());
     } catch (ArrayIndexOutOfBoundsException e) {
-    view.printOutput("Please provide a valid path");
-  }
+      view.printOutput("Please provide a valid path");
+    }
   }
 }

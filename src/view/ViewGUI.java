@@ -1,6 +1,8 @@
 package view;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
 
 /**
  * View class for thr GUI.
@@ -10,33 +12,30 @@ import javax.swing.*;
 
 public class ViewGUI extends JFrame implements ViewI {
 
-    private JPanel errorPanel;
+  private final JLabel label;
 
-    private JLabel label;
-
-    /**
-     * Constructor takes in an error panel object.
-     * Purpose of doing this is to display logs on the GUI.
-     *
-     * @param errorPanel a panel to display log messages.
-     */
-    public ViewGUI(JPanel errorPanel) {
-        this.errorPanel = errorPanel;
-        label = new JLabel();
-        errorPanel.add(label);
-    }
+  /**
+   * Constructor takes in an error panel object.
+   * Purpose of doing this is to display logs on the GUI.
+   *
+   * @param errorPanel a panel to display log messages.
+   */
+  public ViewGUI(JPanel errorPanel) {
+    label = new JLabel();
+    errorPanel.add(label);
+  }
 
 
-    @Override
-    public void printWelcomeMessage() {
+  @Override
+  public void printWelcomeMessage() {
+  //its an empty method.
+  }
 
-    }
+  @Override
+  public void printOutput(String output) {
+    String outputx = "<html>" + output + "</html>";
+    label.setText(outputx);
 
-    @Override
-    public void printOutput(String output) {
-        String outputx = "<html>" + output + "</html>";
-        label.setText(outputx);
-
-    }
+  }
 
 }

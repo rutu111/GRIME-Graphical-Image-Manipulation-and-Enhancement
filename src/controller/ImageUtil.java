@@ -8,6 +8,7 @@ import model.RGBIntegerObject;
 import model.TypeOfImage;
 import model.TypeofImageObject;
 
+import javax.imageio.ImageIO;
 import java.awt.color.ColorSpace;
 import java.awt.color.ICC_ColorSpace;
 import java.awt.color.ICC_Profile;
@@ -21,7 +22,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
-import javax.imageio.ImageIO;
 
 
 /**
@@ -292,10 +292,10 @@ public class ImageUtil {
       BufferedImage image;
       String fileTypeStore = filePath.split("\\.")[1];
       if (imageOutput.getPixels()[0][0].hasAlpha() != null & fileTypeStore.equals("ppm")
-              | imageOutput.getPixels()[0][0].hasAlpha() != null & fileTypeStore.equals("bmp")
-              | imageOutput.getPixels()[0][0].hasAlpha() != null & fileTypeStore.equals("jpg")
-              | imageOutput.getPixels()[0][0].hasAlpha() != null & fileTypeStore.equals("jpeg")
-              | imageOutput.getPixels()[0][0].hasAlpha() == null) {
+          | imageOutput.getPixels()[0][0].hasAlpha() != null & fileTypeStore.equals("bmp")
+          | imageOutput.getPixels()[0][0].hasAlpha() != null & fileTypeStore.equals("jpg")
+          | imageOutput.getPixels()[0][0].hasAlpha() != null & fileTypeStore.equals("jpeg")
+          | imageOutput.getPixels()[0][0].hasAlpha() == null) {
         image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         for (int y = 0; y < imageOutput.getHeight(); y++) {
           for (int x = 0; x < imageOutput.getWidth(); x++) {
@@ -333,10 +333,10 @@ public class ImageUtil {
       ImageIO.write(image, fileType, output);
 
     } catch (FileNotFoundException e) {
-        throw e;
-      } catch (Exception e) {
+      throw e;
+    } catch (Exception e) {
       throw e;
     }
-
   }
+
 }
